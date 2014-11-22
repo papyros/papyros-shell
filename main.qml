@@ -20,7 +20,7 @@ import Material 0.1
 
 // TODO: Don't subclass from Application, since it actually subclasses QtQuick Window
 // However, we do need the theme, units, and other such stuff
-Application {
+MainView {
     id: shell
 
     property Window currentWindow: window1

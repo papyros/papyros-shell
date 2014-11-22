@@ -1,1 +1,13 @@
+Makefile*
+*.pro.user*
 *.qmlproject.user*
+.*.swp
+*.o
+*.moc
+.qmake.cache
+qrc_*.cpp
+moc_*.cpp
+.obj/
+.moc/
+quartz-shell
+*~
