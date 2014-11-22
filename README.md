@@ -13,7 +13,7 @@ QtCompositor requires a small C++ wrapper, but the majority of the shell will be
 
 ### Installation ###
 
-The plan is for Quartz Shell to be a wayland compositor, which will require Wayland and Qt 5.4. However, while in the experimental/mockups stage, it is just an ordinary QML app for simplicity. So, just open the `quartz-shell.qmlproject` in Qt Creator, and run it! You will also need the [qml-material](https://github.com/quartz-os/qml-material) repo installed as a QML module, like this:
+Quartz Shell is a wayland compositor based on QtCompositor, and requires Wayland and Qt 5.4. In addition, will also need the [qml-material](https://github.com/quartz-os/qml-material) repo installed as a QML module, like this:
 
     modules
       Material (renamed qml-material repo)
@@ -21,6 +21,15 @@ The plan is for Quartz Shell to be a wayland compositor, which will require Wayl
       quartz-shell.qml-project
       README.md
       ...
+
+Once you have that set up, run the following commands to compile the C++ wrapper:
+
+    qmake
+    make
+
+And run the compositor from an X11 desktop:
+
+    ./quartz-shell -platform xcb
 
 ### Licensing ###
 
