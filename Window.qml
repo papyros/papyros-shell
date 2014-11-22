@@ -21,8 +21,8 @@ import Material 0.1
 // TODO: This is mostly just for testing. The contents will need to be replaced with a Wayland surface
 View {
     id: window
-    width: 500
-    height: 400
+    width: units.dp(500)
+    height: units.dp(400)
 
     x: Math.random() * (parent.width - width)
     y: Math.random() * (parent.height - height)

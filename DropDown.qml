@@ -24,11 +24,11 @@ View {
     property bool showing
     property Item caller
     property int offset
-    property var padding: units.dp(5)
+    property var padding: units.dp(20)
     property var side
 
     function open(widget) {
-        openAt(widget, popover.width/2, widget.height + padding)
+        openAt(widget, popover.width/2, widget.height/2 + padding)
     }
 
     function close() {
@@ -45,16 +45,16 @@ View {
         var position = widget.mapToItem(popover.parent, x, y)
         popover.x = position.x - popover.width/2
 
-        if (position.y + popover.height + units.gu(2.5) + padding > overlayLayer.height) {
+        if (position.y + popover.height + padding > overlayLayer.height) {
             side = Qt.AlignTop
-            popover.y = position.y - popover.height - units.gu(1.5) - padding - widget.height
-            if (position.y - popover.height - units.gu(1.5) - widget.height - padding < units.gu(1.5)) {
-                popover.y = units.gu(1.5) + padding
+            popover.y = position.y - popover.height - padding - widget.height
+            if (position.y - popover.height - widget.height - padding < units.gu(1.5)) {
+                popover.y = padding
                 side = Qt.AlignVCenter
             }
         } else {
             side = Qt.AlignBottom
-            popover.y = position.y + units.gu(1.5) + padding
+            popover.y = position.y + padding
         }
 
         if (popover.x < padding) {
@@ -74,7 +74,7 @@ View {
 
     opacity: showing ? 1 : 0
 
-    implicitWidth: units.dp(250)
+    implicitWidth: units.dp(350)
 
     width: implicitWidth
     height: showing ? implicitHeight : 0

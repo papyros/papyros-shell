@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
+import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import ".."
 
@@ -30,12 +31,12 @@ Indicator {
     // TODO: Where does this come from?
     property var operations: [
         {
-            icon: "",
+            icon: "action/settings",
             title: "System update",
             progress: 0.56
         },
         {
-            icon: "",
+            icon: "file/file_download",
             title: "Mockups.zip",
             progress: 0.4
         }
@@ -60,8 +61,23 @@ Indicator {
 
             Repeater {
                 model: indicator.operations
-                delegate: ListItem.Standard {
+                delegate: ProgressListItem {
+                    action: Rectangle {
+                        anchors.fill: parent
+                        color: modelData.color ? modelData.color : "gray"
+                        radius: width/2
+                        Icon {
+                            anchors.centerIn: parent
+                            //anchors.horizontalCenterOffset: units.gu(0.1)
+                            size: units.dp(27)
+                            name: modelData.icon
+                            color: "white"
+                        }
+                    }
+
                     text: modelData.title
+                    valueText: "%1%".arg(modelData.progress * 100)
+                    progress: modelData.progress
                 }
             }
         }

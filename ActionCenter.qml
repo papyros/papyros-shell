@@ -20,8 +20,8 @@ import Material 0.1
 
 DropDown {
 
-    implicitWidth: units.dp(400)
-    implicitHeight: units.dp(300)
+    implicitWidth: units.dp(500)
+    implicitHeight: units.dp(350)
 
     Column {
         id: iconsColumn
@@ -39,6 +39,10 @@ DropDown {
                 {
                     icon: "communication/chat",
                     description: "Chat"
+                },
+                {
+                    icon: "image/wb_sunny",
+                    description: "Weather"
                 },
                 {
                     icon: "content/content_paste",

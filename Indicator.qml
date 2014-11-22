@@ -57,7 +57,7 @@ View {
 
         color: "white"
         anchors.centerIn: parent
-        font.pixelSize: units.dp(18)
+        font.pixelSize: units.dp(19)
     }
 
     MouseArea {

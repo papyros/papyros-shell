@@ -28,6 +28,10 @@ Application {
     width: units.dp(1440)
     height: units.dp(900)
 
+    theme {
+        secondary: "#009688"//"#FFEB3B"
+    }
+
     // TODO: Load the wallpaper from user preferences
     Image {
         id: wallpaper
@@ -103,4 +107,3 @@ Application {
         anchors.fill: parent
     }
 }
-

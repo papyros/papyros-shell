@@ -140,10 +140,7 @@ Rectangle {
 
         ActionCenterIndicator {}
 
-        Indicator {
-            text: "5:40 PM"
-            tooltip: "Date & Time"
-        }
+        DateTimeIndicator {}
 
         Indicator {
             icon: "action/account_circle"
