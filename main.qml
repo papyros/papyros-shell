@@ -23,7 +23,48 @@ import Material 0.1
 MainView {
     id: shell
 
-    property Window currentWindow: window1
+    property Window currentWindow
+    property var windows: []
+    property var windowOrder: []
+
+    function windowAdded(window) {
+        var windowComponent = Qt.createComponent("Window.qml");
+        if (windowComponent.status != Component.Ready) {
+            console.warn("Error loading Window.qml: " +  windowComponent.errorString());
+            return;
+        }
+        var window = windowComponent.createObject(desktop);
+
+        window.surface = compositor.item(window);
+        window.surface.touchEventsEnabled = true;
+
+        window.surfaceWidth = window.size.width;
+        window.surfaceHeight = window.size.height;
+
+        window.x = units.dp(300)
+        window.y = units.dp(300)
+
+        windows.push(window)
+        windowOrder.push(window)
+
+        print('Window added.')
+    }
+
+    function windowResized(window) {
+        window.width = window.surface.size.width;
+        window.height = window.surface.size.height;
+
+        CompositorLogic.relayout();
+    }
+
+    function removeWindow(window) {
+        windows = windows.splice(windows.indexOf(window), 1)
+        windowOrder = windowOrder.splice(windowOrder.indexOf(window), 1)
+
+        window.destroy();
+
+        print('Window removed.')
+    }
 
     width: units.dp(1440)
     height: units.dp(900)
@@ -88,16 +129,6 @@ MainView {
             right: parent.right
             top: panel.bottom
             bottom: parent.bottom
-        }
-
-        Window {
-            id: window1
-
-            x: units.dp(100)
-            y: units.dp(300)
-            headerColor: "#F57C00"
-            toolbarColor: "#FF9800"
-            appName: "Music"
         }
     }
 

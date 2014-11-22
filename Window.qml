@@ -18,25 +18,41 @@
 import QtQuick 2.0
 import Material 0.1
 
-// TODO: This is mostly just for testing. The contents will need to be replaced with a Wayland surface
 View {
     id: window
-    width: units.dp(500)
-    height: units.dp(400)
+
+    // TODO: How do we get these from the Wayland client?
+    property string appName: "Simple Application"
+    property color headerColor: "#0097a7"
+    property url icon: Qt.resolvedUrl("images/play_music.png")
+    property string badge
+
+    property bool active: window == currentWindow
+
+    property var surface
+
+    property int surfaceWidth
+    property int surfaceHeight
+
+    property bool maximized
+    property bool minimized
+
+    property real oldX
+    property real oldY
+
+    scale: minimized ? 0 : 1
+
+    width: surfaceWidth
+    height: surfaceHeight + header.height
 
     x: Math.random() * (parent.width - width)
     y: Math.random() * (parent.height - height)
 
     elevation: active ? 5 : 3
 
-    property string appName: "Simple Application"
-    property color headerColor: "#0097a7"
-    property color toolbarColor: "#00bcd4"
-    property url icon: Qt.resolvedUrl("images/play_music.png")
-    property bool active: window == currentWindow
     z: windowOrder.indexOf(window)
 
-    property string badge
+    onSurfaceChanged: surface.parent = surfaceContainer
 
     Rectangle {
         id: header
@@ -64,10 +80,31 @@ View {
                 NumberAnimation { duration: 300 }
             }
         }
+
+        MouseArea {
+            anchors.fill: parent
+
+            drag {
+                axis: Drag.XAndYAxis
+                minimumX: 0
+                minimumY: 0
+                maximumX: window.parent.width - window.width
+                maximumY: window.parent.height - window.height
+                target: window
+            }
+
+            onDoubleClicked: {
+                window.maximize()
+            }
+
+            onPressed: {
+                window.activate()
+            }
+        }
     }
 
     Item {
-        id: surface
+        id: surfaceContainer
 
         anchors {
             left: parent.left
@@ -76,49 +113,8 @@ View {
             bottom: parent.bottom
         }
 
-        Toolbar {
-            anchors {
-                left: parent.left
-                right: parent.right
-                top: parent.top
-            }
-
-            backgroundColor: toolbarColor
-        }
-
-        MouseArea {
-            anchors.fill: parent
-        }
-
         z: 1
     }
-
-
-    MouseArea {
-        anchors.fill: parent
-
-        z: window.active ? 0 : 2
-
-        drag {
-            axis: Drag.XAndYAxis
-            minimumX: 0
-            minimumY: 0
-            maximumX: window.parent.width - window.width
-            maximumY: window.parent.height - window.height
-            target: window
-        }
-
-        onDoubleClicked: {
-            window.maximize()
-        }
-
-        onPressed: {
-            window.activate()
-        }
-    }
-
-    property bool maximized
-    property bool minimized
 
     function minimize(launcher) {
         minimized = true
@@ -154,13 +150,8 @@ View {
         windowOrder.push(window)
         windowOrder = windowOrder
 
-        dashboard.showing = false
+        panel.selectedIndicator = null
     }
-
-    property real oldX
-    property real oldY
-
-    scale: minimized ? 0 : 1
 
     Behavior on scale {
         NumberAnimation { duration: 300 }

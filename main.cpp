@@ -153,7 +153,6 @@ int main(int argc, char *argv[])
 
     QmlCompositor compositor;
     compositor.setTitle(QLatin1String("Quartz Shell"));
-    compositor.setGeometry(0, 0, 1024, 768);
     compositor.show();
 
     compositor.rootContext()->setContextProperty("compositor", &compositor);
