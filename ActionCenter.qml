@@ -18,28 +18,10 @@
 import QtQuick 2.0
 import Material 0.1
 
-View {
+DropDown {
 
-    property bool showing
-
-    opacity: showing ? 1 : 0
-
-    width: units.dp(400)
-    height: units.dp(300)
-
-    elevation: 2
-
-    parent: desktop
-
-    anchors {
-        right: parent.right
-        top: parent.top
-        margins: units.dp(10)
-    }
-
-    Behavior on opacity {
-        NumberAnimation { duration: 200 }
-    }
+    implicitWidth: units.dp(400)
+    implicitHeight: units.dp(300)
 
     Column {
         id: iconsColumn

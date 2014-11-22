@@ -96,5 +96,11 @@ Application {
             appName: "Music"
         }
     }
+
+    Item {
+        id: overlayLayer
+
+        anchors.fill: parent
+    }
 }
 

@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
+import Material.ListItems 0.1 as ListItem
 import ".."
 
 Indicator {
@@ -30,8 +31,39 @@ Indicator {
     property var operations: [
         {
             icon: "",
-            title: "",
+            title: "System update",
             progress: 0.56
+        },
+        {
+            icon: "",
+            title: "Mockups.zip",
+            progress: 0.4
         }
     ]
+
+    onSelectedChanged: {
+        if (selected) {
+            dropdown.open(indicator)
+        } else {
+            dropdown.close()
+        }
+    }
+
+    DropDown {
+        id: dropdown
+
+        implicitHeight:  column.height
+
+        Column {
+            id: column
+            width: parent.width
+
+            Repeater {
+                model: indicator.operations
+                delegate: ListItem.Standard {
+                    text: modelData.title
+                }
+            }
+        }
+    }
 }
