@@ -29,13 +29,19 @@ Rectangle {
     property alias indicators: indicatorsRow.children
     property Indicator selectedIndicator
 
-    color: Qt.rgba(55/256, 71/256, 79/256, 0.9)
+    color: Qt.rgba(55/256, 71/256, 79/256, screenLocked ? 0.5 : 0.9)
     height: units.dp(48)
 
     anchors {
         left: parent.left
         right: parent.right
         top: parent.top
+    }
+
+    Behavior on color {
+        ColorAnimation {
+            duration: 500
+        }
     }
 
     // The left side of the panel. Contains the Quartz Logo (and hotcorner), along with the active window's controls
@@ -116,11 +122,15 @@ Rectangle {
         Indicator {
             icon: "file/cloud_done"
             tooltip: "Cloud services"
+
+            userSensitive: true
         }
 
         Indicator {
             icon: "social/notifications_none"
             tooltip: "Notifications"
+
+            userSensitive: true
         }
 
         Indicator {
@@ -133,10 +143,7 @@ Rectangle {
             tooltip: "Volume"
         }
 
-        Indicator {
-            icon: "device/battery_80"
-            tooltip: "Power"
-        }
+        PowerIndicator {}
 
         ActionCenterIndicator {}
 
@@ -145,6 +152,8 @@ Rectangle {
         Indicator {
             icon: "action/account_circle"
             tooltip: "System"
+
+            userSensitive: true
         }
     }
 
@@ -154,6 +163,14 @@ Rectangle {
         height: parent.height
         visible: panel.raised
         clip: true
+
+        opacity: screenLocked ? 0 : 1
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 500
+            }
+        }
 
         anchors {
             left: parent.left
