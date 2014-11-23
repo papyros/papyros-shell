@@ -1,5 +1,5 @@
 /*
- * Quartz Shell - The desktop shell for Quartz OS following Material Design
+ * Quantum Shell - The desktop shell for Quantum OS following Material Design
  * Copyright (C) 2014 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify

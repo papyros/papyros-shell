@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QmlCompositor compositor;
-    compositor.setTitle(QLatin1String("Quartz Shell"));
+    compositor.setTitle(QLatin1String("Quantum Shell"));
     compositor.show();
 
     compositor.rootContext()->setContextProperty("compositor", &compositor);
