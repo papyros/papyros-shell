@@ -18,53 +18,13 @@
 import QtQuick 2.2
 import Material 0.1
 
-// TODO: Don't subclass from Application, since it actually subclasses QtQuick Window
-// However, we do need the theme, units, and other such stuff
 MainView {
     id: shell
 
     property Window currentWindow
-    property var windows: []
-    property var windowOrder: []
 
-    function windowAdded(window) {
-        var windowComponent = Qt.createComponent("Window.qml");
-        if (windowComponent.status != Component.Ready) {
-            console.warn("Error loading Window.qml: " +  windowComponent.errorString());
-            return;
-        }
-        var window = windowComponent.createObject(desktop);
-
-        window.surface = compositor.item(window);
-        window.surface.touchEventsEnabled = true;
-
-        window.surfaceWidth = window.size.width;
-        window.surfaceHeight = window.size.height;
-
-        window.x = units.dp(300)
-        window.y = units.dp(300)
-
-        windows.push(window)
-        windowOrder.push(window)
-
-        print('Window added.')
-    }
-
-    function windowResized(window) {
-        window.width = window.surface.size.width;
-        window.height = window.surface.size.height;
-
-        CompositorLogic.relayout();
-    }
-
-    function removeWindow(window) {
-        windows = windows.splice(windows.indexOf(window), 1)
-        windowOrder = windowOrder.splice(windowOrder.indexOf(window), 1)
-
-        window.destroy();
-
-        print('Window removed.')
-    }
+    property bool overviewMode
+    property bool screenLocked
 
     width: units.dp(1440)
     height: units.dp(900)
@@ -72,6 +32,8 @@ MainView {
     theme {
         secondary: "#009688"//"#FFEB3B"
     }
+
+    onOverviewModeChanged: panel.selectedIndicator = null
 
     // TODO: Load the wallpaper from user preferences
     Image {
@@ -85,44 +47,16 @@ MainView {
         id: panel
     }
 
-    Column {
-        anchors {
-            right: parent.right
-            top: panel.bottom
-            bottom: parent.bottom
-            margins: units.dp(25)
-        }
-
-        spacing: units.dp(20)
-
-        Label {
-
-            text: "Panel Indicators"
-            style: "subheading"
-            color: "white"
-        }
-
-        Repeater {
-            model: panel.indicators
-            delegate: Row {
-                visible: modelData.icon
-                spacing: units.dp(10)
-
-                Icon {
-                    name: modelData.icon
-                    color: "white"
-                }
-
-                Label {
-                    text: modelData.tooltip
-                    color: "white"
-                }
-            }
-        }
-    }
-
     Item {
         id: desktop
+
+        opacity: screenLocked ? 0 : 1
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 500
+            }
+        }
 
         anchors {
             left: parent.left
@@ -130,11 +64,84 @@ MainView {
             top: panel.bottom
             bottom: parent.bottom
         }
+
+        InteractiveNotification {
+            z: 2
+            y: units.dp(20)
+
+            height: units.dp(100)
+            width: units.dp(300)
+
+            Row {
+                spacing: units.dp(10)
+
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    margins: units.dp(10)
+                }
+
+                Icon {
+                    name: "communication/chat"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Label {
+                    text: "Test Contact"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+        }
+
+        Column {
+            anchors {
+                right: parent.right
+                top: parent.top
+                bottom: parent.bottom
+                margins: units.dp(25)
+            }
+
+            spacing: units.dp(20)
+
+            Label {
+
+                text: "Panel Indicators"
+                style: "subheading"
+                color: "white"
+            }
+
+            Repeater {
+                model: panel.indicators
+                delegate: Row {
+                    visible: modelData.icon
+                    spacing: units.dp(10)
+
+                    Icon {
+                        name: modelData.icon
+                        color: "white"
+                    }
+
+                    Label {
+                        text: modelData.tooltip
+                        color: "white"
+                    }
+                }
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: screenLocked = !screenLocked
+        }
     }
 
     Item {
         id: overlayLayer
 
         anchors.fill: parent
+    }
+
+    Lockscreen {
+        id: lockscreen
     }
 }

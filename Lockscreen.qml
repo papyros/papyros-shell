@@ -15,25 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import QtQuick 2.0
-import ".."
+import QtQuick 2.2
+import Material 0.1
 
-Indicator {
-    id: indicator
+Item {
+    id: lockscreen
 
-    userSensitive: true
-    icon: "navigation/expand_more"
-    tooltip: "More"
-
-    onSelectedChanged: {
-        if (selected) {
-            actionCenter.open(indicator)
-        } else {
-            actionCenter.close()
-        }
-    }
-
-    ActionCenter {
-        id: actionCenter
+    anchors {
+        left: parent.left
+        right: parent.right
+        top: panel.bottom
+        bottom: parent.bottom
     }
 }

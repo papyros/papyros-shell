@@ -25,6 +25,9 @@ View {
     property alias text: label.text
     property string tooltip
 
+    property bool userSensitive
+    property bool showing: true
+
     property bool selected: selectedIndicator == indicator
 
     signal triggered(var caller)
@@ -36,13 +39,27 @@ View {
             selectedIndicator = indicator
     }
 
+    opacity: showing && !(userSensitive && screenLocked) ? 1 : 0
+
     height: parent.height
-    width: visible ? text ? label.width + (height - label.height)
-                          : height
-                   : 0
+    width: opacity > 0 ? text ? label.width + (height - label.height)
+                             : height
+                       : 0
 
     backgroundColor: "transparent"
     tintColor: mouseArea.containsMouse ? Qt.rgba(0,0,0,0.2) : "transparent"
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 250
+        }
+    }
+
+    Behavior on width {
+        NumberAnimation {
+            duration: 250
+        }
+    }
 
     Icon {
         id: icon

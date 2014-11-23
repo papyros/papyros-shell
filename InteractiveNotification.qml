@@ -15,25 +15,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import QtQuick 2.0
-import ".."
+import QtQuick 2.3
+import Material 0.1
 
-Indicator {
-    id: indicator
+View {
+    id: notification
 
-    userSensitive: true
-    icon: "navigation/expand_more"
-    tooltip: "More"
+    property bool showing: mouseArea.containsMouse
 
-    onSelectedChanged: {
-        if (selected) {
-            actionCenter.open(indicator)
-        } else {
-            actionCenter.close()
+    radius: units.dp(2)
+    elevation: 3
+
+    clip: false
+
+    anchors {
+        right: parent.right
+        rightMargin: showing ? units.dp(20) : units.dp(20) - notification.width
+
+        Behavior on rightMargin {
+            NumberAnimation { duration: 200 }
         }
     }
 
-    ActionCenter {
-        id: actionCenter
+    MouseArea {
+        id: mouseArea
+
+        anchors.fill: parent
+        anchors.margins: -units.dp(20)
+        hoverEnabled: true
     }
 }
