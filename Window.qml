@@ -63,7 +63,7 @@ View {
         }
 
         height: units.dp(32)
-        color: headerColor
+        color: active ? headerColor : "#E0E0E0"
 
         Label {
             anchors {
