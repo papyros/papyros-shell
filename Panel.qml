@@ -1,5 +1,5 @@
 /*
- * Quartz Shell - The desktop shell for Quartz OS following Material Design
+ * Quantum Shell - The desktop shell for Quantum OS following Material Design
  * Copyright (C) 2014 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@ import Material 0.1
 import "indicators"
 
 /*
- * The Panel is the top panel with the status icons on the right and the Quartz icon and active app info on the left.
+ * The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.
  */
 Rectangle {
     id: panel
@@ -44,7 +44,7 @@ Rectangle {
         }
     }
 
-    // The left side of the panel. Contains the Quartz Logo (and hotcorner), along with the active window's controls
+    // The left side of the panel. Contains the Quantum Logo (and hotcorner), along with the active window's controls
     Row {
         anchors {
             left: parent.left
@@ -62,7 +62,7 @@ Rectangle {
                     margins: units.dp(7.5)
                 }
 
-                source: Qt.resolvedUrl("images/quartz-os.png")
+                source: Qt.resolvedUrl("images/quantum-os.png")
                 mipmap: true // FIXME: Get an appropriately sized image and remove this
             }
         }
