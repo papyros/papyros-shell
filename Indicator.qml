@@ -66,7 +66,7 @@ View {
 
         color: "white"
         anchors.centerIn: parent
-        size: units.dp(25)
+        size: units.dp(18)
     }
 
     Label {
@@ -74,7 +74,7 @@ View {
 
         color: "white"
         anchors.centerIn: parent
-        font.pixelSize: units.dp(19)
+        font.pixelSize: units.dp(14)
     }
 
     MouseArea {

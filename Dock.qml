@@ -15,17 +15,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import QtQuick 2.0
-import Material.ListItems 0.1 as ListItem
-import ".."
+import QtQuick 2.3
+import Material 0.1
+import "indicators"
 
-Indicator {
-    id: indicator
-
-    icon: "device/battery_80"
-    tooltip: "Power"
-
-    DropDown {
-
-    }
+/*
+ * The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.
+ */
+View {
+	elevation: 2
+	fullHeight: true
+	
+	anchors {
+		left: parent.left
+		top: parent.top
+		bottom: parent.bottom
+	}
+	
+	width: units.dp(64)
+	
+	Item {
+		anchors {
+			left: parent.left
+			right: parent.right
+			bottom: parent.bottom
+		}
+		height: width
+		
+		Icon {
+			anchors.centerIn: parent
+			name: "navigation/apps"
+			size: units.dp(36)
+		}	
+	}
 }

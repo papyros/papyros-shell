@@ -73,8 +73,9 @@ View {
     }
 
     opacity: showing ? 1 : 0
+    visible: opacity > 0
 
-    implicitWidth: units.dp(350)
+    implicitWidth: units.dp(300)
 
     width: implicitWidth
     height: showing ? implicitHeight : 0
@@ -82,13 +83,11 @@ View {
     elevation: 2
     radius: units.dp(2)
 
-    parent: desktop
-
     Behavior on opacity {
-        NumberAnimation { duration: 200 }
+        NumberAnimation { duration: 300 }
     }
 
     Behavior on height {
-        NumberAnimation { duration: 200 }
+        NumberAnimation { duration: 300 }
     }
 }

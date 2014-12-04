@@ -76,7 +76,7 @@ DropDown {
     }
 
     Rectangle {
-        width: 1
+        width: units.dp(1)
 
         anchors {
             left: iconsColumn.right
@@ -84,6 +84,6 @@ DropDown {
             bottom: parent.bottom
         }
 
-        color: theme.blackColor('divider')
+        color: Theme.light.dividerColor
     }
 }

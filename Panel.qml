@@ -30,7 +30,7 @@ Rectangle {
     property Indicator selectedIndicator
 
     color: Qt.rgba(55/256, 71/256, 79/256, screenLocked ? 0.5 : 0.9)
-    height: units.dp(48)
+    height: units.dp(32)
 
     anchors {
         left: parent.left
@@ -50,21 +50,6 @@ Rectangle {
             left: parent.left
             top: parent.top
             bottom: parent.bottom
-        }
-
-        Item {
-            width: height
-            height: parent.height
-
-            Image {
-                anchors {
-                    fill: parent
-                    margins: units.dp(7.5)
-                }
-
-                source: Qt.resolvedUrl("images/quantum-os.png")
-                mipmap: true // FIXME: Get an appropriately sized image and remove this
-            }
         }
 
         Item {

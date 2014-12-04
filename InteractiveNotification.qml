@@ -26,7 +26,7 @@ View {
     radius: units.dp(2)
     elevation: 3
 
-    clip: false
+    clipContent: false
 
     anchors {
         right: parent.right

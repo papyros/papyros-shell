@@ -30,8 +30,10 @@ MainView {
     height: units.dp(900)
 
     theme {
-        secondary: "#009688"//"#FFEB3B"
+       	//accentColor: "#009688"//"#FFEB3B"
     }
+    
+    Component.onCompleted: theme.accentColor = "#009688"
 
     onOverviewModeChanged: panel.selectedIndicator = null
 
@@ -41,10 +43,6 @@ MainView {
 
         anchors.fill: parent
         source: Qt.resolvedUrl("images/quantum_wallpaper.png")
-    }
-
-    Panel {
-        id: panel
     }
 
     Item {
@@ -139,7 +137,34 @@ MainView {
         id: overlayLayer
 
         anchors.fill: parent
+        
+        opacity: screenLocked ? 0 : 1
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 500
+            }
+        }
     }
+    
+    Panel {
+        id: panel
+    }
+    
+    Item {
+    	anchors {
+            left: parent.left
+            right: parent.right
+            top: panel.bottom
+            bottom: parent.bottom
+        }
+
+		clip: true
+    
+		Dock {
+			id: dock
+		}
+	}
 
     Lockscreen {
         id: lockscreen
