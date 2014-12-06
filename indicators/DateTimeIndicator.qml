@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
+import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import ".."
 
@@ -32,5 +33,37 @@ Indicator {
         repeat: true
         running: true
         onTriggered: date = new Date()
+    }
+
+    dropdown: DropDown {
+        implicitHeight: units.dp(400)
+
+        Column {
+            width: parent.width
+
+            View {
+                id: view
+                height: label.height + units.dp(32)
+                width: parent.width
+
+                Label {
+                    id: label
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        verticalCenter: parent.verticalCenter
+                        margins: units.dp(16)
+                    }
+
+                    text: "Saturday,\nNovember 8th"
+                    style: "title"
+                    font.pixelSize: units.dp(30)
+                }
+            }
+
+            ListItem.Header {
+                text: "Upcoming events"
+            }
+        }
     }
 }

@@ -30,13 +30,26 @@ View {
 
     property bool selected: selectedIndicator == indicator
 
+    property DropDown dropdown
+
     signal triggered(var caller)
 
+    onSelectedChanged: {
+        if (dropdown) {
+            if (selected) {
+                dropdown.open(indicator)
+            } else {
+                dropdown.close()
+            }
+        }
+    }
+
     onTriggered: {
-        if (selected)
+        if (selected) {
             selectedIndicator = null
-        else
+        } else {
             selectedIndicator = indicator
+        }
     }
 
     opacity: showing && !(userSensitive && screenLocked) ? 1 : 0
