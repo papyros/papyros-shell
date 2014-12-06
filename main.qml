@@ -1,5 +1,5 @@
 /*
- * Quartz Shell - The desktop shell for Quartz OS following Material Design
+ * Quantum Shell - The desktop shell for Quantum OS following Material Design
  * Copyright (C) 2014 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,8 +30,10 @@ MainView {
     height: units.dp(900)
 
     theme {
-        secondary: "#009688"//"#FFEB3B"
+       	//accentColor: "#009688"//"#FFEB3B"
     }
+    
+    Component.onCompleted: theme.accentColor = "#009688"
 
     onOverviewModeChanged: panel.selectedIndicator = null
 
@@ -40,11 +42,7 @@ MainView {
         id: wallpaper
 
         anchors.fill: parent
-        source: Qt.resolvedUrl("images/quartz_wallpaper.png")
-    }
-
-    Panel {
-        id: panel
+        source: Qt.resolvedUrl("images/quantum_wallpaper.png")
     }
 
     Item {
@@ -139,7 +137,34 @@ MainView {
         id: overlayLayer
 
         anchors.fill: parent
+        
+        opacity: screenLocked ? 0 : 1
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 500
+            }
+        }
     }
+    
+    Panel {
+        id: panel
+    }
+    
+    Item {
+    	anchors {
+            left: parent.left
+            right: parent.right
+            top: panel.bottom
+            bottom: parent.bottom
+        }
+
+		clip: true
+    
+		Dock {
+			id: dock
+		}
+	}
 
     Lockscreen {
         id: lockscreen

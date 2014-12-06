@@ -1,5 +1,5 @@
 /*
- * Quartz Shell - The desktop shell for Quartz OS following Material Design
+ * Quantum Shell - The desktop shell for Quantum OS following Material Design
  * Copyright (C) 2014 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
@@ -79,7 +79,7 @@ View {
 
         color: "white"
         anchors.centerIn: parent
-        size: units.dp(25)
+        size: units.dp(18)
     }
 
     Label {
@@ -87,7 +87,7 @@ View {
 
         color: "white"
         anchors.centerIn: parent
-        font.pixelSize: units.dp(19)
+        font.pixelSize: units.dp(14)
     }
 
     MouseArea {
