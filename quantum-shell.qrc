@@ -1,0 +1,26 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+
+<qresource>
+	<file>main.qml</file>
+	<file>ActionCenter.qml</file>
+	<file>Dock.qml</file>
+	<file>DropDown.qml</file>
+	<file>Indicator.qml</file>
+	<file>InteractiveNotification.qml</file>
+	<file>Lockscreen.qml</file>
+	<file>OverlayScreen.qml</file>
+	<file>Panel.qml</file>
+	<file>ProgressListItem.qml</file>
+	<file>Window.qml</file>
+	<file>indicators/ActionCenterIndicator.qml</file>
+	<file>indicators/AppDrawer.qml</file>
+	<file>indicators/DateTimeIndicator.qml</file>
+	<file>indicators/OperationsIndicator.qml</file>
+	<file>indicators/PowerIndicator.qml</file>
+	<file>images/play_music.png</file>
+	<file>images/quantum-os.png</file>
+	<file>images/quantum_wallpaper.png</file>
+</qresource>
+
+</RCC>
