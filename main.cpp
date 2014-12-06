@@ -64,10 +64,7 @@ public:
         : QWaylandQuickCompositor(this, 0, DefaultExtensions | SubSurfaceExtension)
         , m_fullscreenSurface(0)
     {
-        // TODO: Remove this line after truly installing QML Material!
-        engine()->addImportPath("../modules");
-
-        setSource(QUrl("main.qml"));
+        setSource(QUrl("qrc:/main.qml"));
         setResizeMode(QQuickView::SizeRootObjectToView);
         setColor(Qt::black);
         winId();
