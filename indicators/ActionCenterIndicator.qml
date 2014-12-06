@@ -25,15 +25,7 @@ Indicator {
     icon: "navigation/expand_more"
     tooltip: "More"
 
-    onSelectedChanged: {
-        if (selected) {
-            actionCenter.open(indicator)
-        } else {
-            actionCenter.close()
-        }
-    }
-
-    ActionCenter {
+    dropdown: ActionCenter {
         id: actionCenter
     }
 }

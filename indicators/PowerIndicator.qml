@@ -25,7 +25,7 @@ Indicator {
     icon: "device/battery_80"
     tooltip: "Power"
 
-    DropDown {
+    dropdown: DropDown {
 
     }
 }

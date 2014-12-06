@@ -43,15 +43,7 @@ Indicator {
         }
     ]
 
-    onSelectedChanged: {
-        if (selected) {
-            dropdown.open(indicator)
-        } else {
-            dropdown.close()
-        }
-    }
-
-    DropDown {
+    dropdown: DropDown {
         id: dropdown
 
         implicitHeight:  column.height

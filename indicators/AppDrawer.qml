@@ -28,19 +28,11 @@ Indicator {
 
     userSensitive: true
 
-    onSelectedChanged: {
-        if (selected) {
-            dropdown.open(appDrawer)
-        } else {
-            dropdown.close()
-        }
-    }
-
-    DropDown {
+    dropdown: DropDown {
         id: dropdown
 
         implicitHeight: units.dp(200)
-        
+
         TextField {
         	anchors {
         		left: parent.left
@@ -49,7 +41,7 @@ Indicator {
         		topMargin: units.dp(5)
         		margins: units.dp(15)
         	}
-        	
+
         	hintText: "Search..."
         }
     }
