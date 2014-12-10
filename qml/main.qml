@@ -42,7 +42,7 @@ MainView {
         id: wallpaper
 
         anchors.fill: parent
-        source: Qt.resolvedUrl("images/quantum_wallpaper.png")
+        source: Qt.resolvedUrl("qrc:/images/quantum_wallpaper.png")
     }
 
     Item {
