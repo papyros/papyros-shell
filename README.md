@@ -13,23 +13,24 @@ QtCompositor requires a small C++ wrapper, but the majority of the shell will be
 
 ### Installation ###
 
-Quantum Shell is a wayland compositor based on QtCompositor, and requires Wayland and Qt 5.4. In addition, will also need the [qml-material](https://github.com/quantum-os/qml-material) repo installed as a QML module, like this:
+Quantum Shell is a wayland compositor based on QtCompositor, and requires Wayland and Qt 5.4. In addition, will also need the [qml-material](https://github.com/quantum-os/qml-material) repo installed as a QML system module.
 
-    modules
-      Material (renamed qml-material repo)
-    quantum-shell
-      quantum-shell.qml-project
-      README.md
-      ...
+	$ git clone https://github.com/quantum-os/qml-material
+	$ cd qml-material/
+	$ qmake
+	$ make
+	# make install
+
+As well as [qml-extras](https://github.com/quantum-os/qml-extras) that can be installed the same way as [qml-material](https://github.com/quantum-os/qml-material)
 
 Once you have that set up, run the following commands to compile the C++ wrapper:
 
-    qmake
-    make
+    $ qmake
+    $ make
 
 And run the compositor from an X11 desktop:
 
-    ./quantum-shell -platform xcb
+    $ ./quantum-shell -platform xcb
 
 ### Licensing ###
 

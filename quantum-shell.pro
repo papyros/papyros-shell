@@ -1,5 +1,3 @@
-LIBS += -L ../../lib
-
 QT += quick qml
 QT += compositor
 
