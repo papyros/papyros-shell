@@ -3,7 +3,7 @@ LIBS += -L ../../lib
 QT += quick qml
 QT += compositor
 
-SOURCES += main.cpp
+SOURCES += src/main.cpp
 
 OTHER_FILES = images/*.png \
 	COPYING \
