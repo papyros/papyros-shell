@@ -64,7 +64,7 @@ public:
         : QWaylandQuickCompositor(this, 0, DefaultExtensions | SubSurfaceExtension)
         , m_fullscreenSurface(0)
     {
-        setSource(QUrl("qrc:/main.qml"));
+        setSource(QUrl("qrc:/qml/main.qml"));
         setResizeMode(QQuickView::SizeRootObjectToView);
         setColor(Qt::black);
         winId();

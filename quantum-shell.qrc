@@ -2,22 +2,22 @@
 <RCC version="1.0">
 
 <qresource>
-	<file>main.qml</file>
-	<file>ActionCenter.qml</file>
-	<file>Dock.qml</file>
-	<file>DropDown.qml</file>
-	<file>Indicator.qml</file>
-	<file>InteractiveNotification.qml</file>
-	<file>Lockscreen.qml</file>
-	<file>OverlayScreen.qml</file>
-	<file>Panel.qml</file>
-	<file>ProgressListItem.qml</file>
-	<file>Window.qml</file>
-	<file>indicators/ActionCenterIndicator.qml</file>
-	<file>indicators/AppDrawer.qml</file>
-	<file>indicators/DateTimeIndicator.qml</file>
-	<file>indicators/OperationsIndicator.qml</file>
-	<file>indicators/PowerIndicator.qml</file>
+	<file>qml/main.qml</file>
+	<file>qml/ActionCenter.qml</file>
+	<file>qml/Dock.qml</file>
+	<file>qml/DropDown.qml</file>
+	<file>qml/Indicator.qml</file>
+	<file>qml/InteractiveNotification.qml</file>
+	<file>qml/Lockscreen.qml</file>
+	<file>qml/OverlayScreen.qml</file>
+	<file>qml/Panel.qml</file>
+	<file>qml/ProgressListItem.qml</file>
+	<file>qml/Window.qml</file>
+	<file>qml/indicators/ActionCenterIndicator.qml</file>
+	<file>qml/indicators/AppDrawer.qml</file>
+	<file>qml/indicators/DateTimeIndicator.qml</file>
+	<file>qml/indicators/OperationsIndicator.qml</file>
+	<file>qml/indicators/PowerIndicator.qml</file>
 	<file>images/play_music.png</file>
 	<file>images/quantum-os.png</file>
 	<file>images/quantum_wallpaper.png</file>
