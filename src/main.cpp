@@ -54,6 +54,11 @@
 #include <QQuickView>
 #include <QQmlEngine>
 
+#include <QDBusServiceWatcher>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDBusConnectionInterface>
+
 class QmlCompositor : public QQuickView, public QWaylandQuickCompositor
 {
     Q_OBJECT

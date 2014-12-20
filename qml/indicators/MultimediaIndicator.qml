@@ -57,8 +57,16 @@ Indicator {
                 }
             }
             ProgressBar {
-                progress: mpris2Source.trackPosition / mpris2Source.trackLength
+                progress: mpris2Source.trackPosition / mpris2Source.trackLength;
                 width: parent.width
+                Timer {
+                    interval: 1000
+                    repeat: true
+                    running: (mpris2Source.playbackStatus == "Playing")
+                    onTriggered: {
+                        mpris2Source.trackPosition += 1000000;
+                    }
+                }
             }
             Row {
                 id: mediaControls
@@ -116,7 +124,7 @@ Indicator {
             property int trackLength: getMetadata("mpris:length", 0)
             property string playbackStatus: getHasData() ? data[current]["PlaybackStatus"] : 'unknown'
             property bool canControl: getHasData() && data[current]["CanControl"]
-            property int trackPosition: getHasData() ? data[current]["Position"] : 0
+            property int trackPosition: getHasData() ? data[current].Position : 0
 
             function getHasData() {
                 return data[current] != undefined
@@ -134,6 +142,15 @@ Indicator {
                     return data[current]["Metadata"][entry];
                 else
                     return def;
+            }
+            onSourceAdded: {
+            }
+
+            onSourcesChanged: {
+            }
+
+            onDataChanged: {
+                trackPosition = getHasData() ? data[current].Position : 0
             }
         }
     }
