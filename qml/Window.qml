@@ -45,8 +45,10 @@ View {
     width: surfaceWidth
     height: surfaceHeight + header.height
 
-    x: Math.random() * (parent.width - width)
-    y: Math.random() * (parent.height - height)
+    Component.onCompleted: {
+        x = Math.random() * (parent.width - width)
+        y = Math.random() * (parent.height - height)
+    }
 
     elevation: active ? 5 : 3
 

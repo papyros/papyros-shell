@@ -25,12 +25,69 @@ import "indicators"
 Rectangle {
     id: panel
 
-    property bool raised: true
+    property bool raised: false
     property alias indicators: indicatorsRow.children
     property Indicator selectedIndicator
 
-    color: Qt.rgba(55/256, 71/256, 79/256, screenLocked ? 0.5 : 0.9)
+    color: "transparent"//Qt.rgba(55/256, 71/256, 79/256, screenLocked ? 0.5 : 0.9)
     height: units.dp(32)
+
+    property int classicHeight: units.dp(56)
+
+    state: config.layout
+
+    states: [
+        State {
+            name: "classic"
+            PropertyChanges {
+                target: panel
+                color: Qt.rgba(0.2, 0.2, 0.2, 1)
+                height: classicHeight
+            }
+
+            PropertyChanges {
+                target: indicatorsRow
+
+                anchors.rightMargin:units.dp(16)
+            }
+
+            AnchorChanges {
+                target: panel
+
+                anchors.top: undefined
+                anchors.bottom: parent.bottom
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "*"
+            to: "*"
+
+            NumberAnimation {
+                target: panel
+                properties: "height"
+                duration: 200
+            }
+
+            ColorAnimation {
+                target: panel
+                properties: "color"
+                duration: 200
+            }
+
+            NumberAnimation {
+                target: indicators.anchors
+                properties: "rightMargin"
+                duration: 200
+            }
+
+            AnchorAnimation {
+                targets: panel
+            }
+        }
+    ]
 
     anchors {
         left: parent.left
@@ -52,9 +109,8 @@ Rectangle {
             bottom: parent.bottom
         }
 
-        Item {
-            width: units.dp(10)
-            height: parent.height
+        AppDrawer {
+            width: height
         }
 
         Item {
@@ -102,21 +158,21 @@ Rectangle {
 //            tooltip: "Quick Actions"
 //        }
 
-        OperationsIndicator {}
+//        OperationsIndicator {}
 
-        Indicator {
-            icon: "file/cloud_done"
-            tooltip: "Cloud services"
+//        Indicator {
+//            icon: "file/cloud_done"
+//            tooltip: "Cloud services"
 
-            userSensitive: true
-        }
+//            userSensitive: true
+//        }
 
-        Indicator {
-            icon: "social/notifications_none"
-            tooltip: "Notifications"
+//        Indicator {
+//            icon: "social/notifications_none"
+//            tooltip: "Notifications"
 
-            userSensitive: true
-        }
+//            userSensitive: true
+//        }
 
         Indicator {
             icon: "device/signal_wifi_3_bar"
@@ -130,15 +186,19 @@ Rectangle {
 
         PowerIndicator {}
 
-        ActionCenterIndicator {}
+        //ActionCenterIndicator {}
 
         DateTimeIndicator {}
 
         Indicator {
-            icon: "action/account_circle"
+            icon: "action/list"
             tooltip: "System"
 
             userSensitive: true
+
+            onSelectedChanged: {
+                notificationCenter.showing = selected
+            }
         }
     }
 

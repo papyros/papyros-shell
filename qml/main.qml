@@ -42,11 +42,11 @@ MainView {
         id: wallpaper
 
         anchors.fill: parent
-        source: Qt.resolvedUrl("qrc:/images/quantum_wallpaper.png")
+        source: Qt.resolvedUrl("../images/quantum_wallpaper.png")
     }
 
     Item {
-        id: desktop
+        id: content
 
         opacity: screenLocked ? 0 : 1
 
@@ -59,90 +59,38 @@ MainView {
         anchors {
             left: parent.left
             right: parent.right
-            top: panel.bottom
+            top: parent.top
             bottom: parent.bottom
-        }
 
-        InteractiveNotification {
-            z: 2
-            y: units.dp(20)
+            topMargin: config.layout == "classic" ? 0 : panel.height
+            bottomMargin: config.layout == "classic" ? panel.height : 0
 
-            height: units.dp(100)
-            width: units.dp(300)
+            Behavior on topMargin {
+                NumberAnimation { duration: 200 }
+            }
 
-            Row {
-                spacing: units.dp(10)
-
-                anchors {
-                    left: parent.left
-                    top: parent.top
-                    margins: units.dp(10)
-                }
-
-                Icon {
-                    name: "communication/chat"
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Label {
-                    text: "Test Contact"
-                    anchors.verticalCenter: parent.verticalCenter
-                }
+            Behavior on bottomMargin {
+                NumberAnimation { duration: 200 }
             }
         }
 
-        Column {
-            anchors {
-                right: parent.right
-                top: parent.top
-                bottom: parent.bottom
-                margins: units.dp(25)
-            }
+        Item {
+            id: desktop
 
-            spacing: units.dp(20)
-
-            Label {
-
-                text: "Panel Indicators"
-                style: "subheading"
-                color: "white"
-            }
-
-            Repeater {
-                model: panel.indicators
-                delegate: Row {
-                    visible: modelData.icon
-                    spacing: units.dp(10)
-
-                    Icon {
-                        name: modelData.icon
-                        color: "white"
-                    }
-
-                    Label {
-                        text: modelData.tooltip
-                        color: "white"
-                    }
-                }
-            }
-        }
-
-        MouseArea {
             anchors.fill: parent
-            onClicked: screenLocked = !screenLocked
+
+//            SettingsWindow {
+
+//            }
         }
-    }
 
-    Item {
-        id: overlayLayer
+        Item {
+            id: overlayLayer
 
-        anchors.fill: parent
-        
-        opacity: screenLocked ? 0 : 1
+            anchors.fill: parent
 
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 500
+            NotificationCenter {
+                id: notificationCenter
             }
         }
     }
@@ -150,23 +98,12 @@ MainView {
     Panel {
         id: panel
     }
-    
-    Item {
-    	anchors {
-            left: parent.left
-            right: parent.right
-            top: panel.bottom
-            bottom: parent.bottom
-        }
-
-		clip: true
-    
-		Dock {
-			id: dock
-		}
-	}
 
     Lockscreen {
         id: lockscreen
+    }
+
+    DesktopConfig {
+        id: config
     }
 }

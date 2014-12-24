@@ -28,6 +28,8 @@ View {
     property bool userSensitive
     property bool showing: true
 
+    property alias iconSize: icon.size
+
     property bool selected: selectedIndicator == indicator
 
     property DropDown dropdown
@@ -55,8 +57,8 @@ View {
     opacity: showing && !(userSensitive && screenLocked) ? 1 : 0
 
     height: parent.height
-    width: opacity > 0 ? text ? label.width + (height - label.height)
-                             : height
+    width: opacity > 0 ? text ? label.width + (units.dp(40) - label.height)
+                             : units.dp(40)
                        : 0
 
     backgroundColor: "transparent"
@@ -79,7 +81,7 @@ View {
 
         color: "white"
         anchors.centerIn: parent
-        size: units.dp(18)
+        size: units.dp(20)
     }
 
     Label {

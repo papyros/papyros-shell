@@ -24,6 +24,7 @@ Indicator {
     id: appDrawer
 
     icon: "navigation/apps"
+    iconSize: units.dp(24)
     tooltip: "Applications"
 
     userSensitive: true
@@ -42,7 +43,7 @@ Indicator {
         		margins: units.dp(15)
         	}
 
-        	hintText: "Search..."
+            //hintText: "Search..."
         }
     }
 }
