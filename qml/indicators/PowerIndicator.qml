@@ -22,10 +22,39 @@ import ".."
 Indicator {
     id: indicator
 
-    icon: "device/battery_80"
+    icon: {
+        var level = "full"
+
+        print(batteryInfo.percentCharged, batteryInfo.isValid)
+
+        if (batteryInfo.percentCharged < 0.25)
+            level = "20"
+        else if (batteryInfo.percentCharged < 0.35)
+            level = "30"
+        else if (batteryInfo.percentCharged < 0.55)
+            level = "50"
+        else if (batteryInfo.percentCharged < 0.65)
+            level = "60"
+        else if (batteryInfo.percentCharged < 0.85)
+            level = "80"
+        else if (batteryInfo.percentCharged < 0.95)
+            level = "90"
+
+        print(level)
+
+        if (batteryInfo.isCharging)
+            return "device/battery_charging_" + level
+        else
+            return "device/battery_" + level
+    }
+
     tooltip: "Power"
 
     dropdown: DropDown {
 
+    }
+
+    BatteryInfo {
+        id: batteryInfo
     }
 }
