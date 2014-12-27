@@ -174,6 +174,8 @@ Rectangle {
 //            userSensitive: true
 //        }
 
+        DateTimeIndicator {}
+
         Indicator {
             icon: "device/signal_wifi_3_bar"
             tooltip: "Network"
@@ -188,8 +190,6 @@ Rectangle {
 
         //ActionCenterIndicator {}
 
-        DateTimeIndicator {}
-
         Indicator {
             icon: "action/list"
             tooltip: "System"
@@ -200,6 +200,8 @@ Rectangle {
                 notificationCenter.showing = selected
             }
         }
+
+        SystemIndicator {}
     }
 
     // This is necessary to get the shadow affect and still have the panel be translucent

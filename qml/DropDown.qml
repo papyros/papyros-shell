@@ -18,7 +18,7 @@
 import QtQuick 2.0
 import Material 0.1
 
-View {
+Item {
     id: popover
 
     property bool showing
@@ -45,10 +45,10 @@ View {
         var position = widget.mapToItem(popover.parent, x, y)
         popover.x = position.x - popover.width/2
 
-        if (position.y + popover.height + padding > overlayLayer.height) {
+        if (position.y + popover.implicitHeight + padding > overlayLayer.height) {
             side = Qt.AlignTop
-            popover.y = position.y - popover.height - padding - widget.height
-            if (position.y - popover.height - widget.height - padding < units.gu(1.5)) {
+            popover.y = position.y - popover.implicitHeight - padding - widget.height
+            if (position.y - popover.implicitHeight - widget.height - padding < units.dp(15)) {
                 popover.y = padding
                 side = Qt.AlignVCenter
             }
@@ -72,22 +72,37 @@ View {
         opened()*/
     }
 
-    opacity: showing ? 1 : 0
-    visible: opacity > 0
-
     implicitWidth: units.dp(300)
 
     width: implicitWidth
-    height: showing ? implicitHeight : 0
+    height: implicitHeight
 
-    elevation: 2
-    radius: units.dp(2)
+    default property alias content: container.data
 
-    Behavior on opacity {
-        NumberAnimation { duration: 300 }
-    }
+    View {
+        id: container
 
-    Behavior on height {
-        NumberAnimation { duration: 300 }
+        elevation: 2
+        radius: units.dp(2)
+
+        opacity: showing ? 1 : 0
+        visible: opacity > 0
+
+        height: showing ? popover.height : 0
+
+        anchors {
+            top: popover.side == Qt.AlignTop ? undefined : parent.top
+            bottom: popover.side == Qt.AlignBottom ? undefined : parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+
+        Behavior on opacity {
+            NumberAnimation { duration: 200 }
+        }
+
+        Behavior on height {
+            NumberAnimation { duration: 200 }
+        }
     }
 }

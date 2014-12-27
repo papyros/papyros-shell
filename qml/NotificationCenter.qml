@@ -75,10 +75,27 @@ and use the raise function,
                     anchors.fill: parent
                     anchors.margins: units.dp(8)
                     spacing: units.dp(8)
-                    Label {
-                        style: "title"
-                        text: name
-                        color: Theme.light.subTextColor
+
+                    Item {
+                        height: childrenRect.height
+                        width: parent.width
+
+                        Label {
+                            style: "title"
+                            text: name
+                            color: Theme.light.subTextColor
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                            }
+                        }
+
+                        IconAction {
+                            name: "navigation/more_vert"
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                right: parent.right
+                            }
+                        }
                     }
 
                     Image {
@@ -153,6 +170,28 @@ and use the raise function,
                     }
                 }
             }
+        }
+    }
+
+    Item {
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            margins: units.dp(16)
+        }
+
+        height: childrenRect.height
+
+        Label {
+            anchors.verticalCenter: parent.verticalCenter
+
+            text: "Silent mode"
+        }
+
+        Switch {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
         }
     }
 
