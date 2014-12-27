@@ -123,6 +123,8 @@ Rectangle {
             tooltip: "Network"
         }
 
+        MultimediaIndicator {}
+
         Indicator {
             icon: "av/volume_up"
             tooltip: "Volume"

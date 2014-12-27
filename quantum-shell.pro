@@ -1,7 +1,7 @@
 QT += quick qml
-QT += compositor
+QT += compositor dbus
 
-SOURCES += src/main.cpp
+SOURCES += src/main.cpp src/mpris.cpp
 
 OTHER_FILES = images/*.png \
 	COPYING \

@@ -16,6 +16,7 @@
 	<file>qml/indicators/ActionCenterIndicator.qml</file>
 	<file>qml/indicators/AppDrawer.qml</file>
 	<file>qml/indicators/DateTimeIndicator.qml</file>
+	<file>qml/indicators/MultimediaIndicator.qml</file>
 	<file>qml/indicators/OperationsIndicator.qml</file>
 	<file>qml/indicators/PowerIndicator.qml</file>
 	<file>images/play_music.png</file>
