@@ -1,0 +1,127 @@
+/*
+ * Quantum Shell - The desktop shell for Quantum OS following Material Design
+ * Copyright (C) 2015 Michael Spencer
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+import QtQuick 2.0
+import Material 0.1
+import Material.Desktop 0.1
+
+Item {
+    anchors.fill: parent
+
+    NotificationServer {
+        id: notifyServer
+
+        onNotificationAdded: {
+            print(id)
+            notifications.insert(0, {modelData: notification})
+        }
+
+        onNotificationUpdated: {
+            print(id)
+            for (var i = 0; i < notifications.count; i++) {
+                var note = notifications.get(i).modelData
+
+                if (note.id == id) {
+                    print('Updating...')
+                    notifications.set(i, {modelData: notification})
+                    return
+                }
+            }
+            notifications.insert(0, {modelData: notification})
+        }
+
+        onNotificationRemoved: {
+            print("Removing", id)
+
+            for (var i = 0; i < notifications.count; i++) {
+                var note = notifications.get(i).modelData
+
+                if (note.id == id) {
+                    print('Removing...')
+                    notifications.remove(i)
+                    return
+                }
+            }
+        }
+    }
+
+    Label {
+        anchors.centerIn: parent
+        text: listView.count
+    }
+
+    ListModel {
+        id: notifications
+    }
+
+    ListView {
+        id: listView
+
+        anchors {
+            right: parent.right
+            top: parent.top
+            bottom: parent.bottom
+            margins: units.dp(16)
+        }
+
+        width: units.dp(280)
+
+        verticalLayoutDirection: ListView.BottomToTop
+        orientation: Qt.Vertical
+
+        model: notifications
+
+        spacing: units.dp(16)
+
+        delegate: NotificationCard {
+            notification: modelData
+        }
+
+        add: Transition {
+            SequentialAnimation {
+                // Make sure the card is completely off-screen at the start of the animation
+                PropertyAction { properties: "y"; value: units.dp(20) }
+
+                ParallelAnimation {
+                    NumberAnimation { property: "opacity"; from: 0; duration: animationDuration }
+                    NumberAnimation { properties: "y"; duration: animationDuration }
+                }
+            }
+        }
+
+        addDisplaced: Transition {
+            NumberAnimation { properties: "y"; duration: animationDuration }
+        }
+
+        remove: Transition {
+            ParallelAnimation {
+                NumberAnimation { property: "opacity"; to: 0; duration: animationDuration }
+                NumberAnimation { properties: "x"; to: listView.width; duration: animationDuration }
+            }
+        }
+
+        removeDisplaced: Transition {
+            SequentialAnimation {
+                PauseAnimation { duration: animationDuration }
+
+                NumberAnimation { properties: "y"; duration: animationDuration }
+            }
+        }
+    }
+
+    property int animationDuration: 300
+}
