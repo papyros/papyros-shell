@@ -26,42 +26,34 @@ Item {
         id: notifyServer
 
         onNotificationAdded: {
-            print(id)
             notifications.insert(0, {modelData: notification})
         }
 
         onNotificationUpdated: {
-            print(id)
             for (var i = 0; i < notifications.count; i++) {
                 var note = notifications.get(i).modelData
 
                 if (note.id == id) {
-                    print('Updating...')
                     notifications.set(i, {modelData: notification})
                     return
                 }
             }
+
+            // The notification didn't already exist, so add it instead
             notifications.insert(0, {modelData: notification})
         }
 
         onNotificationRemoved: {
-            print("Removing", id)
 
             for (var i = 0; i < notifications.count; i++) {
                 var note = notifications.get(i).modelData
 
                 if (note.id == id) {
-                    print('Removing...')
                     notifications.remove(i)
                     return
                 }
             }
         }
-    }
-
-    Label {
-        anchors.centerIn: parent
-        text: listView.count
     }
 
     ListModel {
