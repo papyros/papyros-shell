@@ -28,10 +28,6 @@ MainView {
 
     width: units.dp(1440)
     height: units.dp(900)
-
-    theme {
-       	//accentColor: "#009688"//"#FFEB3B"
-    }
     
     Component.onCompleted: theme.accentColor = "#009688"
 

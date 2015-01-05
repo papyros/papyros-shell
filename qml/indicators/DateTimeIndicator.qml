@@ -27,7 +27,7 @@ Indicator {
     property var date: new Date()
 
     text: Qt.formatTime(date)
-    tooltip: "Date & Time"
+    tooltip: Qt.formatDate(date, Locale.LongFormat)
 
     Timer {
         interval: 10 * 100

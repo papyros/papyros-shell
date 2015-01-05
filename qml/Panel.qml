@@ -153,27 +153,6 @@ Rectangle {
             bottom: parent.bottom
         }
 
-//        Indicator {
-//            icon: "content/create"
-//            tooltip: "Quick Actions"
-//        }
-
-//        OperationsIndicator {}
-
-//        Indicator {
-//            icon: "file/cloud_done"
-//            tooltip: "Cloud services"
-
-//            userSensitive: true
-//        }
-
-//        Indicator {
-//            icon: "social/notifications_none"
-//            tooltip: "Notifications"
-
-//            userSensitive: true
-//        }
-
         DateTimeIndicator {}
 
         Indicator {
@@ -188,11 +167,9 @@ Rectangle {
 
         PowerIndicator {}
 
-        //ActionCenterIndicator {}
-
         Indicator {
-            icon: "action/list"
-            tooltip: "System"
+            icon: "action/list" // "social/notifications_none"
+            tooltip: "Widgets & Notifications"
 
             userSensitive: true
 

@@ -31,7 +31,7 @@ View {
     clipContent: false
 
     width: parent.width
-    height: units.dp(80)
+    height: mouseArea.containsMouse ? column.height + units.dp(32) : units.dp(70)
 
     MouseArea {
         id: mouseArea
@@ -71,6 +71,7 @@ View {
     }
 
     Column {
+        id: column
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.right: parent.right
@@ -90,7 +91,7 @@ View {
             text: notification.body
             elide: Text.ElideRight
             width: parent.width
-            maximumLineCount: 1
+            maximumLineCount: mouseArea.containsMouse ? 0 : 1
         }
     }
 }

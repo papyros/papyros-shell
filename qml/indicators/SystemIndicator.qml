@@ -4,5 +4,7 @@ import ".."
 
 Indicator {
     icon: "action/account_circle"
+
+    tooltip: "Michael Spencer"
 }
 

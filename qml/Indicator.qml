@@ -37,6 +37,9 @@ View {
     signal triggered(var caller)
 
     onSelectedChanged: {
+        if (tooltip.showing)
+            tooltip.close()
+
         if (dropdown) {
             if (selected) {
                 dropdown.open(indicator)
@@ -98,6 +101,18 @@ View {
         anchors.fill: parent
         onClicked: triggered(indicator)
         hoverEnabled: true
+
+        onContainsMouseChanged: {
+            if (!tooltip.text || selectedIndicator != null) return
+
+            if (containsMouse) {
+                if (!tooltip.showing)
+                    tooltip.open(indicator)
+            } else {
+                if (tooltip.showing)
+                    tooltip.close()
+            }
+        }
     }
 
     Rectangle {
@@ -117,5 +132,11 @@ View {
 
         height: units.dp(2)
         color: "#FFEB3B"
+    }
+
+    Tooltip {
+        id: tooltip
+
+        text: indicator.tooltip
     }
 }
