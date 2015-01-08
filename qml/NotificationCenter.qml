@@ -76,7 +76,7 @@ View {
             margins: units.dp(16)
         }
 
-        height: childrenRect.height
+        height: units.dp(30)
 
         Label {
             anchors.verticalCenter: parent.verticalCenter

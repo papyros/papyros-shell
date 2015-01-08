@@ -101,6 +101,7 @@ BaseListItem {
 
                 width: parent.width
                 anchors.verticalCenter: parent.verticalCenter
+                alwaysShow: true
             }
         }
     }

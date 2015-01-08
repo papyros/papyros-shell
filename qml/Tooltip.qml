@@ -18,69 +18,8 @@
 import QtQuick 2.0
 import Material 0.1
 
-Rectangle {
+PopupBase {
     id: popover
-
-    property bool showing
-    property Item caller
-    property int offset
-    property var padding: units.dp(8)
-    property var side
-
-    function open(widget) {
-        openAt(widget, 0, 0)
-    }
-
-    function close() {
-        showing = false
-    }
-
-    function openAt(widget, x, y) {
-        if (!widget)
-            throw "Caller cannot be undefined!"
-
-        caller = widget
-        popover.parent = overlayLayer
-
-        var position = widget.mapToItem(popover.parent, x, y)
-        popover.y = Qt.binding(function() {
-            if (position.y + widget.height + popover.height + 2 * padding > overlayLayer.height) {
-                side = Qt.AlignTop
-
-                y = position.y - popover.height - padding
-
-                if (y < padding) {
-                    y = padding
-                    side = Qt.AlignVCenter
-                }
-            } else {
-                side = Qt.AlignBottom
-                y = position.y + widget.height + padding
-            }
-
-            return y
-        })
-
-        popover.x = Qt.binding(function() {
-            var x = position.x + widget.width/2 - popover.width/2
-
-            if (x < padding) {
-                popover.offset = x - padding
-                x = padding
-            } else if (x + popover.width > popover.parent.width - padding) {
-                popover.offset = x + popover.width - (popover.parent.width - padding)
-                x = popover.parent.width - padding - popover.width
-            } else {
-                popover.offset = 0
-            }
-
-            return x
-        })
-
-        showing = true/*
-        currentOverlay = popover
-        opened()*/
-    }
 
     Label {
         id: label
@@ -91,8 +30,8 @@ Rectangle {
         color: Theme.dark.textColor
     }
 
-    implicitWidth: label.implicitWidth + units.dp(32)
-    implicitHeight: label.implicitHeight + units.dp(24)
+    width: label.implicitWidth + units.dp(32)
+    height: label.implicitHeight + units.dp(24)
 
     property alias text: label.text
 

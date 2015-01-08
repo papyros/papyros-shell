@@ -18,59 +18,8 @@
 import QtQuick 2.0
 import Material 0.1
 
-Item {
+PopupBase {
     id: popover
-
-    property bool showing
-    property Item caller
-    property int offset
-    property var padding: units.dp(20)
-    property var side
-
-    function open(widget) {
-        openAt(widget, popover.width/2, widget.height/2 + padding)
-    }
-
-    function close() {
-        showing = false
-    }
-
-    function openAt(widget, x, y) {
-        if (!widget)
-            throw "Caller cannot be undefined!"
-
-        caller = widget
-        popover.parent = overlayLayer
-
-        var position = widget.mapToItem(popover.parent, x, y)
-        popover.x = position.x - popover.width/2
-
-        if (position.y + popover.implicitHeight + padding > overlayLayer.height) {
-            side = Qt.AlignTop
-            popover.y = position.y - popover.implicitHeight - padding - widget.height
-            if (position.y - popover.implicitHeight - widget.height - padding < units.dp(15)) {
-                popover.y = padding
-                side = Qt.AlignVCenter
-            }
-        } else {
-            side = Qt.AlignBottom
-            popover.y = position.y + padding
-        }
-
-        if (popover.x < padding) {
-            popover.offset = popover.x - padding
-            popover.x = padding
-        } else if (popover.x + popover.width > popover.parent.width - padding) {
-            popover.offset = popover.x + popover.width - (popover.parent.width - padding)
-            popover.x = popover.parent.width - padding - popover.width
-        } else {
-            popover.offset = 0
-        }
-
-        showing = true/*
-        currentOverlay = popover
-        opened()*/
-    }
 
     implicitWidth: units.dp(300)
 
@@ -88,20 +37,21 @@ Item {
         opacity: showing ? 1 : 0
         visible: opacity > 0
 
-        height: showing ? popover.height : 0
+        height: parent.height
 
         anchors {
-            top: popover.side == Qt.AlignTop ? undefined : parent.top
-            bottom: popover.side == Qt.AlignBottom ? undefined : parent.bottom
+            verticalCenter: parent.verticalCenter
             left: parent.left
             right: parent.right
+
+            verticalCenterOffset: showing ? 0 : popover.side = Qt.AlignTop ? height/2 : -height/2
+
+            Behavior on verticalCenterOffset {
+                NumberAnimation { duration: 200 }
+            }
         }
 
         Behavior on opacity {
-            NumberAnimation { duration: 200 }
-        }
-
-        Behavior on height {
             NumberAnimation { duration: 200 }
         }
     }

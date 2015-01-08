@@ -37,8 +37,8 @@ Indicator {
     }
 
     dropdown: DropDown {
-        implicitHeight: units.dp(300)
-        implicitWidth: units.dp(300)
+        height: units.dp(300)
+        width: units.dp(300)
 
         Calendar {
             id: calendar

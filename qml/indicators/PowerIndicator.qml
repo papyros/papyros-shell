@@ -28,13 +28,17 @@ Indicator {
         if (!primaryPowerSource)
             return "Unknown"
 
-        var percent = primaryPowerSource.percentage + "%"
+        return powerSummary(primaryPowerSource)
+    }
 
-        if (primaryPowerSource.state == UPowerDeviceState.Charging) {
-            return "%1 until full (%2)".arg(DateUtils.friendlyDuration(primaryPowerSource.timeToFull * 1000, 'm')).arg(percent)
-        } else if (primaryPowerSource.state == UPowerDeviceState.Discharging) {
-            return "%1 remaining (%2)".arg(DateUtils.friendlyDuration(primaryPowerSource.timeToEmpty * 1000, 'm')).arg(percent)
-        } else if (primaryPowerSource.state == UPowerDeviceState.FullyCharged) {
+    function powerSummary(device) {
+        var percent = device.percentage + "%"
+
+        if (device.state == UPowerDeviceState.Charging) {
+            return "%1 until full (%2)".arg(DateUtils.friendlyDuration(device.timeToFull * 1000, 'm')).arg(percent)
+        } else if (device.state == UPowerDeviceState.Discharging) {
+            return "%1 remaining (%2)".arg(DateUtils.friendlyDuration(device.timeToEmpty * 1000, 'm')).arg(percent)
+        } else if (device.state == UPowerDeviceState.FullyCharged) {
             return "Fully Charged"
         } else {
             return percent
@@ -72,7 +76,30 @@ Indicator {
     }
 
     dropdown: DropDown {
+        height: column.height
 
+        Column {
+            id: column
+
+            width: parent.width
+
+            Repeater {
+                model: upower.devices
+
+                delegate: ProgressListItem {
+                    text: modelData == primaryPowerSource ? "Laptop battery" : vendor
+                    progress: percentage/100
+                    valueText: powerSummary(modelData)
+                    visible: type != UPowerDeviceType.LinePower
+
+                    showDivider: true
+                }
+            }
+
+            ListItem.Standard {
+                text: "Power settings..."
+            }
+        }
     }
 
     property var primaryPowerSource
