@@ -1,6 +1,6 @@
 /*
- * Quantum Shell - The desktop shell for Quantum OS following Material Design
- * Copyright (C) 2014 Michael Spencer
+ * Papyros Shell - The desktop shell for Papyros following Material Design
+ * Copyright (C) 2015 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,57 +15,83 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import QtQuick 2.0
+import QtQuick 2.3
 import Material 0.1
+import Material.ListItems 0.1 as ListItem
 
 View {
     id: indicator
 
-    property alias icon: icon.name
-    property alias text: label.text
+    property alias iconSource: icon.source
     property string tooltip
 
-    property bool userSensitive
-    property bool showing: true
+    signal clicked()
+    signal rightClicked()
 
-    property alias iconSize: icon.size
-    property color highlightColor: "#FFEB3B"
+    property bool focused
 
-    property bool selected: selectedIndicator == indicator
+    property DropDown popupMenu: DropDown {
+        height: column.height
+        width: units.dp(250)
 
-    property DropDown dropdown
+        Column {
+            id: column
+            width: parent.width
 
-    property bool dimIcon
+            ListItem.Standard {
+                text: "New Window"
+                showDivider: true
+            }
 
-    signal triggered(var caller)
+            ListItem.Standard {
+                text: "Pinned to dock"
 
-    onSelectedChanged: {
-        if (tooltip.showing)
-            tooltip.close()
+                onTriggered: checkbox.checked = !checkbox.checked
 
-        if (dropdown) {
-            if (selected) {
-                dropdown.open(indicator)
-            } else {
-                dropdown.close()
+                Switch {
+                    id: checkbox
+                    anchors {
+                        right: parent.right
+                        verticalCenter: parent.verticalCenter
+                        rightMargin: (parent.height - height)/2
+                    }
+                }
             }
         }
     }
 
-    onTriggered: {
-        if (selected) {
-            selectedIndicator = null
-        } else {
-            selectedIndicator = indicator
+    onRightClicked: {
+        // Show the right-click menu
+
+        if (tooltip.showing)
+            tooltip.close()
+
+        if (popupMenu) {
+            if (!popupMenu.showing) {
+                popupMenu.open(indicator)
+            } else {
+                popupMenu.close()
+            }
         }
     }
 
-    opacity: showing && !(userSensitive && screenLocked) ? 1 : 0
+    onClicked: {
+        // If the application is open,
+        //    If it is already focused,
+        //       Window spread
+        //    Otherwise,
+        //       Focus the application
+        // Otherwise,
+        //    Launch the application
+
+        // TODO: TEMP CODE:
+        focused = !focused
+    }
+
+    opacity: screenLocked ? 0 : 1
 
     height: parent.height
-    width: opacity > 0 ? text ? label.width + (units.dp(40) - label.height)
-                             : units.dp(40)
-                       : 0
+    width: height
 
     backgroundColor: "transparent"
     tintColor: mouseArea.containsMouse ? Qt.rgba(0,0,0,0.2) : "transparent"
@@ -82,33 +108,31 @@ View {
         }
     }
 
-    Icon {
+    Image {
         id: icon
 
-        color: "white"
         anchors.centerIn: parent
-        size: units.dp(20)
 
-        opacity: dimIcon ? 0.6 : 1
+        width: parent.width - units.dp(24)
+        height: width * sourceSize.height/sourceSize.width
 
-        Behavior on opacity {
-            NumberAnimation { duration: 200 }
-        }
-    }
-
-    Label {
-        id: label
-
-        color: "white"
-        anchors.centerIn: parent
-        font.pixelSize: units.dp(14)
+        mipmap: true
     }
 
     MouseArea {
         id: mouseArea
 
         anchors.fill: parent
-        onClicked: triggered(indicator)
+        onClicked: {
+            print("Clicked!")
+            if (mouse.button == Qt.RightButton)
+                indicator.rightClicked()
+            else
+                indicator.clicked()
+        }
+
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+
         hoverEnabled: true
 
         onContainsMouseChanged: {
@@ -133,14 +157,14 @@ View {
             //bottomMargin: selected ? 0 : -height
         }
 
-        opacity: selected ? 1 : 0
+        opacity: focused ? 1 : 0
 
         Behavior on opacity {
             NumberAnimation { duration: 200 }
         }
 
         height: units.dp(2)
-        color: highlightColor
+        color: "white"
     }
 
     Tooltip {

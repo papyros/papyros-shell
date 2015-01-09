@@ -113,32 +113,22 @@ Rectangle {
             width: height
         }
 
-        Item {
-            width: height
-            height: parent.height
+        Repeater {
+            model: [
+                {
+                    tooltip: "Inbox - 25 unread emails",
+                    icon: "google-inbox"
+                },
 
-            Image {
-                anchors {
-                    fill: parent
-                    margins: units.dp(10)
-                }
-
-                source: currentWindow.icon
-                mipmap: true // FIXME: Get an appropriately sized image and remove this
+                {
+                    tooltip: "Play Music",
+                    icon: "play_music"
+                },
+            ]
+            delegate: AppIcon {
+                tooltip: modelData.tooltip
+                iconSource: Qt.resolvedUrl("../images/%1.png".arg(modelData.icon))
             }
-        }
-
-        Item {
-            width: units.dp(6)
-            height: parent.height
-        }
-
-        Label {
-            text: currentWindow.appName
-            style: "subheading"
-            color: "white"
-
-            anchors.verticalCenter: parent.verticalCenter
         }
     }
 
@@ -170,6 +160,7 @@ Rectangle {
         Indicator {
             icon: "action/list" // "social/notifications_none"
             tooltip: "Widgets & Notifications"
+            dimIcon: config.silentMode
 
             userSensitive: true
 

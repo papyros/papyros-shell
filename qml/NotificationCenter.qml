@@ -87,6 +87,9 @@ View {
         Switch {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
+
+            checked: config.silentMode
+            onCheckedChanged: config.silentMode = checked
         }
     }
 

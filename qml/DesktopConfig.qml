@@ -4,5 +4,6 @@ import Material 0.1
 Object {
 
     property string layout: "classic"
+    property bool silentMode
 }
 
