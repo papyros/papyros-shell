@@ -13,8 +13,7 @@ Item {
 	property var windows: []
 	property var windowOrder: []
 	
-	function windowAdded(window) {
-		print('Adding window!')
+	function windowAdded(surface) {
 		var windowComponent = Qt.createComponent("Window.qml");
 		if (windowComponent.status != Component.Ready) {
 			console.warn("Error loading Window.qml: " + windowComponent.errorString());
@@ -22,19 +21,15 @@ Item {
 		}
 		var window = windowComponent.createObject(desktop);
 		
-		print('Window created!')
-		print('Compositor', compositor)
-		window.surface = compositor.item(window);
-		print('Window surface set up!')
+		window.surface = compositor.item(surface);
 		window.surface.touchEventsEnabled = true;
-		window.surfaceWidth = window.size.width;
-		window.surfaceHeight = window.size.height;
-		window.x = units.dp(300)
-		window.y = units.dp(300)
-		print('Window set up!')
+		window.surfaceWidth = surface.size.width;
+		window.surfaceHeight = surface.size.height;
+		window.x = units.dp(100)
+		window.y = units.dp(100)
 		windows.push(window)
 		windowOrder.push(window)
-		print('Window added.')
+		print('Window added.', window.surfaceWidth, window.surfaceHeight)
 	}
 
 	function windowResized(window) {
