@@ -7,7 +7,7 @@ OTHER_FILES = images/*.png \
 	COPYING \
 	README.md
 
-RESOURCES += quantum-shell.qrc
+RESOURCES += papyros-shell.qrc
 
 target.path = /usr/bin
 INSTALLS += target
