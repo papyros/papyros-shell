@@ -5,6 +5,7 @@
 	<file>qml/ActionCenter.qml</file>
 	<file>qml/AppIcon.qml</file>
 	<file>qml/Calendar.qml</file>
+	<file>qml/Desktop.qml</file>
 	<file>qml/DesktopConfig.qml</file>
 	<file>qml/Dock.qml</file>
 	<file>qml/DropDown.qml</file>

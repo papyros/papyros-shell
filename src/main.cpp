@@ -153,9 +153,10 @@ int main(int argc, char *argv[])
     compositor.show();
 
     compositor.rootContext()->setContextProperty("compositor", &compositor);
+    QQuickItem *desktop = compositor.rootObject()->findChild<QQuickItem*>("desktop");
 
-    QObject::connect(&compositor, SIGNAL(windowAdded(QVariant)), compositor.rootObject(), SLOT(windowAdded(QVariant)));
-    QObject::connect(&compositor, SIGNAL(windowResized(QVariant)), compositor.rootObject(), SLOT(windowResized(QVariant)));
+    QObject::connect(&compositor, SIGNAL(windowAdded(QVariant)), desktop, SLOT(windowAdded(QVariant)));
+    QObject::connect(&compositor, SIGNAL(windowResized(QVariant)), desktop, SLOT(windowResized(QVariant)));
 
     return app.exec();
 }

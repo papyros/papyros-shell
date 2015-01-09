@@ -54,8 +54,12 @@ View {
 
     z: windowOrder.indexOf(window)
 
-    onSurfaceChanged: surface.parent = surfaceContainer
-
+    onSurfaceChanged: {
+    	print('Surface changed - updating parent!')
+    	surface.parent = surfaceContainer
+    	print('Done changing parent')
+	}
+    
     Rectangle {
         id: header
         anchors {

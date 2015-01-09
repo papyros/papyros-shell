@@ -21,8 +21,6 @@ import Material 0.1
 MainView {
     id: shell
 
-    property Window currentWindow
-
     property bool overviewMode
     property bool screenLocked
 
@@ -70,14 +68,8 @@ MainView {
             }
         }
 
-        Item {
+        Desktop {
             id: desktop
-
-            anchors.fill: parent
-
-//            SettingsWindow {
-
-//            }
         }
 
         Notifications {
