@@ -4,6 +4,7 @@
 <qresource>
 	<file>qml/ActionCenter.qml</file>
 	<file>qml/AppIcon.qml</file>
+	<file>qml/Application.qml</file>
 	<file>qml/Calendar.qml</file>
 	<file>qml/Desktop.qml</file>
 	<file>qml/DesktopConfig.qml</file>

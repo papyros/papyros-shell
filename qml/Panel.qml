@@ -114,20 +114,10 @@ Rectangle {
         }
 
         Repeater {
-            model: [
-                {
-                    tooltip: "Inbox - 25 unread emails",
-                    icon: "google-inbox"
-                },
-
-                {
-                    tooltip: "Play Music",
-                    icon: "play_music"
-                },
-            ]
+            model: desktop.applications
             delegate: AppIcon {
-                tooltip: modelData.tooltip
-                iconSource: Qt.resolvedUrl("../images/%1.png".arg(modelData.icon))
+                tooltip: application.appName
+                iconSource: application.iconSource
             }
         }
     }

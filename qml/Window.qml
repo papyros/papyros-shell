@@ -22,10 +22,12 @@ View {
     id: window
 
     // TODO: How do we get these from the Wayland client?
-    property string appName: "Simple Application"
+    property string title: info ? info.title : "Unknown"
     property color headerColor: "#0097a7"
-    property url icon: Qt.resolvedUrl("images/play_music.png")
+    property url icon: Qt.resolvedUrl("../images/play_music.png")
     property string badge
+    
+    property var info
 
     property bool active: window == currentWindow
 
@@ -79,7 +81,7 @@ View {
             }
 
             color: "white"
-            text: appName
+            text: window.title
             opacity: window.maximized ? 0 : 1
 
             Behavior on opacity {

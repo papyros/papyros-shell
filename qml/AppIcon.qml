@@ -27,8 +27,10 @@ View {
 
     signal clicked()
     signal rightClicked()
+    
+    property var app
 
-    property bool focused
+    property bool focused: desktop.focusedApplication == application
 
     property DropDown popupMenu: DropDown {
         height: column.height
@@ -77,15 +79,15 @@ View {
 
     onClicked: {
         // If the application is open,
-        //    If it is already focused,
-        //       Window spread
-        //    Otherwise,
-        //       Focus the application
-        // Otherwise,
-        //    Launch the application
-
-        // TODO: TEMP CODE:
-        focused = !focused
+        if (app.windows.count > 0) {
+        	if (focused) {
+        		// Window spread!
+        	} else {
+        		// Focus the application	
+        	}
+        } else {
+        	// Launch the application
+        }
     }
 
     opacity: screenLocked ? 0 : 1
