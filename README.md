@@ -1,9 +1,9 @@
 Quantum Shell
 ============
 
-Quantum Shell is the desktop shell for Quantum OS, an operating system based upon Linux which conforms to Google’s Material Design guidelines. The focus will be on creating a stable and easy-to-use operating system with a heavy emphasis on well-thought-out design.
+Papyros Shell is the desktop shell for Papyros, an operating system based upon Linux which conforms to Google’s Material Design guidelines. The focus will be on creating a stable and easy-to-use operating system with a heavy emphasis on well-thought-out design.
 
-Brought to you by the [Quantum OS development team](https://github.com/quantum-os/quantum-shell/graphs/contributors).
+Brought to you by the [Papyros development team](https://github.com/papyros/papyros-shell/graphs/contributors).
 
 ### Implementation Details ###
 
@@ -13,15 +13,15 @@ QtCompositor requires a small C++ wrapper, but the majority of the shell will be
 
 ### Installation ###
 
-Quantum Shell is a wayland compositor based on QtCompositor, and requires Wayland and Qt 5.4. In addition, will also need the [qml-material](https://github.com/quantum-os/qml-material) repo installed as a QML system module.
+Papyros Shell is a wayland compositor based on QtCompositor, and requires Wayland and Qt 5.4. In addition, will also need the [qml-material](https://github.com/papyros/qml-material) repo installed as a QML system module.
 
-	$ git clone https://github.com/quantum-os/qml-material
+	$ git clone https://github.com/papyros/qml-material
 	$ cd qml-material/
 	$ qmake
 	$ make
 	# make install
 
-As well as [qml-extras](https://github.com/quantum-os/qml-extras) that can be installed the same way as [qml-material](https://github.com/quantum-os/qml-material)
+As well as [qml-extras](https://github.com/papyros/qml-extras) that can be installed the same way as [qml-material](https://github.com/papyros/qml-material)
 
 Once you have that set up, run the following commands to compile the C++ wrapper:
 
@@ -30,7 +30,7 @@ Once you have that set up, run the following commands to compile the C++ wrapper
 
 And run the compositor from an X11 desktop:
 
-    $ ./quantum-shell -platform xcb
+    $ ./papyros-shell -platform xcb
 
 ### Dependencies ###
 
@@ -43,4 +43,4 @@ And run the compositor from an X11 desktop:
 
 ### Licensing ###
 
-Quantum Shell is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+Papyros Shell is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
