@@ -34,7 +34,7 @@ And run the compositor from an X11 desktop:
 
 ### Dependencies ###
 
-*AUR Packages:*
+**AUR Packages:**
 
  * qt5-base-git
  * qt5-declarative-git
