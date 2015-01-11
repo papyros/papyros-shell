@@ -9,5 +9,5 @@ qrc_*.cpp
 moc_*.cpp
 .obj/
 .moc/
-quartz-shell
+papyros-shell
 *~

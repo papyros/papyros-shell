@@ -32,6 +32,15 @@ And run the compositor from an X11 desktop:
 
     $ ./quantum-shell -platform xcb
 
+### Dependencies ###
+
+*AUR Packages:*
+
+ * qt5-base-git
+ * qt5-declarative-git
+ * qt5-wayland-dev-git
+ * gsettings-qt-bzr
+
 ### Licensing ###
 
 Quantum Shell is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.

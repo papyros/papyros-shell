@@ -17,38 +17,39 @@
  */
 import QtQuick 2.0
 import Material 0.1
-import Material.ListItems 0.1 as ListItem
 import ".."
-import "../components"
 
 Indicator {
-    id: appDrawer
+    width: iconsRow.width + units.dp(20)
 
-    icon: config.layout == "classic" ? "navigation/apps" : ""
-    iconSize: units.dp(24)
-    tooltip: "Applications"
+    Row {
+        id: iconsRow
+        anchors.centerIn: parent
 
-    text: config.layout == "modern" ? "Applications" : ""
+        spacing: units.dp(10)
 
-    width:  text ? label.width + (units.dp(40) - label.height)  : height
+        Icon {
+            name: "device/signal_wifi_3_bar"
+            color: "white"
+            size: iconSize
+        }
 
-    userSensitive: true
+        Icon {
+            name: "av/volume_up"
+            color: "white"
+            size: iconSize
+        }
 
-    dropdown: DropDown {
-        id: dropdown
+        Icon {
+            name: upower.deviceIcon(upower.primaryDevice)
+            color: "white"
+            size: iconSize
+        }
 
-        implicitHeight: units.dp(200)
-
-        TextField {
-        	anchors {
-        		left: parent.left
-        		right: parent.right
-        		top: parent.top
-        		topMargin: units.dp(5)
-        		margins: units.dp(15)
-        	}
-
-            //hintText: "Search..."
+        Icon {
+            name: "action/account_circle"
+            color: "white"
+            size: iconSize
         }
     }
 }

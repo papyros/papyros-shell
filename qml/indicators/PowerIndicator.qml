@@ -1,6 +1,6 @@
 /*
- * Quantum Shell - The desktop shell for Quantum OS following Material Design
- * Copyright (C) 2014 Michael Spencer
+ * Papyros Shell - The desktop shell for Papyros following Material Design
+ * Copyright (C) 2015 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,15 +17,45 @@
  */
 import QtQuick 2.0
 import Material.ListItems 0.1 as ListItem
+import Material.Desktop 0.1
+import Material.Extras 0.1
 import ".."
+import "../components"
 
 Indicator {
     id: indicator
 
-    icon: "device/battery_80"
-    tooltip: "Power"
+    tooltip: {
+        if (!primaryPowerSource)
+            return "Unknown"
+
+        return powerSummary(primaryPowerSource)
+    }
 
     dropdown: DropDown {
+        height: column.height
 
+        Column {
+            id: column
+
+            width: parent.width
+
+            Repeater {
+                model: upower.devices
+
+                delegate: ProgressListItem {
+                    text: modelData == primaryPowerSource ? "Laptop battery" : vendor
+                    progress: percentage/100
+                    valueText: powerSummary(modelData)
+                    visible: type != UPowerDeviceType.LinePower
+
+                    showDivider: true
+                }
+            }
+
+            ListItem.Standard {
+                text: "Power settings..."
+            }
+        }
     }
 }

@@ -17,38 +17,42 @@
  */
 import QtQuick 2.0
 import Material 0.1
-import Material.ListItems 0.1 as ListItem
-import ".."
-import "../components"
 
-Indicator {
-    id: appDrawer
+PopupBase {
+    id: popover
 
-    icon: config.layout == "classic" ? "navigation/apps" : ""
-    iconSize: units.dp(24)
-    tooltip: "Applications"
+    implicitWidth: units.dp(300)
 
-    text: config.layout == "modern" ? "Applications" : ""
+    width: implicitWidth
+    height: implicitHeight
 
-    width:  text ? label.width + (units.dp(40) - label.height)  : height
+    default property alias content: container.data
 
-    userSensitive: true
+    View {
+        id: container
 
-    dropdown: DropDown {
-        id: dropdown
+        elevation: 2
+        radius: units.dp(2)
 
-        implicitHeight: units.dp(200)
+        opacity: showing ? 1 : 0
+        visible: opacity > 0
 
-        TextField {
-        	anchors {
-        		left: parent.left
-        		right: parent.right
-        		top: parent.top
-        		topMargin: units.dp(5)
-        		margins: units.dp(15)
-        	}
+        height: parent.height
 
-            //hintText: "Search..."
+        anchors {
+            verticalCenter: parent.verticalCenter
+            left: parent.left
+            right: parent.right
+
+            verticalCenterOffset: showing ? 0 : popover.side = Qt.AlignTop ? height/2 : -height/2
+
+            Behavior on verticalCenterOffset {
+                NumberAnimation { duration: 200 }
+            }
+        }
+
+        Behavior on opacity {
+            NumberAnimation { duration: 200 }
         }
     }
 }

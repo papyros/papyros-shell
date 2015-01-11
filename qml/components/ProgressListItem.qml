@@ -1,6 +1,6 @@
 /*
- * Quantum Shell - The desktop shell for Quantum OS following Material Design
- * Copyright (C) 2014 Michael Spencer
+ * Papyros Shell - The desktop shell for Papyros following Material Design
+ * Copyright (C) 2015 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,31 +20,31 @@ import Material 0.1
 import Material.ListItems 0.1
 
 BaseListItem {
-    id: listItem
+        id: listItem
 
-    height: units.dp(72)
+        height: units.dp(72)
 
-    property alias text: label.text
-    property alias progress: progressBar.progress
-    property alias valueText: valueLabel.text
+        property alias text: label.text
+        property alias progress: progressBar.progress
+        property alias valueText: valueLabel.text
 
-    property alias action: actionItem.children
-    property alias secondaryItem: secondaryItem.children
+        property alias action: actionItem.children
+        property alias secondaryItem: secondaryItem.children
 
-    Item {
-        id: actionItem
+        Item {
+                id: actionItem
 
-        anchors {
-            left: parent.left
-            leftMargin: listItem.margins
-            verticalCenter: parent.verticalCenter
+                anchors {
+                        left: parent.left
+                        leftMargin: listItem.margins
+                        verticalCenter: parent.verticalCenter
+                }
+
+                height: width
+                width: units.dp(40)
         }
 
-        height: width
-        width: units.dp(40)
-    }
-
-    dividerInset: actionItem.children.length == 0 ? 0 : listItem.height
+        dividerInset: actionItem.children.length == 0 ? 0 : listItem.height
 
     Column {
         anchors {
@@ -101,6 +101,7 @@ BaseListItem {
 
                 width: parent.width
                 anchors.verticalCenter: parent.verticalCenter
+                alwaysShow: true
             }
         }
     }

@@ -1,6 +1,6 @@
 /*
- * Quantum Shell - The desktop shell for Quantum OS following Material Design
- * Copyright (C) 2014 Michael Spencer
+ * Papyros Shell - The desktop shell for Papyros following Material Design
+ * Copyright (C) 2015 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,10 @@
  */
 import QtQuick 2.2
 import Material 0.1
+import GSettings 1.0
 
 MainView {
     id: shell
-
-    property Window currentWindow
 
     property bool overviewMode
     property bool screenLocked
@@ -29,24 +28,34 @@ MainView {
     width: units.dp(1440)
     height: units.dp(900)
 
-    theme {
-       	//accentColor: "#009688"//"#FFEB3B"
-    }
-    
     Component.onCompleted: theme.accentColor = "#009688"
 
     onOverviewModeChanged: panel.selectedIndicator = null
+
+    GSettings {
+        id: wallpaperSetting
+        schema.id: "org.gnome.desktop.background"
+    }
 
     // TODO: Load the wallpaper from user preferences
     Image {
         id: wallpaper
 
         anchors.fill: parent
-        source: Qt.resolvedUrl("qrc:/images/quantum_wallpaper.png")
+        source: {
+            var filename = wallpaperSetting.pictureUri
+
+            if (filename.indexOf("xml") != -1) {
+                // We don't support GNOME's animated wallpapers. Default to our default wallpaper
+                return Qt.resolvedUrl("../images/quantum_wallpaper.png")
+            } else {
+                return filename
+            }
+        }
     }
 
     Item {
-        id: desktop
+        id: content
 
         opacity: screenLocked ? 0 : 1
 
@@ -59,114 +68,63 @@ MainView {
         anchors {
             left: parent.left
             right: parent.right
-            top: panel.bottom
+            top: parent.top
             bottom: parent.bottom
-        }
 
-        InteractiveNotification {
-            z: 2
-            y: units.dp(20)
+            topMargin: config.layout == "classic" ? 0 : panel.height
+            bottomMargin: config.layout == "classic" ? panel.height : 0
 
-            height: units.dp(100)
-            width: units.dp(300)
-
-            Row {
-                spacing: units.dp(10)
-
-                anchors {
-                    left: parent.left
-                    top: parent.top
-                    margins: units.dp(10)
-                }
-
-                Icon {
-                    name: "communication/chat"
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Label {
-                    text: "Test Contact"
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
-        }
-
-        Column {
-            anchors {
-                right: parent.right
-                top: parent.top
-                bottom: parent.bottom
-                margins: units.dp(25)
+            Behavior on topMargin {
+                NumberAnimation { duration: 200 }
             }
 
-            spacing: units.dp(20)
-
-            Label {
-
-                text: "Panel Indicators"
-                style: "subheading"
-                color: "white"
-            }
-
-            Repeater {
-                model: panel.indicators
-                delegate: Row {
-                    visible: modelData.icon
-                    spacing: units.dp(10)
-
-                    Icon {
-                        name: modelData.icon
-                        color: "white"
-                    }
-
-                    Label {
-                        text: modelData.tooltip
-                        color: "white"
-                    }
-                }
+            Behavior on bottomMargin {
+                NumberAnimation { duration: 200 }
             }
         }
 
         MouseArea {
             anchors.fill: parent
-            onClicked: screenLocked = !screenLocked
+
+            onClicked: config.layout == "classic" ? config.layout = "modern" : config.layout = "classic"
         }
-    }
 
-    Item {
-        id: overlayLayer
+        Desktop {
+            id: desktop
+        }
 
-        anchors.fill: parent
-        
-        opacity: screenLocked ? 0 : 1
+        Notifications {
 
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 500
+        }
+
+        Item {
+            id: overlayLayer
+
+            anchors.fill: parent
+
+            NotificationCenter {
+                id: notificationCenter
+            }
+
+            SystemCenter {
+                id: systemCenter
             }
         }
     }
-    
+
     Panel {
         id: panel
     }
-    
-    Item {
-    	anchors {
-            left: parent.left
-            right: parent.right
-            top: panel.bottom
-            bottom: parent.bottom
-        }
-
-		clip: true
-    
-		Dock {
-			id: dock
-		}
-	}
 
     Lockscreen {
         id: lockscreen
+    }
+
+    DesktopConfig {
+        id: config
+    }
+
+    UPower {
+        id: upower
     }
 }

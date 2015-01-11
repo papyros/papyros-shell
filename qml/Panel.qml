@@ -1,6 +1,6 @@
 /*
- * Quantum Shell - The desktop shell for Quantum OS following Material Design
- * Copyright (C) 2014 Michael Spencer
+ * Papyros Shell - The desktop shell for Papyros following Material Design
+ * Copyright (C) 2015 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 import QtQuick 2.3
 import Material 0.1
 import "indicators"
+import "components"
 
 /*
  * The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.
@@ -25,12 +26,80 @@ import "indicators"
 Rectangle {
     id: panel
 
-    property bool raised: true
+    property bool raised: false
     property alias indicators: indicatorsRow.children
     property Indicator selectedIndicator
 
-    color: Qt.rgba(55/256, 71/256, 79/256, screenLocked ? 0.5 : 0.9)
+    color: Qt.rgba(0,0,0,0.5)
     height: units.dp(32)
+
+    property int classicHeight: units.dp(56)
+
+    state: config.layout
+
+    states: [
+        State {
+            name: "classic"
+            PropertyChanges {
+                target: panel
+                color: Qt.rgba(0.2, 0.2, 0.2, 1)
+                height: classicHeight
+            }
+
+            PropertyChanges {
+                target: indicatorsRow
+
+                anchors.rightMargin:units.dp(16)
+            }
+
+            AnchorChanges {
+                target: panel
+
+                anchors.top: undefined
+                anchors.bottom: parent.bottom
+            }
+
+            AnchorChanges {
+                target: dateTimeIndicator
+
+                anchors.horizontalCenter: undefined
+                anchors.right: indicatorsRow.left
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "*"
+            to: "*"
+
+            NumberAnimation {
+                target: panel
+                properties: "height"
+                duration: 200
+            }
+
+            ColorAnimation {
+                target: panel
+                properties: "color"
+                duration: 200
+            }
+
+            NumberAnimation {
+                target: indicators.anchors
+                properties: "rightMargin"
+                duration: 200
+            }
+
+            AnchorAnimation {
+                targets: panel
+            }
+
+            AnchorAnimation {
+                targets: dateTimeIndicator
+            }
+        }
+    ]
 
     anchors {
         left: parent.left
@@ -52,37 +121,25 @@ Rectangle {
             bottom: parent.bottom
         }
 
-        Item {
-            width: units.dp(10)
-            height: parent.height
+        AppDrawer {
         }
 
-        Item {
-            width: height
-            height: parent.height
-
-            Image {
-                anchors {
-                    fill: parent
-                    margins: units.dp(10)
-                }
-
-                source: currentWindow.icon
-                mipmap: true // FIXME: Get an appropriately sized image and remove this
+        Repeater {
+            model: desktop.applications
+            delegate: AppIcon {
+                tooltip: application.appName
+                iconSource: application.iconSource
             }
         }
+    }
 
-        Item {
-            width: units.dp(6)
-            height: parent.height
-        }
+    DateTimeIndicator {
+        id: dateTimeIndicator
 
-        Label {
-            text: currentWindow.appName
-            style: "subheading"
-            color: "white"
-
-            anchors.verticalCenter: parent.verticalCenter
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            bottom: parent.bottom
         }
     }
 
@@ -97,48 +154,22 @@ Rectangle {
             bottom: parent.bottom
         }
 
-//        Indicator {
-//            icon: "content/create"
-//            tooltip: "Quick Actions"
-//        }
-
-        OperationsIndicator {}
+        SystemIndicator {
+            onSelectedChanged: {
+                systemCenter.showing = selected
+            }
+        }
 
         Indicator {
-            icon: "file/cloud_done"
-            tooltip: "Cloud services"
+            icon: "action/list" // "social/notifications_none"
+            tooltip: "Widgets & Notifications"
+            dimIcon: config.silentMode
 
             userSensitive: true
-        }
 
-        Indicator {
-            icon: "social/notifications_none"
-            tooltip: "Notifications"
-
-            userSensitive: true
-        }
-
-        Indicator {
-            icon: "device/signal_wifi_3_bar"
-            tooltip: "Network"
-        }
-
-        Indicator {
-            icon: "av/volume_up"
-            tooltip: "Volume"
-        }
-
-        PowerIndicator {}
-
-        ActionCenterIndicator {}
-
-        DateTimeIndicator {}
-
-        Indicator {
-            icon: "action/account_circle"
-            tooltip: "System"
-
-            userSensitive: true
+            onSelectedChanged: {
+                notificationCenter.showing = selected
+            }
         }
     }
 

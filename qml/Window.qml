@@ -22,10 +22,12 @@ View {
     id: window
 
     // TODO: How do we get these from the Wayland client?
-    property string appName: "Simple Application"
+    property string title: info ? info.title : "Unknown"
     property color headerColor: "#0097a7"
-    property url icon: Qt.resolvedUrl("images/play_music.png")
+    property url icon: Qt.resolvedUrl("../images/play_music.png")
     property string badge
+    
+    property var info
 
     property bool active: window == currentWindow
 
@@ -45,15 +47,21 @@ View {
     width: surfaceWidth
     height: surfaceHeight + header.height
 
-    x: Math.random() * (parent.width - width)
-    y: Math.random() * (parent.height - height)
+    Component.onCompleted: {
+        x = Math.random() * (parent.width - width)
+        y = Math.random() * (parent.height - height)
+    }
 
     elevation: active ? 5 : 3
 
     z: windowOrder.indexOf(window)
 
-    onSurfaceChanged: surface.parent = surfaceContainer
-
+    onSurfaceChanged: {
+    	print('Surface changed - updating parent!')
+    	surface.parent = surfaceContainer
+    	print('Done changing parent')
+	}
+    
     Rectangle {
         id: header
         anchors {
@@ -73,7 +81,7 @@ View {
             }
 
             color: "white"
-            text: appName
+            text: window.title
             opacity: window.maximized ? 0 : 1
 
             Behavior on opacity {

@@ -17,38 +17,31 @@
  */
 import QtQuick 2.0
 import Material 0.1
-import Material.ListItems 0.1 as ListItem
-import ".."
-import "../components"
 
-Indicator {
-    id: appDrawer
+PopupBase {
+    id: popover
 
-    icon: config.layout == "classic" ? "navigation/apps" : ""
-    iconSize: units.dp(24)
-    tooltip: "Applications"
+    Label {
+        id: label
 
-    text: config.layout == "modern" ? "Applications" : ""
+        anchors.centerIn: parent
 
-    width:  text ? label.width + (units.dp(40) - label.height)  : height
-
-    userSensitive: true
-
-    dropdown: DropDown {
-        id: dropdown
-
-        implicitHeight: units.dp(200)
-
-        TextField {
-        	anchors {
-        		left: parent.left
-        		right: parent.right
-        		top: parent.top
-        		topMargin: units.dp(5)
-        		margins: units.dp(15)
-        	}
-
-            //hintText: "Search..."
-        }
+        width: parent.width - units.dp(32)
+        color: Theme.dark.textColor
     }
+
+    width: label.implicitWidth + units.dp(32)
+    height: label.implicitHeight + units.dp(24)
+
+    property alias text: label.text
+
+    opacity: showing ? 1 : 0
+
+    Behavior on opacity {
+        NumberAnimation { duration: 250 }
+    }
+
+    color: Qt.rgba(0,0,0,0.6)
+
+    radius: units.dp(2)
 }
