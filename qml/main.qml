@@ -68,6 +68,12 @@ MainView {
             }
         }
 
+        MouseArea {
+            anchors.fill: parent
+
+            onClicked: config.layout == "classic" ? config.layout = "modern" : config.layout = "classic"
+        }
+
         Desktop {
             id: desktop
         }

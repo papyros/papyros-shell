@@ -29,6 +29,7 @@ View {
     property bool userSensitive
     property bool showing: true
 
+    property alias label: label
     property alias iconSize: icon.size
     property color highlightColor: "#FFEB3B"
 
@@ -65,8 +66,7 @@ View {
 
     height: parent.height
     width: opacity > 0 ? text ? label.width + (units.dp(40) - label.height)
-                             : units.dp(40)
-                       : 0
+                             : units.dp(40) : 0
 
     backgroundColor: "transparent"
     tintColor: mouseArea.containsMouse ? Qt.rgba(0,0,0,0.2) : "transparent"
@@ -88,7 +88,7 @@ View {
 
         color: "white"
         anchors.centerIn: parent
-        size: units.dp(20)
+        size: config.layout == "classic" ? units.dp(20) : units.dp(16)
 
         opacity: dimIcon ? 0.6 : 1
 

@@ -24,9 +24,13 @@ import "../components"
 Indicator {
     id: appDrawer
 
-    icon: "navigation/apps"
+    icon: config.layout == "classic" ? "navigation/apps" : ""
     iconSize: units.dp(24)
     tooltip: "Applications"
+
+    text: config.layout == "modern" ? "Applications" : ""
+
+    width:  text ? label.width + (units.dp(40) - label.height)  : height
 
     userSensitive: true
 

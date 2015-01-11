@@ -31,25 +31,25 @@ Indicator {
         Icon {
             name: "device/signal_wifi_3_bar"
             color: "white"
-            size: units.dp(20)
+            size: iconSize
         }
 
         Icon {
             name: "av/volume_up"
             color: "white"
-            size: units.dp(20)
+            size: iconSize
         }
 
         Icon {
             name: upower.deviceIcon(upower.primaryDevice)
             color: "white"
-            size: units.dp(20)
+            size: iconSize
         }
 
         Icon {
             name: "action/account_circle"
             color: "white"
-            size: units.dp(20)
+            size: iconSize
         }
     }
 }

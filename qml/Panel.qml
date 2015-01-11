@@ -30,7 +30,7 @@ Rectangle {
     property alias indicators: indicatorsRow.children
     property Indicator selectedIndicator
 
-    color: "transparent"//Qt.rgba(55/256, 71/256, 79/256, screenLocked ? 0.5 : 0.9)
+    color: Qt.rgba(0,0,0,0.5)
     height: units.dp(32)
 
     property int classicHeight: units.dp(56)
@@ -57,6 +57,13 @@ Rectangle {
 
                 anchors.top: undefined
                 anchors.bottom: parent.bottom
+            }
+
+            AnchorChanges {
+                target: dateTimeIndicator
+
+                anchors.horizontalCenter: undefined
+                anchors.right: indicatorsRow.left
             }
         }
     ]
@@ -87,6 +94,10 @@ Rectangle {
             AnchorAnimation {
                 targets: panel
             }
+
+            AnchorAnimation {
+                targets: dateTimeIndicator
+            }
         }
     ]
 
@@ -111,7 +122,6 @@ Rectangle {
         }
 
         AppDrawer {
-            width: height
         }
 
         Repeater {
@@ -120,6 +130,16 @@ Rectangle {
                 tooltip: application.appName
                 iconSource: application.iconSource
             }
+        }
+    }
+
+    DateTimeIndicator {
+        id: dateTimeIndicator
+
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            bottom: parent.bottom
         }
     }
 
@@ -133,8 +153,6 @@ Rectangle {
             top: parent.top
             bottom: parent.bottom
         }
-
-        DateTimeIndicator {}
 
         SystemIndicator {
             onSelectedChanged: {
