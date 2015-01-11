@@ -1,6 +1,6 @@
 /*
- * Quantum Shell - The desktop shell for Quantum OS following Material Design
- * Copyright (C) 2014 Michael Spencer
+ * Papyros Shell - The desktop shell for Papyros following Material Design
+ * Copyright (C) 2015 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import ".."
+import "../components"
 
 Indicator {
     id: indicator

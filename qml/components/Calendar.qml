@@ -1,5 +1,5 @@
 /*
- * Quantum Shell - The desktop shell for Quantum OS following Material Design
+ * Papyros Shell - The desktop shell for Papyros following Material Design
  * Copyright (C) 2015 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
@@ -111,4 +111,3 @@ Calendar {
         }
     }
 }
-

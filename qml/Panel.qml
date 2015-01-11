@@ -1,6 +1,6 @@
 /*
- * Quantum Shell - The desktop shell for Quantum OS following Material Design
- * Copyright (C) 2014 Michael Spencer
+ * Papyros Shell - The desktop shell for Papyros following Material Design
+ * Copyright (C) 2015 Michael Spencer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 import QtQuick 2.3
 import Material 0.1
 import "indicators"
+import "components"
 
 /*
  * The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.
@@ -135,17 +136,11 @@ Rectangle {
 
         DateTimeIndicator {}
 
-        Indicator {
-            icon: "device/signal_wifi_3_bar"
-            tooltip: "Network"
+        SystemIndicator {
+            onSelectedChanged: {
+                systemCenter.showing = selected
+            }
         }
-
-        Indicator {
-            icon: "av/volume_up"
-            tooltip: "Volume"
-        }
-
-        PowerIndicator {}
 
         Indicator {
             icon: "action/list" // "social/notifications_none"
@@ -158,8 +153,6 @@ Rectangle {
                 notificationCenter.showing = selected
             }
         }
-
-        SystemIndicator {}
     }
 
     // This is necessary to get the shadow affect and still have the panel be translucent
