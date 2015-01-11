@@ -17,6 +17,7 @@
  */
 import QtQuick 2.2
 import Material 0.1
+import GSettings 1.0
 
 MainView {
     id: shell
@@ -31,12 +32,26 @@ MainView {
 
     onOverviewModeChanged: panel.selectedIndicator = null
 
+    GSettings {
+        id: wallpaperSetting
+        schema.id: "org.gnome.desktop.background"
+    }
+
     // TODO: Load the wallpaper from user preferences
     Image {
         id: wallpaper
 
         anchors.fill: parent
-        source: Qt.resolvedUrl("../images/quantum_wallpaper.png")
+        source: {
+            var filename = wallpaperSetting.pictureUri
+
+            if (filename.indexOf("xml") != -1) {
+                // We don't support GNOME's animated wallpapers. Default to our default wallpaper
+                return Qt.resolvedUrl("../images/quantum_wallpaper.png")
+            } else {
+                return filename
+            }
+        }
     }
 
     Item {
