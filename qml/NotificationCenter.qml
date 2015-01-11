@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Material 0.1
+import Material.Extras 0.1
 import Material.ListItems 0.1 as ListItem
 import Material.Desktop 0.1
 
@@ -47,7 +48,9 @@ View {
                     rightMargin: units.dp(16)
                 }
 
-                text: "Saturday,<br/>November 8<sup>th</sup>"
+                text:  Qt.formatDateTime(now, "dddd',<br>'MMMM d'<sup>%1</sup>'"
+                        .arg(Utils.nth(now.getDate())))
+
                 style: "title"
                 font.pixelSize: units.dp(30)
                 textFormat: Text.RichText
@@ -97,4 +100,3 @@ View {
         id: musicPlayer
     }
 }
-

@@ -24,17 +24,8 @@ import "../components"
 Indicator {
     id: indicator
 
-    property var date: new Date()
-
-    text: Qt.formatTime(date)
-    tooltip: Qt.formatDate(date, Locale.LongFormat)
-
-    Timer {
-        interval: 10 * 100
-        repeat: true
-        running: true
-        onTriggered: date = new Date()
-    }
+    text: Qt.formatTime(now)
+    tooltip: Qt.formatDate(now, Locale.LongFormat)
 
     dropdown: DropDown {
         height: units.dp(300)
