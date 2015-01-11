@@ -129,6 +129,7 @@ Rectangle {
             delegate: AppIcon {
                 tooltip: application.appName
                 iconSource: application.iconSource
+                app: application
             }
         }
     }
@@ -154,21 +155,13 @@ Rectangle {
             bottom: parent.bottom
         }
 
+        NotificationsIndicator {
+
+        }
+
         SystemIndicator {
             onSelectedChanged: {
                 systemCenter.showing = selected
-            }
-        }
-
-        Indicator {
-            icon: "action/list" // "social/notifications_none"
-            tooltip: "Widgets & Notifications"
-            dimIcon: config.silentMode
-
-            userSensitive: true
-
-            onSelectedChanged: {
-                notificationCenter.showing = selected
             }
         }
     }
