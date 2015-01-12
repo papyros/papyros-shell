@@ -1,4 +1,4 @@
-Quantum Shell
+Papyros Shell
 ============
 
 Papyros Shell is the desktop shell for Papyros, an operating system based upon Linux which conforms to Google’s Material Design guidelines. The focus will be on creating a stable and easy-to-use operating system with a heavy emphasis on well-thought-out design.
