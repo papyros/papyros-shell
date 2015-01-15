@@ -20,6 +20,8 @@ import Material 0.1
 import ".."
 
 Indicator {
+    id: indicator
+
     width: iconsRow.width + units.dp(20)
 
     Row {
@@ -28,28 +30,23 @@ Indicator {
 
         spacing: units.dp(10)
 
-        Icon {
+        IndicatorIcon {
             name: "device/signal_wifi_3_bar"
-            color: "white"
-            size: iconSize
+            tooltip: "Wifi not connected"
         }
 
-        Icon {
+        IndicatorIcon {
             name: "av/volume_up"
-            color: "white"
-            size: iconSize
+            tooltip: "Volume at 75%"
         }
 
-        Icon {
+        IndicatorIcon {
             name: upower.deviceIcon(upower.primaryDevice)
-            color: "white"
-            size: iconSize
+            tooltip: upower.deviceSummary(upower.primaryDevice)
         }
 
-        Icon {
+        IndicatorIcon {
             name: "action/account_circle"
-            color: "white"
-            size: iconSize
         }
     }
 }

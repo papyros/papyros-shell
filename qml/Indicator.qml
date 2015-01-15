@@ -22,6 +22,8 @@ import "components"
 View {
     id: indicator
 
+    default property alias contents: mouseArea.data
+
     property alias icon: icon.name
     property alias text: label.text
     property string tooltip
@@ -30,7 +32,7 @@ View {
 
     property alias label: label
     property alias iconSize: icon.size
-    property color highlightColor: "#FFEB3B"
+    property color highlightColor: Theme.dark.accentColor
 
     property bool selected: selectedIndicator == indicator
 
@@ -147,5 +149,16 @@ View {
         id: tooltip
 
         text: indicator.tooltip
+
+        onTextChanged: {
+            if (!tooltip.text && tooltip.showing) {
+                tooltip.close()
+                return
+            }
+
+            if (mouseArea.containsMouse && tooltip.text && !tooltip.showing) {
+                tooltip.open(indicator)
+            }
+        }
     }
 }
