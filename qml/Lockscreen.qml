@@ -60,7 +60,7 @@ Item {
     MouseArea {
         anchors.fill: parent
 
-        hoverEnabled: true
+        hoverEnabled: enabled
         enabled: shell.state == "locked"
 
         onPositionChanged: {

@@ -11,7 +11,7 @@ View {
         anchors.fill: parent
 
         enabled: desktop.expanded
-        onClicked: desktop.expanded = false
+        onClicked: shell.state = "default"
     }
 
     CrossFadeImage {

@@ -12,7 +12,7 @@ Item {
 
     anchors.fill: parent
 
-    property bool expanded
+    property bool expanded: shell.state == "exposed"
 
     VisualItemModel {
         id: workspaces
@@ -70,7 +70,12 @@ Item {
     HotCorners {
         anchors.fill: parent
 
-        onTopLeftTriggered: desktop.expanded = !desktop.expanded
+        onTopLeftTriggered: {
+            if (desktop.exposed)
+                shell.state = "default"
+            else
+                shell.state = "exposed"
+        }
     }
 
     // ===== Window Management =====
