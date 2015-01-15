@@ -1,4 +1,4 @@
-Quantum Shell
+Papyros Shell
 ============
 
 Papyros Shell is the desktop shell for Papyros, an operating system based upon Linux which conforms to Google’s Material Design guidelines. The focus will be on creating a stable and easy-to-use operating system with a heavy emphasis on well-thought-out design.
@@ -34,7 +34,11 @@ And run the compositor from an X11 desktop:
 
 ### Dependencies ###
 
-**AUR Packages:**
+ * Qt 5.4
+ * QtWayland 5.4 with QtCompositor (a CONFIG option is required to enable QtCompositor as it is not compiled by default)
+ * The [GSettings QML module](https://launchpad.net/gsettings-qt). This is developed for Ubuntu Touch, but is not Ubuntu-specific
+
+If you're using Arch Linux, you can install the required dependencies using these packages from the [AUR](aur.archlinux.org):
 
  * qt5-base-git
  * qt5-declarative-git
