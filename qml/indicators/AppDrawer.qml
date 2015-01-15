@@ -32,8 +32,6 @@ Indicator {
 
     width:  text ? label.width + (units.dp(40) - label.height)  : height
 
-    userSensitive: true
-
     dropdown: DropDown {
         id: dropdown
 

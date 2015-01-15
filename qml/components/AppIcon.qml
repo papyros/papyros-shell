@@ -27,7 +27,7 @@ View {
 
     signal clicked()
     signal rightClicked()
-    
+
     property var app
 
     property bool focused: desktop.focusedApplication == application
@@ -80,13 +80,18 @@ View {
     onClicked: {
         // If the application is open,
         if (app.windows.count > 0) {
+            print("App is open")
         	if (focused) {
+                print("Spreading windows...")
         		// Window spread!
+                desktop.spread(app.windows)
         	} else {
-        		// Focus the application	
+        		// Focus the application
+                    print("Focusing the app...")
         	}
         } else {
         	// Launch the application
+            print ("Launching the app")
         }
     }
 

@@ -54,6 +54,8 @@ Item {
         }
     }
 
+    property alias currentImage: internals.currentImage
+
     QtObject {
         id: internals
 

@@ -3,6 +3,6 @@ import Material 0.1
 
 Object {
 
-    property string layout: "modern"
+    property string layout: "classic"
     property bool silentMode
 }

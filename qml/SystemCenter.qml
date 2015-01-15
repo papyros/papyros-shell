@@ -46,12 +46,14 @@ View {
     Column {
         width: parent.width
 
+        // TODO: Replace with real data
         ListItem.Subtitled {
             text: "Michael Spencer"
             subText: "sonrisesoftware@gmail.com"
             showDivider: true
         }
 
+        // TODO: Replace with real data
         ListItem.Standard {
             text: "Wi-Fi"
             valueText: "Not connected"
@@ -62,6 +64,7 @@ View {
             }
         }
 
+        // TODO: Replace with real data
         ListItem.Standard {
             text: "Bluetooth"
             secondaryItem: Switch {
@@ -120,6 +123,9 @@ View {
         IconAction {
             size: units.dp(30)
             name: "action/lock"
+
+            // TODO: replace with call to Logind DBus
+            onTriggered: shell.state = "locked"
         }
 
         IconAction {

@@ -33,10 +33,9 @@ Indicator {
                                               : hasNotifications ? "%1 notifications".arg(notificationsCount)
                                                                            : "No notifications"
 
-    property bool hasNotifications
-    property int notificationsCount
+    property bool hasNotifications: notificationsCount > 0
+    property int notificationsCount: 3
 
-    userSensitive: true
 
     onSelectedChanged: {
         notificationCenter.showing = selected

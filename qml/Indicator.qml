@@ -26,7 +26,6 @@ View {
     property alias text: label.text
     property string tooltip
 
-    property bool userSensitive
     property bool showing: true
 
     property alias label: label
@@ -62,7 +61,7 @@ View {
         }
     }
 
-    opacity: showing && !(userSensitive && screenLocked) ? 1 : 0
+    opacity: showing ? 1 : 0
 
     height: parent.height
     width: opacity > 0 ? text ? label.width + (units.dp(40) - label.height)

@@ -17,127 +17,165 @@
  */
 import QtQuick 2.2
 import Material 0.1
-import GSettings 1.0
-import "components"
 
 MainView {
-    id: shell
-
-    property bool overviewMode
-    property bool screenLocked
+    id: root
 
     width: units.dp(1440)
     height: units.dp(900)
 
-    Component.onCompleted: theme.accentColor = "#009688"
-
-    onOverviewModeChanged: panel.selectedIndicator = null
-
-    GSettings {
-        id: wallpaperSetting
-        schema.id: "org.gnome.desktop.background"
+    theme {
+        accentColor: "#009688"
     }
 
-    CrossFadeImage {
-        id: wallpaper
+    state: loader.status == Loader.Ready
+            ? "default" : loader.status == Loader.Error ? "error" : "loading"
+
+    states: [
+        State {
+            name: "error"
+
+            PropertyChanges {
+                target: errorView
+
+                opacity: 1
+            }
+        },
+
+        State {
+            name: "loading"
+
+            PropertyChanges {
+                target: label
+
+                opacity: 1
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "*"
+            to: "*"
+
+            NumberAnimation {
+                target: label
+                properties: "opacity"
+            }
+
+            NumberAnimation {
+                target: errorView
+                properties: "opacity"
+            }
+        }
+    ]
+
+    onStateChanged: {
+        if (state == "error")
+            errorWave.open(width/2, height/2)
+        else if (state == "default")
+            background.close(width/2, height/2)
+    }
+
+    Loader {
+        id: loader
 
         anchors.fill: parent
+        asynchronous: true
 
-        fadeDuration: 500
-        fillMode: Image.Stretch
-
-        source: {
-            var filename = wallpaperSetting.pictureUri
-
-            if (filename.indexOf("xml") != -1) {
-                // We don't support GNOME's time-based wallpapers. Default to our default wallpaper
-                return Qt.resolvedUrl("../images/quantum_wallpaper.png")
-            } else {
-                return filename
-            }
+        Component.onCompleted: {
+            var component = Qt.createComponent(Qt.resolvedUrl("Shell.qml"), Component.Asynchronous)
+            loader.sourceComponent = component
         }
     }
 
-    Item {
-        id: content
+    Wave {
+        id: background
 
-        opacity: screenLocked ? 0 : 1
+        color: "#2196f3"
 
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 500
-            }
-        }
+        opened: true
+    }
 
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            bottom: parent.bottom
+    Label {
+        id: label
 
-            topMargin: config.layout == "classic" ? 0 : panel.height
-            bottomMargin: config.layout == "classic" ? panel.height : 0
+        anchors.centerIn: parent
+        //style: "headline"
+        style: "display1"
+        text: "Welcome"
+        color: "white"
 
-            Behavior on topMargin {
-                NumberAnimation { duration: 200 }
-            }
+        opacity: 0
+    }
 
-            Behavior on bottomMargin {
-                NumberAnimation { duration: 200 }
-            }
-        }
+    Wave {
+        id: errorWave
+        color:"#f44336"
+    }
 
-        MouseArea {
-            anchors.fill: parent
+    Column {
+        id: errorView
 
-            onClicked: config.layout == "classic" ? config.layout = "modern" : config.layout = "classic"
-        }
+        anchors.centerIn: parent
+        width: parent.width * 0.7
 
-        Desktop {
-            id: desktop
-        }
+        opacity: 0
 
-        Notifications {
+        Icon {
+            size: units.dp(100)
+            name: "alert/warning"
+            color: "white"
 
+            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Item {
-            id: overlayLayer
-
-            anchors.fill: parent
-
-            NotificationCenter {
-                id: notificationCenter
-            }
-
-            SystemCenter {
-                id: systemCenter
-            }
+            width: parent.width
+            height: units.dp(20)
         }
-    }
 
-    Panel {
-        id: panel
-    }
+        Label {
+            anchors.horizontalCenter: parent.horizontalCenter
+            style: "display1"
+            text: "Oh no! "
+            color: "white"
+        }
 
-    Lockscreen {
-        id: lockscreen
-    }
+        Item {
+            width: parent.width
+            height: units.dp(20)
+        }
 
-    DesktopConfig {
-        id: config
-    }
+        Label {
+            anchors.horizontalCenter: parent.horizontalCenter
 
-    UPower {
-        id: upower
-    }
+            horizontalAlignment: Text.AlignHCenter
+            width: parent.width
+            wrapMode: Text.Wrap
 
-    property var now: new Date()
+            style: "title"
+            color: "white"
 
-    Timer {
-        interval: 1000
-        repeat: true
-        running: true
-        onTriggered: now = new Date()
+            text: "Unable to load the desktop"
+        }
+
+        Item {
+            width: parent.width
+            height: units.dp(10)
+        }
+
+        Label {
+            id: errorLabel
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            horizontalAlignment: Text.AlignHCenter
+            width: parent.width
+            wrapMode: Text.Wrap
+
+            style: "subheading"
+            color: "white"
+            text: loader.sourceComponent.errorString()
+        }
     }
 }
