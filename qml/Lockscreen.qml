@@ -176,6 +176,8 @@ Item {
             placeholderText: "Password"
 
             echoMode: TextInput.Password
+
+            onAccepted: shell.state = "default"
         }
     }
 }

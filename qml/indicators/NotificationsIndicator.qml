@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
+import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import Material.Desktop 0.1
 import Material.Extras 0.1
@@ -34,8 +35,30 @@ Indicator {
                                                                            : "No notifications"
 
     property bool hasNotifications: notificationsCount > 0
-    property int notificationsCount: 3
+    property int notificationsCount: 4
 
+    Rectangle {
+        anchors {
+            left: parent.horizontalCenter
+            bottom: parent.verticalCenter
+
+            margins: units.dp(1)
+        }
+
+        color: "#f44336"
+        border.color: "#d32f2f"
+        radius: units.dp(2)
+        width: height
+        height: label.height + units.dp(1)
+        visible: hasNotifications && !config.silentMode
+
+        Label {
+            id: label
+            anchors.centerIn: parent
+            text: notificationsCount > 9 ? "+" : notificationsCount
+            color: "white"
+        }
+    }
 
     onSelectedChanged: {
         notificationCenter.showing = selected
