@@ -1,6 +1,6 @@
 /*
  * Papyros Shell - The desktop shell for Papyros following Material Design
- * Copyright (C) 2015 Michael Spencer
+ * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,39 +15,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.0
 import Material 0.1
-import ".."
 
-Indicator {
-    id: indicator
+Object {
+    id: notification
 
-    width: iconsRow.width + units.dp(20)
+    property int notificationId
 
-    Row {
-        id: iconsRow
-        anchors.centerIn: parent
+    property string summary
+    property string body
+    property real percent
+    property string iconName
+    property string iconSource: "image://material/" + iconName
 
-        spacing: units.dp(10)
+    property alias timer: __timer
+    property alias duration: __timer.interval
 
-        IndicatorIcon {
-            name: "device/signal_wifi_3_bar"
-            tooltip: "Wifi not connected"
-        }
+    Timer {
+        id: __timer
 
-        IndicatorIcon {
-            name: sound.iconName
-            tooltip: "Volume at %1%".arg(sound.master)
-        }
+        running: true
+        interval: 2000
 
-        IndicatorIcon {
-            name: upower.deviceIcon(upower.primaryDevice)
-            tooltip: upower.deviceSummary(upower.primaryDevice)
-        }
-
-        IndicatorIcon {
-            // TODO: Use an appropriate Material Design icon
-            name: "awesome/power_off"
-        }
+        onTriggered: notifications.remove(notification)
     }
 }

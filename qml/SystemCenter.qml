@@ -53,6 +53,19 @@ View {
             showDivider: true
         }
 
+        ListItem.Standard {
+            text: "Sound"
+            valueText: sound.muted ? "Muted" : "Volume at %1%".arg(sound.master)
+
+            action: Icon {
+                anchors.centerIn: parent
+                name: sound.muted ? "av/volume_off"
+                      : sound.master <= 33 ? "av/volume_mute"
+                      : sound.master >= 67 ? "av/volume_up"
+                      : "av/volume_down"
+            }
+        }
+
         // TODO: Replace with real data
         ListItem.Standard {
             text: "Wi-Fi"

@@ -156,7 +156,7 @@ View {
                 return
             }
 
-            if (mouseArea.containsMouse && tooltip.text && !tooltip.showing) {
+            if (mouseArea.containsMouse && tooltip.text && !tooltip.showing && !selected) {
                 tooltip.open(indicator)
             }
         }

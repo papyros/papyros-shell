@@ -31,7 +31,8 @@ View {
     clipContent: false
 
     width: parent.width
-    height: mouseArea.containsMouse ? column.height + units.dp(32) : units.dp(70)
+    height: mouseArea.containsMouse && notification.text
+            ? column.height + units.dp(32) : units.dp(70)
 
     MouseArea {
         id: mouseArea
@@ -64,9 +65,29 @@ View {
 
                 onTriggered: {
                     print("Closing...")
-                    notifyServer.closeNotification(notification.id)
+                    notifyServer.closeNotification(notification.hasOwnProperty("id")
+                            ? notification.id : notification.notificationId)
                 }
             }
+        }
+    }
+
+    Item {
+        id: actionItem
+
+        anchors {
+            left: parent.left
+            leftMargin: units.dp(16)
+            verticalCenter: parent.verticalCenter
+        }
+
+        height: width
+        width: units.dp(40)
+
+        Icon {
+            size: units.dp(36)
+            anchors.centerIn: parent
+            name: notification.iconName
         }
     }
 
@@ -75,6 +96,7 @@ View {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.leftMargin: units.dp(72)
         anchors.margins: units.dp(16)
 
         spacing: units.dp(8)
@@ -84,6 +106,7 @@ View {
             text: notification.summary
             elide: Text.ElideRight
             width: parent.width
+            visible: text != ""
         }
 
         Label {
@@ -92,6 +115,13 @@ View {
             elide: Text.ElideRight
             width: parent.width
             maximumLineCount: mouseArea.containsMouse ? 0 : 1
+            visible: text != ""
+        }
+
+        ProgressBar {
+            progress: visible ? notification.percent : 0
+            width: parent.width
+            visible: notification.hasOwnProperty("percent")
         }
     }
 }

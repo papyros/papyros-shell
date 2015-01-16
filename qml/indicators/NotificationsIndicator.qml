@@ -50,7 +50,11 @@ Indicator {
         radius: units.dp(2)
         width: height
         height: label.height + units.dp(1)
-        visible: hasNotifications && !config.silentMode
+        opacity: hasNotifications && !config.silentMode
+
+        Behavior on opacity {
+            NumberAnimation { duration: 300 }
+        }
 
         Label {
             id: label

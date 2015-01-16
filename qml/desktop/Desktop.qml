@@ -17,13 +17,24 @@ Item {
     VisualItemModel {
         id: workspaces
 
-        Workspace {}
+        Workspace { index: 0 }
 
-        Workspace {}
+        Workspace { index: 1 }
     }
 
     property real verticalOffset: height * 0.1
     property real horizontalOffset: width * 0.1
+
+    function switchToWorkspace(workspace) {
+        print("Switching to index: ", workspace, listView.currentIndex)
+
+        if (workspace == listView.currentIndex) {
+            print("Switching to default!")
+            shell.state = "default"
+        } else {
+            listView.currentIndex = workspace
+        }
+    }
 
     ListView {
         id: listView
@@ -57,6 +68,11 @@ Item {
         snapMode: ListView.SnapOneItem
 
         orientation: Qt.Horizontal
+        interactive: desktop.expanded
+        highlightFollowsCurrentItem: true
+        highlightRangeMode: ListView.StrictlyEnforceRange
+        highlightMoveDuration: 500
+        currentIndex: 0
 
         spacing: expanded ? horizontalOffset * 0.70 : 0
 

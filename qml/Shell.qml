@@ -18,9 +18,11 @@
 import QtQuick 2.2
 import QtQuick.Window 2.0
 import Material 0.1
+import Material.Desktop 0.1
 import GSettings 1.0
 import "components"
 import "desktop"
+import "notifications"
 
 View {
     id: shell
@@ -64,8 +66,8 @@ View {
             }
         }
 
-        Notifications {
-
+        NotificationsView {
+            id: notifications
         }
 
         Item {
@@ -102,8 +104,21 @@ View {
         schema.id: "org.gnome.desktop.background"
     }
 
+    SystemNotifications {
+
+    }
+
     UPower {
         id: upower
+    }
+
+    Sound {
+        id: sound
+
+        property string iconName: sound.muted ? "av/volume_off"
+                                  : sound.master <= 33 ? "av/volume_mute"
+                                  : sound.master >= 67 ? "av/volume_up"
+                                  : "av/volume_down"
     }
 
     property var now: new Date()

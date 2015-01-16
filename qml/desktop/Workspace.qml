@@ -7,11 +7,15 @@ View {
     width: listView.width
     height: listView.height
 
+    property int index
+
     MouseArea {
         anchors.fill: parent
 
         enabled: desktop.expanded
-        onClicked: shell.state = "default"
+        onClicked: {
+            desktop.switchToWorkspace(index)
+        }
     }
 
     CrossFadeImage {
