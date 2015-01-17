@@ -112,6 +112,12 @@ Item {
             top: parent.top
             bottom: parent.bottom
             margins: units.dp(16)
+            rightMargin: notificationCenter.showing || systemCenter.showing
+                         ? units.dp(275 + 16) : units.dp(16)
+
+            Behavior on rightMargin {
+                NumberAnimation { duration: 200 }
+            }
         }
 
         width: units.dp(280)

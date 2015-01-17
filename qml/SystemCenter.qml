@@ -41,7 +41,7 @@ View {
         }
     }
 
-    width: units.dp(265)
+    width: units.dp(275)
 
     Column {
         width: parent.width

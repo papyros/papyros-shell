@@ -24,7 +24,7 @@ View {
         }
     }
 
-    width: units.dp(250)
+    width: units.dp(275)
 
     property var widgets: ["Music"]
 
