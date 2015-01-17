@@ -138,7 +138,7 @@ View {
             name: "action/lock"
 
             // TODO: replace with call to Logind DBus
-            onTriggered: shell.state = "locked"
+            onTriggered: shell.lockScreen()
         }
 
         IconAction {

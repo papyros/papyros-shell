@@ -23,6 +23,7 @@ import GSettings 1.0
 import "components"
 import "desktop"
 import "notifications"
+import "dashboard"
 
 View {
     id: shell
@@ -32,15 +33,47 @@ View {
     signal keyPressed(var event)
     signal keyReleased(var event)
 
+    function toggleState(state) {
+        if (shell.state == state)
+            shell.state = "default"
+        else
+            shell.state = state
+    }
+
+    function toggleDashboard() {
+        toggleState("dashboard")
+    }
+
+    function toggleHelp() {
+        toggleState("help")
+    }
+
+    function lockScreen() {
+        shell.state = "locked"
+    }
+
     state: "default"
 
     states: [
         State {
             name: "locked"
+
+            PropertyChanges {
+                target: keyFilter
+                enabled: false
+            }
         },
 
         State {
             name: "exposed"
+        },
+
+        State {
+            name: "dashboard"
+        },
+
+        State {
+            name: "help"
         }
     ]
 
@@ -88,11 +121,19 @@ View {
             SystemCenter {
                 id: systemCenter
             }
+
+            HelpOverlay {
+                id: helpOverlay
+            }
         }
     }
 
     Panel {
         id: panel
+    }
+
+    Dashboard {
+        id: dashboard
     }
 
     Lockscreen {
@@ -104,6 +145,8 @@ View {
     KeyEventFilter {
         id: keyFilter
 
+        enabled: shell.state != "locked"
+
         Keys.onPressed: shell.keyPressed(event)
         Keys.onReleased: shell.keyReleased(event)
     }
@@ -111,14 +154,30 @@ View {
     property bool superOnly: false
 
     onKeyPressed: {
+        if (!keyFilter.enabled) return
+
         print("Key pressed", event.key)
 
         if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_Meta) {
             superOnly = true
+            helpTimer.restart()
             return
         }
 
         superOnly = false
+        if (helpTimer.running)
+            helpTimer.stop()
+
+        // Use the grid symbol on the Mac keyboard to open the dashboard
+        if (event.key == Qt.Key_LaunchD ||
+                (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_D)) {
+            toggleDashboard()
+        }
+
+        // Super + > triggers the help overlay
+        if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_Slash) {
+            toggleHelp()
+        }
 
         // Abort session
         if (event.modifiers & (Qt.ControlModifier | Qt.AltModifier) &&
@@ -152,10 +211,10 @@ View {
 
         // Present windows
         if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_E) {
-            if (shell.state != "exposed")
-                shell.state = "exposed"
-            else
+            if (shell.state == "exposed")
                 shell.state = "default"
+            else
+                shell.state = "exposed"
 
             event.accepted = true;
             return;
@@ -163,10 +222,28 @@ View {
     }
 
     onKeyReleased: {
+        if (!keyFilter.enabled) return
+
         if (superOnly) {
             print("That's super!")
-            superPressed()
+
+            if (shell.state == "help")
+                toggleHelp()
+            else
+                superPressed()
         }
+
+        superOnly = false
+        helpTimer.stop()
+    }
+
+    // If the super key is held down for more than
+    // 2 seconds, show the help overlay
+    Timer {
+        id: helpTimer
+
+        interval: 2000
+        onTriggered: toggleHelp()
     }
 
     // ===== Configuration and Settings =====

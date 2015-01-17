@@ -27,9 +27,10 @@ Object {
 
     onSoundVolumeChanged: notifications.add(soundNotification.createObject())
 
-    property int lastLevel
+    property int lastLevel: 100
 
     onBatteryLevelChanged: {
+        print("Battery level changed!")
         if (batteryLevel <= 30 && batteryLevel < lastLevel - 5) {
             lastLevel = batteryLevel
             notifications.add(batteryNotification.createObject())

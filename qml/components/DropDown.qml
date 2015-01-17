@@ -47,12 +47,12 @@ PopupBase {
             verticalCenterOffset: showing ? 0 : popover.side = Qt.AlignTop ? height/2 : -height/2
 
             Behavior on verticalCenterOffset {
-                NumberAnimation { duration: 200 }
+                NumberAnimation { duration: 150 }
             }
         }
 
         Behavior on opacity {
-            NumberAnimation { duration: 200 }
+            NumberAnimation { duration: 150 }
         }
     }
 }

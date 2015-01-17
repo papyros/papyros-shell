@@ -26,6 +26,14 @@ Rectangle {
 
     color: "#fafafa"
 
+    opacity: shell.state == "dashboard" ? 1 : 0
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 250
+        }
+    }
+
     Item {
         height: childrenRect.height
 
@@ -45,6 +53,7 @@ Rectangle {
             }
 
             name: "navigation/arrow_back"
+            onTriggered: shell.toggleDashboard()
         }
 
         Label {
@@ -82,7 +91,7 @@ Rectangle {
             }
 
             Icon {
-                name: "av/volume_up"
+                name: sound.iconName
                 size: units.dp(20)
             }
 
