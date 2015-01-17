@@ -27,8 +27,12 @@ import "notifications"
 View {
     id: shell
 
-    elevation: 10
-    backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 1)
+    signal superPressed()
+
+    signal keyPressed(var event)
+    signal keyReleased(var event)
+
+    state: "default"
 
     states: [
         State {
@@ -41,6 +45,8 @@ View {
     ]
 
     onStateChanged: panel.selectedIndicator = null
+
+    backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 1)
 
     Desktop {
         id: desktop
@@ -91,6 +97,76 @@ View {
 
     Lockscreen {
         id: lockscreen
+    }
+
+    // ===== Keyboard Shortcuts =====
+
+    KeyEventFilter {
+        id: keyFilter
+
+        Keys.onPressed: shell.keyPressed(event)
+        Keys.onReleased: shell.keyReleased(event)
+    }
+
+    property bool superOnly: false
+
+    onKeyPressed: {
+        print("Key pressed", event.key)
+
+        if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_Meta) {
+            superOnly = true
+            return
+        }
+
+        superOnly = false
+
+        // Abort session
+        if (event.modifiers & (Qt.ControlModifier | Qt.AltModifier) &&
+                event.key === Qt.Key_Backspace) {
+            event.accepted = true;
+            print("Killing session...")
+            Qt.quit()
+
+            return;
+        }
+
+        // Lock screen
+        if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_L) {
+            shell.state = "locked";
+
+            event.accepted = true;
+            return;
+        }
+
+        // Window switcher
+        // if (event.modifiers & Qt.MetaModifier) {
+        //     if (event.key === Qt.Key_Tab || event.key === Qt.Key_Backtab) {
+        //         if (state != "windowSwitcher" && surfaceModel.count >= 2) {
+        //             // Activate only when two or more windows are available
+        //             state = "windowSwitcher";
+        //             event.accepted = true;
+        //             return;
+        //         }
+        //     }
+        // }
+
+        // Present windows
+        if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_E) {
+            if (shell.state != "exposed")
+                shell.state = "exposed"
+            else
+                shell.state = "default"
+
+            event.accepted = true;
+            return;
+        }
+    }
+
+    onKeyReleased: {
+        if (superOnly) {
+            print("That's super!")
+            superPressed()
+        }
     }
 
     // ===== Configuration and Settings =====

@@ -35,7 +35,7 @@ Indicator {
     dropdown: DropDown {
         id: dropdown
 
-        implicitHeight: units.dp(200)
+        height: units.dp(360)
 
         TextField {
         	anchors {
@@ -48,5 +48,12 @@ Indicator {
 
             //hintText: "Search..."
         }
+    }
+
+    Connections {
+        target: shell
+
+        onSuperPressed: selected ? selectedIndicator = null
+                                 : selectedIndicator = appDrawer
     }
 }

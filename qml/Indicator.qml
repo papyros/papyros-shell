@@ -34,7 +34,7 @@ View {
     property alias iconSize: icon.size
     property color highlightColor: Theme.dark.accentColor
 
-    property bool selected: selectedIndicator == indicator
+    property bool selected: shell.state == "default" && selectedIndicator == indicator
 
     property DropDown dropdown
 
@@ -156,7 +156,8 @@ View {
                 return
             }
 
-            if (mouseArea.containsMouse && tooltip.text && !tooltip.showing && !selected) {
+            if (mouseArea.containsMouse && tooltip.text && !tooltip.showing &&
+                    !selectedIndicator) {
                 tooltip.open(indicator)
             }
         }
