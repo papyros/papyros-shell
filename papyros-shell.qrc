@@ -32,6 +32,7 @@
 	<file>qml/desktop/Workspace.qml</file>
 	<file>qml/indicators/AppDrawer.qml</file>
 	<file>qml/indicators/DateTimeIndicator.qml</file>
+	<file>qml/indicators/IndicatorIcon.qml</file>
 	<file>qml/indicators/NotificationsIndicator.qml</file>
 	<file>qml/indicators/OperationsIndicator.qml</file>
 	<file>qml/indicators/SystemIndicator.qml</file>
