@@ -28,7 +28,6 @@ Indicator {
     tooltip: "Ongoing Operations"
 
     showing: operations.length > 0
-    userSensitive: true
 
     // TODO: Where does this come from?
     property var operations: [

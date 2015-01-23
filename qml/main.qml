@@ -21,9 +21,6 @@ import Material 0.1
 MainView {
     id: root
 
-    width: units.dp(1440)
-    height: units.dp(900)
-
     theme {
         accentColor: "#009688"
     }
