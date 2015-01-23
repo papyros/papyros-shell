@@ -54,10 +54,13 @@ Calendar {
 
                     onTriggered: calendar.showPreviousMonth()
                 }
+                visible: selectable
             }
 
             Label {
                 text: styleData.title
+                style: "subheading"
+                font.bold: true
                 anchors.centerIn: parent
             }
 
@@ -75,15 +78,15 @@ Calendar {
 
                     onTriggered: calendar.showNextMonth()
                 }
+                visible: selectable
             }
         }
 
         dayOfWeekDelegate: Rectangle {
             height: units.dp(30)
             Label {
-                text: getDay(styleData.dayOfWeek)
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
+                text: getDay(styleData.dayOfWeek).substring(0, 1)
+                anchors.centerIn: parent
                 color: Theme.light.subTextColor
             }
         }
@@ -92,7 +95,7 @@ Calendar {
 
             Rectangle {
                 anchors.centerIn: parent
-                width: 0.8 * Math.min(parent.width, parent.height)
+                width: 1 * Math.min(parent.width, parent.height)
                 height: width
 
                 color: styleData.today

@@ -28,12 +28,80 @@ Indicator {
     tooltip: Qt.formatDate(now, Locale.LongFormat)
 
     dropdown: DropDown {
-        height: units.dp(300)
+        id: dropdown
+
+        height: titleItem.height + subItem.height +
+                calendar.height + units.dp(32)
         width: units.dp(300)
+
+        Item {
+            id: titleItem
+
+            width: parent.width
+            height: dayLabel.height + units.dp(16)
+            clip: true
+
+            Rectangle {
+                width: parent.width
+                height: dropdown.height
+                radius: units.dp(2)
+
+                color: "#00796b"
+            }
+
+            Label {
+                id: dayLabel
+                anchors.centerIn: parent
+                text: Qt.formatDate(now, "dddd")
+                color: Theme.dark.textColor
+            }
+        }
+
+        Rectangle {
+            id: subItem
+            anchors.top: titleItem.bottom
+
+            width: parent.width
+            height: column.height + units.dp(32)
+            color: "#009688"
+
+            Column {
+                id: column
+                anchors.centerIn: parent
+
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: Qt.formatDate(now, "MMM").toUpperCase()
+                    style: "title"
+                    color: Theme.dark.textColor
+                    font.pixelSize: units.dp(27)
+                }
+
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: Qt.formatDate(now, "dd")
+                    style: "display3"
+                    color: Theme.dark.textColor
+                }
+
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: Qt.formatDate(now, "yyyy")
+                    style: "title"
+                    color: Theme.dark.subTextColor
+                    font.pixelSize: units.dp(27)
+                }
+            }
+        }
 
         Calendar {
             id: calendar
-            anchors.fill: parent
+            anchors {
+                top: subItem.bottom
+                left: parent.left
+                right: parent.right
+                margins: units.dp(16)
+            }
 
             frameVisible: false
         }
