@@ -21,7 +21,6 @@
 	<file>qml/components/AppIcon.qml</file>
 	<file>qml/components/Calendar.qml</file>
 	<file>qml/components/CrossFadeImage.qml</file>
-	<file>qml/components/DashboardButton.qml</file>
 	<file>qml/components/DropDown.qml</file>
 	<file>qml/components/PopupBase.qml</file>
 	<file>qml/components/ProgressListItem.qml</file>
