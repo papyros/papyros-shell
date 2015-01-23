@@ -5,5 +5,5 @@ Object {
 
     property string layout: "classic"
     property bool silentMode
-    property color accentColor
+    property string accentColor: 'teal'
 }

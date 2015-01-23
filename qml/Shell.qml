@@ -254,6 +254,10 @@ View {
 
     DesktopConfig {
         id: config
+
+        Component.onCompleted: Theme.accentColor = Qt.binding(function() {
+            return Palette.colors[config.accentColor]['500']
+        })
     }
 
     GSettings {
