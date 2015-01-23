@@ -63,7 +63,7 @@ Indicator {
 
             width: parent.width
             height: column.height + units.dp(32)
-            color: "#009688"
+            color: Theme.accentColor
 
             Column {
                 id: column
