@@ -9,6 +9,8 @@ View {
 
     property int index
 
+    property alias windows: content
+
     MouseArea {
         anchors.fill: parent
 
@@ -36,5 +38,17 @@ View {
                 return filename
             }
         }
+    }
+
+    Item {
+        id: content
+        width: listView.width
+        height: listView.height
+
+        anchors.centerIn: parent
+
+        scale: parent.width/width
+
+        clip: true
     }
 }

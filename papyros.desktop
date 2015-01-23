@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Papyros
+Comment=QtQuick and Wayland based desktop environment
+Exec=/usr/bin/papyros-session
+Icon=start-here
+Type=Application

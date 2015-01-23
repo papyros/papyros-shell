@@ -33,6 +33,10 @@ View {
     signal keyPressed(var event)
     signal keyReleased(var event)
 
+    Component.onCompleted: {
+        compositor.init()
+    }
+
     function toggleState(state) {
         if (shell.state == state)
             shell.state = "default"

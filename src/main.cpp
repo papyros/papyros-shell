@@ -90,6 +90,12 @@ signals:
     void fullscreenSurfaceChanged();
 
 public slots:
+    void init() {
+        QQuickItem *desktop = rootObject()->findChild<QQuickItem*>("desktop");
+
+        QObject::connect(this, SIGNAL(windowAdded(QVariant)), desktop, SLOT(windowAdded(QVariant)));
+        QObject::connect(this, SIGNAL(windowResized(QVariant)), desktop, SLOT(windowResized(QVariant)));
+    }
     void destroyWindow(QVariant window) {
         qvariant_cast<QObject *>(window)->deleteLater();
     }
@@ -153,10 +159,6 @@ int main(int argc, char *argv[])
     compositor.show();
 
     compositor.rootContext()->setContextProperty("compositor", &compositor);
-    QQuickItem *desktop = compositor.rootObject()->findChild<QQuickItem*>("desktop");
-
-    QObject::connect(&compositor, SIGNAL(windowAdded(QVariant)), desktop, SLOT(windowAdded(QVariant)));
-    QObject::connect(&compositor, SIGNAL(windowResized(QVariant)), desktop, SLOT(windowResized(QVariant)));
 
     return app.exec();
 }

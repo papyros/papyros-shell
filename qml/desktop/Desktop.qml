@@ -1,5 +1,6 @@
 import QtQuick 2.4
 import Material 0.1
+import Material.Extras 0.1
 
 /*
  * The desktop consists of multiple workspaces, one of which is shown at a time. The desktop
@@ -19,7 +20,7 @@ Item {
 
         Workspace { index: 0 }
 
-        Workspace { index: 1 }
+        Workspace { id: workspace1; index: 1 }
     }
 
     property real verticalOffset: height * 0.1
@@ -112,12 +113,12 @@ Item {
     }
 
 	function windowAdded(surface) {
-		var windowComponent = Qt.createComponent("Window.qml");
+		var windowComponent = Qt.createComponent("../Window.qml");
 		if (windowComponent.status != Component.Ready) {
 			console.warn("Error loading Window.qml: " + windowComponent.errorString());
 			return;
 		}
-		var window = windowComponent.createObject(desktop);
+		var window = windowComponent.createObject(workspace1.windows);
 
 		window.surface = compositor.item(surface);
 		window.info = surface;

@@ -77,6 +77,11 @@ MainView {
             background.close(width/2, height/2)
     }
 
+    Rectangle {
+        anchors.fill: parent
+        color: background.color
+    }
+
     Loader {
         id: loader
 
