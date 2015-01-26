@@ -25,7 +25,6 @@
 	<file>qml/components/PopupBase.qml</file>
 	<file>qml/components/ProgressListItem.qml</file>
 	<file>qml/components/Tooltip.qml</file>
-	<file>qml/dashboard/Dashboard.qml</file>
 	<file>qml/desktop/Desktop.qml</file>
 	<file>qml/desktop/HotCorner.qml</file>
 	<file>qml/desktop/HotCorners.qml</file>
