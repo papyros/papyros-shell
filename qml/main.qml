@@ -159,7 +159,7 @@ MainView {
             style: "title"
             color: "white"
 
-            text: "Unable to load the desktop"
+            text: "The desktop failed to materialize"
         }
 
         Item {

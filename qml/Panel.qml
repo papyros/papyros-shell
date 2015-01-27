@@ -165,11 +165,11 @@ Rectangle {
             bottom: parent.bottom
         }
 
-        OperationsIndicator {
+        NotificationsIndicator {
 
         }
 
-        NotificationsIndicator {
+        OperationsIndicator {
 
         }
 
