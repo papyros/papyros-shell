@@ -54,15 +54,35 @@ View {
         }
 
         ListItem.Standard {
-            text: "Sound"
-            valueText: sound.muted ? "Muted" : "Volume at %1%".arg(sound.master)
+            interactive: false
 
             action: Icon {
                 anchors.centerIn: parent
-                name: sound.muted ? "av/volume_off"
-                      : sound.master <= 33 ? "av/volume_mute"
-                      : sound.master >= 67 ? "av/volume_up"
-                      : "av/volume_down"
+                name: sound.iconName
+            }
+
+            Slider {
+                minimumValue: 0
+                maximumValue: 100
+                color: Theme.accentColor
+
+                value: sound.master
+
+                onValueChanged: {
+                    if (value != sound.master) {
+                        sound.master = value
+                        value = Qt.binding(function() { return sound.master })
+                    }
+                }
+
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    leftMargin: units.dp(52 + 16)
+                    rightMargin: units.dp(16)
+                    verticalCenter: parent.verticalCenter
+                    verticalCenterOffset: units.dp(2)
+                }
             }
         }
 
