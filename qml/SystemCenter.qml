@@ -128,12 +128,12 @@ View {
 
         spacing: units.dp(30)
 
-        IconAction {
+        IconButton {
             size: units.dp(30)
             name: "action/settings"
         }
 
-        IconAction {
+        IconButton {
             size: units.dp(30)
             name: "action/lock"
 
@@ -141,7 +141,7 @@ View {
             onTriggered: shell.lockScreen()
         }
 
-        IconAction {
+        IconButton {
             size: units.dp(30)
             name: "action/settings_power"
         }

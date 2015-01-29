@@ -175,7 +175,7 @@ Item {
             floatingLabel: true
             placeholderText: "Password"
 
-            echoMode: TextInput.Password
+            input.echoMode: TextInput.Password
 
             onAccepted: shell.state = "default"
         }

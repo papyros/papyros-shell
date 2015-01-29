@@ -47,7 +47,7 @@ Calendar {
                 height: parent.height
                 width: height
 
-                IconAction {
+                IconButton {
                     name: "navigation/chevron_left"
 
                     anchors.centerIn: parent
@@ -71,7 +71,7 @@ Calendar {
                 anchors.right:parent.right
                 anchors.verticalCenter: parent.verticalCenter
 
-                IconAction {
+                IconButton {
                     name: "navigation/chevron_right"
 
                     anchors.centerIn: parent

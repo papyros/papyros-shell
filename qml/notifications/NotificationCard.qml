@@ -57,7 +57,7 @@ View {
                 NumberAnimation { duration: 250 }
             }
 
-            IconAction {
+            IconButton {
                 name: "navigation/close"
                 anchors.centerIn: parent
                 color: "white"

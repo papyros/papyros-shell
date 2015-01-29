@@ -44,7 +44,7 @@ Rectangle {
             margins: units.dp(20)
         }
 
-        IconAction {
+        IconButton {
             id: backIcon
 
             anchors {

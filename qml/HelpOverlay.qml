@@ -54,7 +54,7 @@ View {
             rightMargin: units.dp(20)
         }
 
-        IconAction {
+        IconButton {
             id: closeIcon
 
             anchors {
