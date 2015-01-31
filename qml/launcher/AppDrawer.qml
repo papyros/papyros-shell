@@ -19,8 +19,10 @@ import QtQuick 2.0
 import Material 0.1
 import Material.Desktop 0.1
 import Material.ListItems 0.1 as ListItem
+
 import ".."
 import "../components"
+import "../panel/indicators"
 
 Indicator {
     id: appDrawer

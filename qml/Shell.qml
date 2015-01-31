@@ -20,10 +20,14 @@ import QtQuick.Window 2.0
 import Material 0.1
 import Material.Desktop 0.1
 import GSettings 1.0
+
+import "backend"
 import "components"
-import "desktop"
-import "notifications"
 import "dashboard"
+import "desktop"
+import "lockscreen"
+import "notifications"
+import "panel"
 
 View {
     id: shell

@@ -19,7 +19,7 @@ import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import ".."
-import "../components"
+import "../../components"
 
 Indicator {
     id: indicator

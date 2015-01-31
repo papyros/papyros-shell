@@ -17,8 +17,10 @@
  */
 import QtQuick 2.3
 import Material 0.1
+
+import "../components"
 import "indicators"
-import "components"
+import "../launcher"
 
 /*
  * The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.

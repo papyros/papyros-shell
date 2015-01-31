@@ -21,7 +21,7 @@ import Material.ListItems 0.1 as ListItem
 import Material.Desktop 0.1
 import Material.Extras 0.1
 import ".."
-import "../components"
+import "../../components"
 
 Indicator {
     id: indicator

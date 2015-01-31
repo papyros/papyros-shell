@@ -17,7 +17,8 @@
  */
 import QtQuick 2.0
 import Material 0.1
-import "components"
+
+import "../../components"
 
 View {
     id: indicator
