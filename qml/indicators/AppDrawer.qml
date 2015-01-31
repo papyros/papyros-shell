@@ -17,6 +17,7 @@
  */
 import QtQuick 2.0
 import Material 0.1
+import Material.Desktop 0.1
 import Material.ListItems 0.1 as ListItem
 import ".."
 import "../components"
@@ -38,6 +39,8 @@ Indicator {
         height: units.dp(360)
 
         TextField {
+            id: searchField
+
         	anchors {
         		left: parent.left
         		right: parent.right
@@ -48,6 +51,21 @@ Indicator {
 
             //hintText: "Search..."
         }
+
+        ListView {
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: searchField.bottom
+                bottom: parent.bottom
+            }
+
+            model: desktopScrobbler.desktopFiles
+            delegate: ListItem.Subtitled {
+                text: edit.name
+                subText: edit.exec
+            }
+        }
     }
 
     Connections {
@@ -55,5 +73,9 @@ Indicator {
 
         onSuperPressed: selected ? selectedIndicator = null
                                  : selectedIndicator = appDrawer
+    }
+
+    DesktopScrobbler {
+        id: desktopScrobbler
     }
 }
