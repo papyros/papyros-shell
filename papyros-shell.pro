@@ -1,7 +1,12 @@
 QT += quick qml
 QT += compositor
 
-SOURCES += src/main.cpp
+SOURCES += src/main.cpp \
+	src/qmlcompositor.cpp
+
+HEADERS += src/qmlcompositor.h
+
+INCLUDEPATH = src
 
 OTHER_FILES = images/*.png \
 	COPYING \
