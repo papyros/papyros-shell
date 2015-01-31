@@ -67,8 +67,12 @@ View {
     opacity: showing ? 1 : 0
 
     height: parent.height
-    width: opacity > 0 ? text ? label.width + (units.dp(40) - label.height)
-                             : units.dp(40) : 0
+    width: opacity > 0 ? config.layout == "classic "
+                         ? text ? label.width + (units.dp(40) - label.height)
+                                : units.dp(40)
+                         : text ? label.width + (height - label.height)
+                                : height
+                       : 0
 
     backgroundColor: "transparent"
     tintColor: mouseArea.containsMouse ? Qt.rgba(0,0,0,0.2) : "transparent"

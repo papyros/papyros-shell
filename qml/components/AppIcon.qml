@@ -171,7 +171,7 @@ View {
         }
 
         height: units.dp(2)
-        color: "white"
+        color: config.layout == "classic" ? "white" : Theme.secondaryColor
     }
 
     Tooltip {

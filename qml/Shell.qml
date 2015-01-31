@@ -25,6 +25,7 @@ import "backend"
 import "components"
 import "dashboard"
 import "desktop"
+import "launcher"
 import "lockscreen"
 import "notifications"
 import "panel"
@@ -95,6 +96,8 @@ View {
     }
 
     Item {
+        clip: true
+
         anchors {
             left: parent.left
             right: parent.right
@@ -111,6 +114,10 @@ View {
             Behavior on bottomMargin {
                 NumberAnimation { duration: 200 }
             }
+        }
+
+        Dock {
+            id: dock
         }
 
         NotificationsView {

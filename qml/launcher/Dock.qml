@@ -17,35 +17,53 @@
  */
 import QtQuick 2.3
 import Material 0.1
-import "indicators"
+
+import "../components"
 
 /*
  * The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.
  */
-View {
-	elevation: 2
-	fullHeight: true
-	
+Item {
 	anchors {
-		left: parent.left
-		top: parent.top
 		bottom: parent.bottom
+		horizontalCenter: parent.horizontalCenter
 	}
-	
-	width: units.dp(64)
-	
-	Item {
+
+	visible: config.layout == "modern"
+
+	View {
+		elevation: 2
+		radius: units.dp(5)
+
 		anchors {
 			left: parent.left
 			right: parent.right
 			bottom: parent.bottom
+			bottomMargin: units.dp(-5)
 		}
-		height: width
-		
-		Icon {
-			anchors.centerIn: parent
-			name: "navigation/apps"
-			size: units.dp(36)
-		}	
+
+		height: units.dp(25)
+	}
+
+	height: units.dp(64)
+	width: units.dp(600)
+
+	Row {
+		anchors {
+			verticalCenter: parent.verticalCenter
+			left: parent.left
+			leftMargin: units.dp(16)
+		}
+
+		spacing: units.dp(24)
+
+		Repeater {
+			model: ["play_music", "google-inbox"]
+
+			delegate: AppIcon {
+				tooltip: "Google Inbox"
+				iconSource: Qt.resolvedUrl("../../images/%1.png".arg(modelData))
+			}
+		}
 	}
 }

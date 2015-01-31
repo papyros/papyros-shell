@@ -32,7 +32,7 @@ Rectangle {
     property alias indicators: indicatorsRow.children
     property Indicator selectedIndicator
 
-    color: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0,0,0,0.5)
+    color: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0,0,0,0)
     height: units.dp(32)
 
     Behavior on color {
@@ -173,6 +173,14 @@ Rectangle {
 
         OperationsIndicator {
 
+        }
+
+        Indicator {
+            icon: config.layout == "modern" ? "navigation/expand_more"
+                                            : "navigation/expand_less"
+            tooltip: "Action Center"
+
+            dropdown: ActionCenter {}
         }
 
         SystemIndicator {

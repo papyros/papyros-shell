@@ -43,7 +43,7 @@ View {
 
         Rectangle {
             anchors.top: parent.top
-            anchors.right: parent.right
+            anchors.left: parent.left
 
             width: units.dp(30)
             height: width

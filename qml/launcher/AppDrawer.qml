@@ -51,22 +51,7 @@ Indicator {
         		margins: units.dp(15)
         	}
 
-            //hintText: "Search..."
-        }
-
-        ListView {
-            anchors {
-                left: parent.left
-                right: parent.right
-                top: searchField.bottom
-                bottom: parent.bottom
-            }
-
-            model: desktopScrobbler.desktopFiles
-            delegate: ListItem.Subtitled {
-                text: edit.name
-                subText: edit.exec
-            }
+            placeholderText: "Search..."
         }
     }
 
@@ -75,9 +60,5 @@ Indicator {
 
         onSuperPressed: selected ? selectedIndicator = null
                                  : selectedIndicator = appDrawer
-    }
-
-    DesktopScrobbler {
-        id: desktopScrobbler
     }
 }

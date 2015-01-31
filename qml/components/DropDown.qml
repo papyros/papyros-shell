@@ -44,15 +44,15 @@ PopupBase {
             left: parent.left
             right: parent.right
 
-            verticalCenterOffset: showing ? 0 : popover.side = Qt.AlignTop ? height/2 : -height/2
+            verticalCenterOffset: showing ? 0 : popover.side == Qt.AlignTop ? height/2 : -height/2
 
             Behavior on verticalCenterOffset {
-                NumberAnimation { duration: 150 }
+                NumberAnimation { duration: 250 }
             }
         }
 
         Behavior on opacity {
-            NumberAnimation { duration: 150 }
+            NumberAnimation { duration: 250 }
         }
     }
 }

@@ -122,7 +122,8 @@ Item {
 
         width: units.dp(280)
 
-        verticalLayoutDirection: ListView.BottomToTop
+        verticalLayoutDirection: config.layout == "modern"
+                                 ? ListView.TopToBottom : ListView.BottomToTop 
         orientation: Qt.Vertical
         interactive: false
 

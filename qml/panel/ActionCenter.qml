@@ -18,6 +18,8 @@
 import QtQuick 2.0
 import Material 0.1
 
+import "../components"
+
 DropDown {
 
     implicitWidth: units.dp(500)
@@ -51,6 +53,11 @@ DropDown {
                 {
                     icon: "navigation/fullscreen",
                     description: "Screen clip/quick note (i.e., Evernote)",
+                    size: units.dp(30)
+                },
+                {
+                    icon: "hardware/headset",
+                    description: "Music Player",
                     size: units.dp(30)
                 }
             ]

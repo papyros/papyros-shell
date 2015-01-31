@@ -50,7 +50,7 @@ Indicator {
         radius: units.dp(2)
         width: height
         height: label.height + units.dp(1)
-        opacity: hasNotifications && !config.silentMode
+        opacity: hasNotifications && !config.silentMode && config.layout == "classic"
 
         Behavior on opacity {
             NumberAnimation { duration: 300 }
@@ -61,6 +61,26 @@ Indicator {
             anchors.centerIn: parent
             text: notificationsCount > 9 ? "+" : notificationsCount
             color: "white"
+        }
+    }
+
+    Rectangle {
+        anchors {
+            left: parent.horizontalCenter
+            top: parent.verticalCenter
+
+            margins: units.dp(1)
+        }
+
+        color: config.layout == "modern" ? "#2196f3" : "#f44336"
+        border.color: config.layout == "modern" ? "#1976d2" : "#d32f2f"
+        radius: width/2
+        width: height
+        height: units.dp(8)
+        opacity: hasNotifications && !config.silentMode && config.layout == "modern"
+
+        Behavior on opacity {
+            NumberAnimation { duration: 300 }
         }
     }
 
