@@ -75,7 +75,7 @@ UPowerConnection {
 
         if (device.state == UPowerDeviceState.Charging) {
             return "%1 until full".arg(DateUtils.shortDuration(device.timeToFull * 1000, 'm'))
-        } else if (device.state == UPowerDeviceState.Discharging) {
+        } else if (device.state == UPowerDeviceState.Discharging && device.timeToEmpty != 0) {
             return "%1 remaining".arg(DateUtils.shortDuration(device.timeToEmpty * 1000, 'm'))
         } else if (device.state == UPowerDeviceState.FullyCharged) {
             return "Fully Charged"
