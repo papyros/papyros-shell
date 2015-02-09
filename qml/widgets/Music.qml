@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import Material.Desktop 0.1
+import Material.Extras 0.1
 
 Column {
     spacing: units.dp(16)
@@ -16,12 +17,7 @@ Column {
     and use the raise function,
     */
         delegate: Card {
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
-
-            height: col.implicitHeight + units.dp(16)
+            width: parent.width
 
             Column {
                 id: col
@@ -42,7 +38,7 @@ Column {
                         }
                     }
 
-                    IconAction {
+                    IconButton {
                         name: "navigation/more_vert"
                         anchors {
                             verticalCenter: parent.verticalCenter
@@ -72,8 +68,7 @@ Column {
                     }
 
                     Label {
-                        text: "<b>#%1</b> - %2".arg(model.metadata["mpris:trackid"])
-                                              .arg(model.metadata["xesam:title"])
+                        text: model.metadata["xesam:title"]
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 
                         anchors.top: parent.top
@@ -106,22 +101,25 @@ Column {
 
                     spacing: units.dp(10)
 
-                    IconAction {
+                    IconButton {
                         name: "av/skip_previous"
                         onTriggered: previous()
                     }
 
-                    IconAction {
+                    IconButton {
                         name: "av/pause"
                         onTriggered: playPause()
                     }
 
-                    IconAction {
+                    IconButton {
                         name: "av/skip_next"
                         onTriggered: next()
                     }
                 }
             }
         }
+    }
+    MprisConnection {
+        id: musicPlayer
     }
 }

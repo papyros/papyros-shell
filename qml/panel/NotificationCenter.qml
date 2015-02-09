@@ -60,7 +60,7 @@ View {
         Repeater {
             model: widgets
             delegate: Loader {
-                source: Qt.resolvedUrl("widgets/%1.qml".arg(modelData))
+                source: Qt.resolvedUrl("../widgets/%1.qml".arg(modelData))
 
                 anchors {
                     left: parent.left
@@ -94,9 +94,5 @@ View {
             checked: config.silentMode
             onCheckedChanged: config.silentMode = checked
         }
-    }
-
-    MprisConnection {
-        id: musicPlayer
     }
 }
