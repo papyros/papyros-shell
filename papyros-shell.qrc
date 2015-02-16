@@ -2,22 +2,21 @@
 <RCC version="1.0">
 
 <qresource>
-	<file>qml/ActionCenter.qml</file>
-	<file>qml/Application.qml</file>
-	<file>qml/DesktopConfig.qml</file>
-	<file>qml/Dock.qml</file>
+	<file>qml/panel/ActionCenter.qml</file>
+	<file>qml/desktop/Application.qml</file>
+	<file>qml/backend/DesktopConfig.qml</file>
+	<file>qml/launcher/Dock.qml</file>
 	<file>qml/HelpOverlay.qml</file>
-	<file>qml/Indicator.qml</file>
-	<file>qml/InteractiveNotification.qml</file>
+	<file>qml/panel/indicators/Indicator.qml</file>
 	<file>qml/KeyLabel.qml</file>
-	<file>qml/Lockscreen.qml</file>
-	<file>qml/NotificationCenter.qml</file>
+	<file>qml/lockscreen/Lockscreen.qml</file>
+	<file>qml/panel/NotificationCenter.qml</file>
 	<file>qml/OverlayScreen.qml</file>
-	<file>qml/Panel.qml</file>
+	<file>qml/panel/Panel.qml</file>
 	<file>qml/Shell.qml</file>
-	<file>qml/SystemCenter.qml</file>
-	<file>qml/UPower.qml</file>
-	<file>qml/Window.qml</file>
+	<file>qml/panel/SystemCenter.qml</file>
+	<file>qml/backend/UPower.qml</file>
+	<file>qml/desktop/Window.qml</file>
 	<file>qml/components/AppIcon.qml</file>
 	<file>qml/components/Calendar.qml</file>
 	<file>qml/components/CrossFadeImage.qml</file>
@@ -31,12 +30,12 @@
 	<file>qml/desktop/HotCorners.qml</file>
 	<file>qml/desktop/WindowManagement.js</file>
 	<file>qml/desktop/Workspace.qml</file>
-	<file>qml/indicators/AppDrawer.qml</file>
-	<file>qml/indicators/DateTimeIndicator.qml</file>
-	<file>qml/indicators/IndicatorIcon.qml</file>
-	<file>qml/indicators/NotificationsIndicator.qml</file>
-	<file>qml/indicators/OperationsIndicator.qml</file>
-	<file>qml/indicators/SystemIndicator.qml</file>
+	<file>qml/launcher/AppDrawer.qml</file>
+	<file>qml/panel/indicators/DateTimeIndicator.qml</file>
+	<file>qml/panel/indicators/IndicatorIcon.qml</file>
+	<file>qml/panel/indicators/NotificationsIndicator.qml</file>
+	<file>qml/panel/indicators/OperationsIndicator.qml</file>
+	<file>qml/panel/indicators/SystemIndicator.qml</file>
 	<file>qml/main.qml</file>
 	<file>qml/notifications/NotificationCard.qml</file>
 	<file>qml/notifications/NotificationsView.qml</file>
