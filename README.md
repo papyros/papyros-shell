@@ -1,6 +1,10 @@
 Papyros Shell
 ============
 
+[![GitHub release](https://img.shields.io/github/release/papyros/papyros-shell.svg)](https://github.com/papyros/papyros-shell)
+[![GitHub issues](https://img.shields.io/github/issues/papyros/papyros-shell.svg)](https://github.com/papyros/papyros-shell/issues)
+[![Bountysource](https://img.shields.io/bountysource/team/papyros/activity.svg)](https://www.bountysource.com/teams/papyros)
+
 Papyros Shell is the desktop shell for Papyros, an operating system based upon Linux which conforms to Google’s Material Design guidelines. The focus will be on creating a stable and easy-to-use operating system with a heavy emphasis on well-thought-out design.
 
 Brought to you by the [Papyros development team](https://github.com/papyros/papyros-shell/graphs/contributors).
