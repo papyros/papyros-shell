@@ -64,6 +64,7 @@ Indicator {
 
             model: desktopScrobbler.desktopFiles
             delegate: ListItem.Subtitled {
+                onTriggered: ProcessHelper.startDetached(edit.exec)
                 text: edit.name
                 subText: edit.exec
             }
