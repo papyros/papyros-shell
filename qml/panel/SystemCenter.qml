@@ -164,6 +164,8 @@ View {
         IconButton {
             size: units.dp(30)
             name: "action/settings_power"
+
+            onTriggered: Qt.quit()
         }
     }
 }
