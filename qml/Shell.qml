@@ -120,6 +120,10 @@ View {
             id: dock
         }
 
+        Launcher {
+            id: launcher
+        }
+
         NotificationsView {
             id: notifications
         }

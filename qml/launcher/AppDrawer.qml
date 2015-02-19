@@ -31,7 +31,7 @@ Indicator {
     iconSize: units.dp(24)
     tooltip: "Applications"
 
-    text: config.layout == "modern" ? "Applications" : ""
+    text: config.layout == "classic" ? "" : "Applications"
 
     width:  text ? label.width + (units.dp(40) - label.height)  : height
 

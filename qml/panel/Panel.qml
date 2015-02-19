@@ -28,11 +28,11 @@ import "../launcher"
 Rectangle {
     id: panel
 
-    property bool raised: false
+    property bool raised: true
     property alias indicators: indicatorsRow.children
     property Indicator selectedIndicator
 
-    color: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0,0,0,0)
+    color: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0.2, 0.2, 0.2, 1)
     height: units.dp(32)
 
     Behavior on color {
@@ -51,11 +51,21 @@ Rectangle {
 
     states: [
         State {
+            name: "modern"
+            PropertyChanges {
+                target: panel
+                //color: Qt.rgba(0, 0, 0, 0)
+                raised: false
+            }
+        },
+
+        State {
             name: "classic"
             PropertyChanges {
                 target: panel
                 color: Qt.rgba(0.2, 0.2, 0.2, 1)
                 height: classicHeight
+                raised: false
             }
 
             PropertyChanges {

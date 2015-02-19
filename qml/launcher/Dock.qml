@@ -43,6 +43,8 @@ Item {
 		}
 
 		height: units.dp(25)
+
+		backgroundColor: "white"
 	}
 
 	height: units.dp(64)
