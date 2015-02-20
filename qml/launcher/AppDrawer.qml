@@ -77,4 +77,7 @@ Indicator {
         onSuperPressed: selected ? selectedIndicator = null
                                  : selectedIndicator = appDrawer
     }
+    DesktopScrobbler {
+        id: desktopScrobbler
+    }
 }
