@@ -143,7 +143,7 @@ View {
         hoverEnabled: true
 
         onContainsMouseChanged: {
-            if (!tooltip.text || selectedIndicator != null) return
+            if (!tooltip.text) return
 
             if (containsMouse) {
                 if (!tooltip.showing)

@@ -113,7 +113,7 @@ Item {
     }
 
 	function windowAdded(surface) {
-		var windowComponent = Qt.createComponent("../Window.qml");
+		var windowComponent = Qt.createComponent("Window.qml");
 		if (windowComponent.status != Component.Ready) {
 			console.warn("Error loading Window.qml: " + windowComponent.errorString());
 			return;

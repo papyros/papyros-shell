@@ -50,7 +50,7 @@ Item {
 
             if (filename.indexOf("xml") != -1) {
                 // We don't support GNOME's time-based wallpapers. Default to our default wallpaper
-                return Qt.resolvedUrl("../images/papyros_wallpaper.png")
+                return Qt.resolvedUrl("../../images/papyros_wallpaper.png")
             } else {
                 return filename
             }
@@ -134,7 +134,7 @@ Item {
         CircleImage {
             id: image
 
-            source: Qt.resolvedUrl("../images/face.jpg")
+            source: Qt.resolvedUrl("../../images/face.jpg")
             width: units.dp(80)
             height: width
             anchors {
