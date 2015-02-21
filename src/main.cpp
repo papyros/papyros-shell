@@ -27,5 +27,7 @@ int main(int argc, char *argv[])
 
     compositor.rootContext()->setContextProperty("compositor", &compositor);
 
+    QObject::connect(compositor.rootContext()->engine(), SIGNAL(quit()), &app, SLOT(quit()));
+
     return app.exec();
 }
