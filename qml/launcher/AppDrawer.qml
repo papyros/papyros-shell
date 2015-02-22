@@ -1,6 +1,7 @@
 /*
  * Papyros Shell - The desktop shell for Papyros following Material Design
  * Copyright (C) 2015 Michael Spencer
+ *               2015 Bogdan Cuza
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,9 +41,11 @@ Indicator {
 
         height: units.dp(360)
 
-        TextField {
-            id: searchField
+        Rectangle {
+        	id: fieldContainer
 
+        	color: "white"
+        	height: searchField.height
         	anchors {
         		left: parent.left
         		right: parent.right
@@ -50,23 +53,30 @@ Indicator {
         		topMargin: units.dp(5)
         		margins: units.dp(15)
         	}
+        	z: 10
 
-            placeholderText: "Search..."
+        	TextField {
+	            id: searchField
+
+	            placeholderText: "Search..."
+	        }
         }
 
         ListView {
+        	z: 5
             anchors {
                 left: parent.left
                 right: parent.right
-                top: searchField.bottom
+                top: fieldContainer.bottom
                 bottom: parent.bottom
             }
-
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
             model: desktopScrobbler.desktopFiles
             delegate: ListItem.Subtitled {
                 onTriggered: ProcessHelper.startDetached(edit.exec)
-                text: edit.name
-                subText: edit.exec
+                text: edit.localizedName || edit.name
+                subText: edit.localizedComment || edit.comment
             }
         }
     }
