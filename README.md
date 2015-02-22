@@ -25,7 +25,7 @@ Papyros Shell is a wayland compositor based on QtCompositor, and requires Waylan
 	$ make
 	# make install
 
-As well as [qml-extras](https://github.com/papyros/qml-extras) that can be installed the same way as [qml-material](https://github.com/papyros/qml-material)
+As well as [qml-extras](https://github.com/papyros/qml-extras) and [qml-desktop](https://github.com/papyros/qml-desktop) that can be installed the same way as [qml-material](https://github.com/papyros/qml-material)
 
 Once you have that set up, run the following commands to compile the C++ wrapper:
 
