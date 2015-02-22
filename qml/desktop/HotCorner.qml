@@ -54,6 +54,9 @@ Item {
 
         anchors.centerIn: parent
 
+        border.color: "#ffffff"
+        border.width: 2
+
         height: width
         radius: width/2
         color: Qt.rgba(0,0,0,0.4)
