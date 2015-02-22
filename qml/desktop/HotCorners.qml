@@ -27,6 +27,10 @@
 import QtQuick 2.0
 
 Item {
+    id: root
+
+    clip: true
+
     signal topTriggered()
     signal bottomTriggered()
     signal leftTriggered()
@@ -37,8 +41,6 @@ Item {
 
     signal bottomLeftTriggered()
     signal bottomRightTriggered()
-
-    id: root
 
     // Top side
     HotCorner {

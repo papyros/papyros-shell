@@ -85,10 +85,14 @@ Item {
     }
 
     HotCorners {
-        anchors.fill: parent
+        anchors {
+            fill: parent
+            topMargin: config.layout == "classic" ? 0 : panel.height
+            bottomMargin: config.layout == "classic" ? panel.height : 0
+        }
 
         onTopLeftTriggered: {
-            if (desktop.exposed)
+            if (desktop.expanded)
                 shell.state = "default"
             else
                 shell.state = "exposed"
