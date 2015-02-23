@@ -86,9 +86,12 @@ Item {
 
     HotCorners {
         anchors.fill: parent
+        //allow see and use top corners
+        //todo: set margin 0 on desktop.expanded with handling low cursor speed at top corners
+        anchors.topMargin: panel.height
 
         onTopLeftTriggered: {
-            if (desktop.exposed)
+            if (desktop.expanded)
                 shell.state = "default"
             else
                 shell.state = "exposed"
