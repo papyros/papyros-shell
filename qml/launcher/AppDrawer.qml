@@ -40,7 +40,10 @@ Indicator {
         id: dropdown
 
         height: units.dp(360)
-        width: config.layout == "classic" ? height : width
+        Component.onCompleted: {
+            if (config.layout == "classic")
+                width = height;
+        }
 
         Rectangle {
         	id: container
@@ -72,75 +75,38 @@ Indicator {
         	}
         }
 
-        /*ListView {
-        	id: view
+        Loader {
+            id: mainLoader
 
-        	z: 5
-        	opacity: 0
-        	anchors {
-        		left: parent.left
-        		right: parent.right
-        		top: container.bottom
-        		bottom: parent.bottom
-        	}
-        	clip: true
-        	boundsBehavior: Flickable.StopAtBounds
-        	model: desktopScrobbler.desktopFiles
-        	delegate: ListItem.Subtitled {
-                onTriggered: edit.launch()
-                text: edit.localizedName || edit.name
-                subText: edit.localizedComment || edit.comment
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: container.bottom
+                bottom: parent.bottom
             }
-        }*/
-        GridView {
-	    	id: gridView
-
-	    	z: 5
-	    	anchors {
-	        	left: parent.left
-	        	right: parent.right
-	        	top: container.bottom
-	        	bottom: parent.bottom
-	        }
-	        clip: true
-	        boundsBehavior: Flickable.StopAtBounds
-	        model: desktopScrobbler.desktopFiles
-	        delegate: Item {
-	        	width: units.dp(90)
-	        	height: units.dp(90)
-
-	        	Image {
-	        		anchors.centerIn: parent
-	        		source: edit.icon
-                    height: 40
-                    width: 40
-	        	}
-                //Component.onCompleted: console.log(edit.icon)
-	        }
-	        cellWidth: units.dp(90)
-	        cellHeight: units.dp(90)
-	    }
+            source: Qt.resolvedUrl("Use" + (config.layout == "classic" ? "Grid" : "List") + ".qml")
+        }
     }
 
     function gotoIndex(idx) {
 	    anim.running = false
-		var pos = view.contentY;
+		var pos = mainLoader.item.contentY;
 		var destPos;
-		view.positionViewAtIndex(idx, ListView.Beginning);
-		destPos = view.contentY;
+		mainLoader.item.positionViewAtIndex(idx, ListView.Beginning);
+		destPos = mainLoader.item.contentY;
 		anim.from = pos;
 		anim.to = destPos;
 		anim.running = true;
 	}
 
-	NumberAnimation { id: anim; target: view; property: "contentY"; duration: 500 }
-
+	NumberAnimation { id: anim; target: mainLoader.item; property: "contentY"; duration: 500 }
     Connections {
         target: shell
 
         onSuperPressed: selected ? selectedIndicator = null
                                  : selectedIndicator = appDrawer
     }
+
     DesktopScrobbler {
         id: desktopScrobbler
     }
