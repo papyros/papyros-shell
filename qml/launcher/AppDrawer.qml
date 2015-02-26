@@ -40,46 +40,100 @@ Indicator {
         id: dropdown
 
         height: units.dp(360)
+        width: config.layout == "classic" ? height : width
 
         Rectangle {
-        	id: fieldContainer
+        	id: container
 
+        	z: 10
+        	width: parent.width
+        	height: input.height
         	color: "white"
-        	height: searchField.height
+
+        	TextField {
+        		id: input
+
+        		placeholderText: "Search"
+        		anchors {
+        			left: parent.left
+        			right: parent.right
+        			leftMargin: units.dp(10)
+        			rightMargin: units.dp(10)
+        		}
+        		onTextChanged: {
+       				var possibleIndex = desktopScrobbler.getIndexByName(text);
+       				if (possibleIndex == -1) {
+        				return;
+        			} else {
+        				//view.positionViewAtIndex(possibleIndex, ListView.Beginning);
+        				gotoIndex(possibleIndex);
+        			}
+        		}
+        	}
+        }
+
+        /*ListView {
+        	id: view
+
+        	z: 5
+        	opacity: 0
         	anchors {
         		left: parent.left
         		right: parent.right
-        		top: parent.top
-        		topMargin: units.dp(5)
-        		margins: units.dp(15)
+        		top: container.bottom
+        		bottom: parent.bottom
         	}
-        	z: 10
-
-        	TextField {
-	            id: searchField
-
-	            placeholderText: "Search..."
-	        }
-        }
-
-        ListView {
-        	z: 5
-            anchors {
-                left: parent.left
-                right: parent.right
-                top: fieldContainer.bottom
-                bottom: parent.bottom
-            }
-            clip: true
-            boundsBehavior: Flickable.StopAtBounds
-            model: desktopScrobbler.desktopFiles
-            delegate: ListItem.Subtitled {
-                onTriggered: ProcessHelper.startDetached(edit.exec)
+        	clip: true
+        	boundsBehavior: Flickable.StopAtBounds
+        	model: desktopScrobbler.desktopFiles
+        	delegate: ListItem.Subtitled {
+                onTriggered: edit.launch()
                 text: edit.localizedName || edit.name
                 subText: edit.localizedComment || edit.comment
             }
-        }
+        }*/
+        GridView {
+	    	id: gridView
+
+	    	z: 5
+	    	anchors {
+	        	left: parent.left
+	        	right: parent.right
+	        	top: container.bottom
+	        	bottom: parent.bottom
+	        }
+	        clip: true
+	        boundsBehavior: Flickable.StopAtBounds
+	        model: desktopScrobbler.desktopFiles
+	        delegate: Item {
+	        	width: units.dp(90)
+	        	height: units.dp(90)
+
+	        	Image {
+	        		anchors.centerIn: parent
+	        		source: edit.icon
+                    height: 40
+                    width: 40
+	        	}
+                //Component.onCompleted: console.log(edit.icon)
+	        }
+	        cellWidth: units.dp(90)
+	        cellHeight: units.dp(90)
+	    }
     }
+
+    function gotoIndex(idx) {
+	    anim.running = false
+		var pos = view.contentY;
+		var destPos;
+		view.positionViewAtIndex(idx, ListView.Beginning);
+		destPos = view.contentY;
+		anim.from = pos;
+		anim.to = destPos;
+		anim.running = true;
+	}
+
+	NumberAnimation { id: anim; target: view; property: "contentY"; duration: 500 }
 
     Connections {
         target: shell
