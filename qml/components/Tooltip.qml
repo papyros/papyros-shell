@@ -17,6 +17,7 @@
  */
 import QtQuick 2.0
 import Material 0.1
+import "."
 
 PopupBase {
     id: popover
@@ -42,6 +43,4 @@ PopupBase {
     }
 
     color: Qt.rgba(0,0,0,0.6)
-
-    radius: units.dp(2)
 }

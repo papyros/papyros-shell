@@ -67,7 +67,7 @@ View {
     opacity: showing ? 1 : 0
 
     height: parent.height
-    width: opacity > 0 ? config.layout == "classic "
+    width: opacity > 0 ? config.layout == "classic"
                          ? text ? label.width + (units.dp(40) - label.height)
                                 : units.dp(40)
                          : text ? label.width + (height - label.height)

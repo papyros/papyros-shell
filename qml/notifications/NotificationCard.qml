@@ -63,7 +63,7 @@ View {
                 color: "white"
                 size: units.dp(16)
 
-                onTriggered: {
+                onClicked: {
                     print("Closing...")
                     notifyServer.closeNotification(notification.hasOwnProperty("id")
                             ? notification.id : notification.notificationId)
