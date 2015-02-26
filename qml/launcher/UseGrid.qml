@@ -51,8 +51,6 @@ GridView {
 			horizontalAlignment: Text.AlignHCenter
 		}
 	}
-    cellWidth: units.dp(90)
+        cellWidth: units.dp(90)
 	cellHeight: units.dp(90)
-
-	Component.onCompleted: console.log("Completed")
 }

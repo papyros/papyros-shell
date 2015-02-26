@@ -28,5 +28,5 @@ ListView {
         onTriggered: edit.launch()
         text: edit.localizedName || edit.name
         subText: edit.localizedComment || edit.comment
-	}
+    }
 }

@@ -54,33 +54,34 @@ Indicator {
         }
 
         Rectangle {
-        	id: container
+            id: container
 
-        	z: 10
-        	width: parent.width
-        	height: input.height
-        	color: "white"
+            z: 10
+            width: parent.width
+            height: input.height
+            color: "white"
 
-        	TextField {
-        		id: input
+            TextField {
+                id: input
 
-        		placeholderText: "Search"
-        		anchors {
-        			left: parent.left
-        			right: parent.right
-        			leftMargin: units.dp(10)
-        			rightMargin: units.dp(10)
-        		}
-
-        		onTextChanged: {
-       				var possibleIndex = desktopScrobbler.getIndexByName(text);
-       				if (possibleIndex == -1) {
-        				return;
-        			} else {
-        				gotoIndex(possibleIndex);
-        			}
-        		}
+                placeholderText: "Search"
+        	anchors {
+        	    left: parent.left
+        	    right: parent.right
+        	    leftMargin: units.dp(10)
+        	    rightMargin: units.dp(10)
         	}
+
+        	onTextChanged: {
+       		    var possibleIndex = desktopScrobbler.getIndexByName(text);
+       			if (possibleIndex == -1) {
+                            return;
+        		} else {
+        		    gotoIndex(possibleIndex);
+        		}
+        	    }
+                }
+            }
         }
 
         Loader {
@@ -93,11 +94,10 @@ Indicator {
                 bottom: parent.bottom
             }
             source: Qt.resolvedUrl("Use" + (config.layout == "classic" ? "Grid" : "List") + ".qml")
-            Component.onCompleted: console.log(source, status)
         }
     }
 
-	NumberAnimation { id: anim; target: mainLoader.item; property: "contentY"; duration: 500 }
+    NumberAnimation { id: anim; target: mainLoader.item; property: "contentY"; duration: 500 }
     Connections {
         target: shell
 
