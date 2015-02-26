@@ -53,7 +53,7 @@ Rectangle {
             }
 
             name: "navigation/arrow_back"
-            onTriggered: shell.toggleDashboard()
+            onClicked: shell.toggleDashboard()
         }
 
         Label {
