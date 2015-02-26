@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.0
 import Material 0.1
 import Material.Desktop 0.1
-import Material.ListItems 0.1 as ListItem
 
 import ".."
 import "../components"
@@ -28,18 +28,26 @@ import "../panel/indicators"
 Indicator {
     id: appDrawer
 
+    function gotoIndex(idx) {
+        anim.running = false
+        var pos = mainLoader.item.contentY;
+        var destPos;
+        mainLoader.item.positionViewAtIndex(idx, ListView.Beginning);
+        destPos = mainLoader.item.contentY;
+        anim.from = pos;
+        anim.to = destPos;
+        anim.running = true;
+    }
+
     icon: config.layout == "classic" ? "navigation/apps" : ""
     iconSize: units.dp(24)
     tooltip: "Applications"
-
     text: config.layout == "classic" ? "" : "Applications"
-
     width:  text ? label.width + (units.dp(40) - label.height)  : height
 
     dropdown: DropDown {
-        id: dropdown
-
         height: units.dp(360)
+
         Component.onCompleted: {
             if (config.layout == "classic")
                 width = height;
@@ -63,12 +71,12 @@ Indicator {
         			leftMargin: units.dp(10)
         			rightMargin: units.dp(10)
         		}
+
         		onTextChanged: {
        				var possibleIndex = desktopScrobbler.getIndexByName(text);
        				if (possibleIndex == -1) {
         				return;
         			} else {
-        				//view.positionViewAtIndex(possibleIndex, ListView.Beginning);
         				gotoIndex(possibleIndex);
         			}
         		}
@@ -85,19 +93,9 @@ Indicator {
                 bottom: parent.bottom
             }
             source: Qt.resolvedUrl("Use" + (config.layout == "classic" ? "Grid" : "List") + ".qml")
+            Component.onCompleted: console.log(source, status)
         }
     }
-
-    function gotoIndex(idx) {
-	    anim.running = false
-		var pos = mainLoader.item.contentY;
-		var destPos;
-		mainLoader.item.positionViewAtIndex(idx, ListView.Beginning);
-		destPos = mainLoader.item.contentY;
-		anim.from = pos;
-		anim.to = destPos;
-		anim.running = true;
-	}
 
 	NumberAnimation { id: anim; target: mainLoader.item; property: "contentY"; duration: 500 }
     Connections {
