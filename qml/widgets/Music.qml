@@ -103,17 +103,17 @@ Column {
 
                     IconButton {
                         name: "av/skip_previous"
-                        onTriggered: previous()
+                        onClicked: previous()
                     }
 
                     IconButton {
                         name: "av/pause"
-                        onTriggered: playPause()
+                        onClicked: playPause()
                     }
 
                     IconButton {
                         name: "av/skip_next"
-                        onTriggered: next()
+                        onClicked: next()
                     }
                 }
             }
