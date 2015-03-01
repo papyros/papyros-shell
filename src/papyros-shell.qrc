@@ -2,6 +2,11 @@
 <RCC version="1.0">
 
 <qresource>
+	<file>images/face.jpg</file>
+	<file>images/google-inbox.png</file>
+	<file>images/papyros_logo.png</file>
+	<file>images/papyros_wallpaper.png</file>
+	<file>images/play_music.png</file>
 	<file>qml/HelpOverlay.qml</file>
 	<file>qml/KeyLabel.qml</file>
 	<file>qml/OverlayScreen.qml</file>
@@ -44,11 +49,6 @@
 	<file>qml/panel/indicators/SystemIndicator.qml</file>
 	<file>qml/widgets/Music.qml</file>
 	<file>qml/widgets/Widget.qml</file>
-	<file>images/face.jpg</file>
-	<file>images/google-inbox.png</file>
-	<file>images/papyros_logo.png</file>
-	<file>images/papyros_wallpaper.png</file>
-	<file>images/play_music.png</file>
 </qresource>
 
 </RCC>
