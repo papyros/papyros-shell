@@ -48,7 +48,7 @@ View {
             ListItem.Standard {
                 text: "Pinned to dock"
 
-                onTriggered: checkbox.checked = !checkbox.checked
+                onClicked: checkbox.checked = !checkbox.checked
 
                 Switch {
                     id: checkbox

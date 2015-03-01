@@ -52,7 +52,7 @@ Calendar {
 
                     anchors.centerIn: parent
 
-                    onTriggered: calendar.showPreviousMonth()
+                    onClicked: calendar.showPreviousMonth()
                 }
                 visible: selectable
             }
@@ -76,7 +76,7 @@ Calendar {
 
                     anchors.centerIn: parent
 
-                    onTriggered: calendar.showNextMonth()
+                    onClicked: calendar.showNextMonth()
                 }
                 visible: selectable
             }

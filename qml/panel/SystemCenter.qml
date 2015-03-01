@@ -106,7 +106,7 @@ View {
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            onTriggered: bluetoothSwitch.checked = !bluetoothSwitch.checked
+            onClicked: bluetoothSwitch.checked = !bluetoothSwitch.checked
 
             action: Icon {
                 anchors.centerIn: parent
@@ -158,14 +158,14 @@ View {
             name: "action/lock"
 
             // TODO: replace with call to Logind DBus
-            onTriggered: shell.lockScreen()
+            onClicked: shell.lockScreen()
         }
 
         IconButton {
             size: units.dp(30)
             name: "action/settings_power"
 
-            onTriggered: Qt.quit()
+            onClicked: Qt.quit()
         }
     }
 }

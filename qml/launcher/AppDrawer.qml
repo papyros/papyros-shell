@@ -74,7 +74,7 @@ Indicator {
             boundsBehavior: Flickable.StopAtBounds
             model: desktopScrobbler.desktopFiles
             delegate: ListItem.Subtitled {
-                onTriggered: ProcessHelper.startDetached(edit.exec)
+                onClicked: ProcessHelper.startDetached(edit.exec)
                 text: edit.localizedName || edit.name
                 subText: edit.localizedComment || edit.comment
             }
