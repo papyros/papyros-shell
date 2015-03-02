@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.0
 import Material 0.1
 import Material.Desktop 0.1
-import Material.ListItems 0.1 as ListItem
 
 import ".."
 import "../components"
@@ -28,65 +28,83 @@ import "../panel/indicators"
 Indicator {
     id: appDrawer
 
+    function gotoIndex(idx) {
+        anim.running = false
+        var pos = mainLoader.item.contentY;
+        var destPos;
+        mainLoader.item.positionViewAtIndex(idx, ListView.Beginning);
+        destPos = mainLoader.item.contentY;
+        anim.from = pos;
+        anim.to = destPos;
+        anim.running = true;
+    }
+
     icon: config.layout == "classic" ? "navigation/apps" : ""
     iconSize: units.dp(24)
     tooltip: "Applications"
-
     text: config.layout == "classic" ? "" : "Applications"
-
     width:  text ? label.width + (units.dp(40) - label.height)  : height
 
     dropdown: DropDown {
-        id: dropdown
-
         height: units.dp(360)
 
-        Rectangle {
-        	id: fieldContainer
-
-        	color: "white"
-        	height: searchField.height
-        	anchors {
-        		left: parent.left
-        		right: parent.right
-        		top: parent.top
-        		topMargin: units.dp(5)
-        		margins: units.dp(15)
-        	}
-        	z: 10
-
-        	TextField {
-	            id: searchField
-
-	            placeholderText: "Search..."
-	        }
+        Component.onCompleted: {
+            if (config.layout == "classic")
+                width = height;
         }
 
-        ListView {
-        	z: 5
+        Rectangle {
+            id: container
+
+            z: 10
+            width: parent.width
+            height: input.height
+            color: "white"
+
+            TextField {
+                id: input
+
+                placeholderText: "Search"
+            	anchors {
+            	    left: parent.left
+            	    right: parent.right
+            	    leftMargin: units.dp(10)
+            	    rightMargin: units.dp(10)
+            	}
+
+                onTextChanged: {
+                    var possibleIndex = desktopScrobbler.getIndexByName(text);
+                    if (possibleIndex == -1) {
+                        return;
+                    } else {
+                        gotoIndex(possibleIndex);
+                    }
+                }
+            }
+        }
+
+        Loader {
+            id: mainLoader
+
             anchors {
                 left: parent.left
                 right: parent.right
-                top: fieldContainer.bottom
+                top: container.bottom
                 bottom: parent.bottom
             }
-            clip: true
-            boundsBehavior: Flickable.StopAtBounds
-            model: desktopScrobbler.desktopFiles
-            delegate: ListItem.Subtitled {
-                onClicked: ProcessHelper.startDetached(edit.exec)
-                text: edit.localizedName || edit.name
-                subText: edit.localizedComment || edit.comment
-            }
+
+            source: Qt.resolvedUrl("Use" + (config.layout == "classic" ? "List" : "Grid") + ".qml")
         }
     }
 
+    NumberAnimation { id: anim; target: mainLoader.item; property: "contentY"; duration: 500 }
     Connections {
         target: shell
 
         onSuperPressed: selected ? selectedIndicator = null
                                  : selectedIndicator = appDrawer
     }
+
     DesktopScrobbler {
         id: desktopScrobbler
     }
