@@ -65,21 +65,20 @@ Indicator {
                 id: input
 
                 placeholderText: "Search"
-        	anchors {
-        	    left: parent.left
-        	    right: parent.right
-        	    leftMargin: units.dp(10)
-        	    rightMargin: units.dp(10)
-        	}
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    leftMargin: units.dp(10)
+                    rightMargin: units.dp(10)
+                }
 
-        	onTextChanged: {
-       		    var possibleIndex = desktopScrobbler.getIndexByName(text);
-       			if (possibleIndex == -1) {
-                            return;
-        		} else {
-        		    gotoIndex(possibleIndex);
-        		}
-        	    }
+                onTextChanged: {
+                    var possibleIndex = desktopScrobbler.getIndexByName(text);
+                    if (possibleIndex == -1) {
+                        return;
+                    } else {
+                        gotoIndex(possibleIndex);
+                    }
                 }
             }
         }
