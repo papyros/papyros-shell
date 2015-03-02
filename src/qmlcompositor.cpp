@@ -41,7 +41,7 @@
 #include "qmlcompositor.h"
 
 QmlCompositor::QmlCompositor()
-    : QWaylandQuickCompositor(this, 0, DefaultExtensions | SubSurfaceExtension)
+    : QWaylandQuickCompositor("papyros-shell", DefaultExtensions | SubSurfaceExtension)
     , m_fullscreenSurface(0)
 {
     setSource(QUrl("qrc:/qml/main.qml"));

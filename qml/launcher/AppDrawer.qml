@@ -65,21 +65,20 @@ Indicator {
                 id: input
 
                 placeholderText: "Search"
-        	anchors {
-        	    left: parent.left
-        	    right: parent.right
-        	    leftMargin: units.dp(10)
-        	    rightMargin: units.dp(10)
-        	}
+            	anchors {
+            	    left: parent.left
+            	    right: parent.right
+            	    leftMargin: units.dp(10)
+            	    rightMargin: units.dp(10)
+            	}
 
-        	onTextChanged: {
-       		    var possibleIndex = desktopScrobbler.getIndexByName(text);
-       			if (possibleIndex == -1) {
-                            return;
-        		} else {
-        		    gotoIndex(possibleIndex);
-        		}
-        	    }
+                onTextChanged: {
+                    var possibleIndex = desktopScrobbler.getIndexByName(text);
+                    if (possibleIndex == -1) {
+                        return;
+                    } else {
+                        gotoIndex(possibleIndex);
+                    }
                 }
             }
         }
@@ -93,7 +92,8 @@ Indicator {
                 top: container.bottom
                 bottom: parent.bottom
             }
-            source: Qt.resolvedUrl("Use" + (config.layout == "classic" ? "Grid" : "List") + ".qml")
+
+            source: Qt.resolvedUrl("Use" + (config.layout == "classic" ? "List" : "Grid") + ".qml")
         }
     }
 

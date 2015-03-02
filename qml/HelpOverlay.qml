@@ -63,7 +63,7 @@ View {
             }
 
             name: "navigation/close"
-            onTriggered: shell.toggleHelp()
+            onClicked: shell.toggleHelp()
         }
 
         Label {
