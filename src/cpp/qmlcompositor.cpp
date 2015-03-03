@@ -44,7 +44,7 @@ QmlCompositor::QmlCompositor()
     : QWaylandQuickCompositor("papyros-shell", DefaultExtensions | SubSurfaceExtension)
     , m_fullscreenSurface(0)
 {
-    setSource(QUrl("qrc:/qml/main.qml"));
+    setSource(QUrl("../qml/main.qml"));
     setResizeMode(QQuickView::SizeRootObjectToView);
     setColor(Qt::black);
     winId();
