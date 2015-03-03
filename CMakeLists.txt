@@ -18,7 +18,7 @@ SET(SHELL_SRCS
     ${CMAKE_SOURCE_DIR}/src/cpp/qmlcompositor.h
 )
 
-ADD_EXECTUTABLE(papyros-shell ${SHELL_SRCS})
+ADD_EXECUTABLE(papyros-shell ${SHELL_SRCS})
 TARGET_LINK_LIBRARIES(papyros-shell Qt5::Quick)
 TARGET_LINK_LIBRARIES(papyros-shell Qt5::Compositor)
 
