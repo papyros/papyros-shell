@@ -17,16 +17,40 @@
  */
 
 import QtQuick 2.0
-import Material.ListItems 0.1 as ListItem
+import Material 0.1
 
-ListView {
+GridView {
     z: 5
     clip: true
     boundsBehavior: Flickable.StopAtBounds
     model: desktopScrobbler.desktopFiles
-    delegate: ListItem.Subtitled {
-        onTriggered: edit.launch()
-        text: edit.localizedName || edit.name
-        subText: edit.localizedComment || edit.comment
+    delegate: Item {
+        width: units.dp(90)
+        height: units.dp(90)
+
+        Image {
+	    anchors {
+                horizontalCenter: parent.horizontalCenter
+                top: parent.top
+                topMargin: units.dp(1)
+            }
+            height: units.dp(40)
+            width: units.dp(40)
+            source: edit.icon
+        }
+        Ink {
+            anchors.fill: parent
+            onClicked: edit.launch()
+        }
+        Label {
+            text: edit.localizedName || edit.name
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: units.dp(0.5)
+            width: parent.width
+            wrapMode: Text.WordWrap
+            horizontalAlignment: Text.AlignHCenter
+        }
     }
+    cellWidth: units.dp(90)
+    cellHeight: units.dp(90)
 }
