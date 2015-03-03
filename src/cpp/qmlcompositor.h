@@ -41,6 +41,8 @@
 #ifndef QML_COMPOSITOR
 #define QML_COMPOSITOR
 
+#define PAPYROS_INSTALL_PATH "/usr/share/papyros-shell"
+
 #include "qwaylandquickcompositor.h"
 #include "qwaylandquicksurface.h"
 
