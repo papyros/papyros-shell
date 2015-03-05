@@ -65,6 +65,7 @@ Indicator {
                 id: input
 
                 placeholderText: "Search"
+                
             	anchors {
             	    left: parent.left
             	    right: parent.right
