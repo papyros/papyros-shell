@@ -38,10 +38,6 @@ View {
     signal keyPressed(var event)
     signal keyReleased(var event)
 
-    Component.onCompleted: {
-        compositor.init()
-    }
-
     function toggleState(state) {
         if (shell.state == state)
             shell.state = "default"
@@ -114,14 +110,6 @@ View {
             Behavior on bottomMargin {
                 NumberAnimation { duration: 200 }
             }
-        }
-
-        Dock {
-            id: dock
-        }
-
-        Launcher {
-            id: launcher
         }
 
         NotificationsView {

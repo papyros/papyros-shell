@@ -10,4 +10,5 @@ moc_*.cpp
 .obj/
 .moc/
 papyros-shell
+build
 *~

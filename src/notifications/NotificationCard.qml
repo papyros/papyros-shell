@@ -119,7 +119,7 @@ View {
         }
 
         ProgressBar {
-            progress: visible ? notification.percent : 0
+            value: visible ? notification.percent : 0
             width: parent.width
             visible: notification.hasOwnProperty("percent")
         }

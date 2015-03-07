@@ -64,7 +64,7 @@ Item {
 
 			delegate: AppIcon {
 				tooltip: "Google Inbox"
-				iconSource: Qt.resolvedUrl("../../images/%1.png".arg(modelData))
+				iconSource: Qt.resolvedUrl("../images/%1.png".arg(modelData))
 			}
 		}
 	}

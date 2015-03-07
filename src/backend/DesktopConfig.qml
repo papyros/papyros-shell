@@ -3,7 +3,7 @@ import Material 0.1
 
 Object {
 
-    property string layout: "modern" // converge, modern, or classic
+    property string layout: "classic" // converge, modern, or classic
     property bool silentMode
     property string accentColor: 'teal'
 }

@@ -70,7 +70,7 @@ Indicator {
 
                     text: modelData.title
                     valueText: "%1%".arg(modelData.progress * 100)
-                    progress: modelData.progress
+                    value: modelData.progress
                 }
             }
         }
