@@ -1,6 +1,8 @@
 import QtQuick 2.4
 import Material 0.1
 import Material.Extras 0.1
+import GreenIsland 1.0
+import "WindowManagement.js" as WindowManagement
 
 /*
  * The desktop consists of multiple workspaces, one of which is shown at a time. The desktop
@@ -14,6 +16,8 @@ Item {
     anchors.fill: parent
 
     property bool expanded: shell.state == "exposed"
+
+    property Workspace currentWorksace: listView.currentItem
 
     VisualItemModel {
         id: workspaces
@@ -99,94 +103,59 @@ Item {
 
     // ===== Window Management =====
 
-    property var currentWindow
+    property var activeWindow: null
 
-	property var windows: []
-	property var windowOrder: []
+    readonly property alias surfaceModel: surfaceModel
+    readonly property int activeWindowIndex: WindowManagement.getActiveWindowIndex()
+    readonly property var windowList: WindowManagement.windowList
 
-	property alias applications: applications
-
-	onCurrentWindowChanged: {
-		focusedApplication = applications.applicationForWindow(currentWindow)
-	}
-
-    function spreadWindows(windows) {
-
+    ListModel {
+        id: surfaceModel
     }
 
-	function windowAdded(surface) {
-		var windowComponent = Qt.createComponent("Window.qml");
-		if (windowComponent.status != Component.Ready) {
-			console.warn("Error loading Window.qml: " + windowComponent.errorString());
-			return;
-		}
-		var window = windowComponent.createObject(workspace1.windows);
+    // Code taken from Hawii desktop shell
+    Connections {
+        target: compositor
 
-		window.surface = compositor.item(surface);
-		window.info = surface;
-		window.surface.touchEventsEnabled = true;
-		window.surfaceWidth = surface.size.width;
-		window.surfaceHeight = surface.size.height;
-		window.x = units.dp(100)
-		window.y = units.dp(100)
-		windows.push(window)
-		windowOrder.push(window)
+        onWindowMapped: {
+            // A window was mapped
+            WindowManagement.windowMapped(window);
+        }
+        onWindowUnmapped: {
+            // A window was unmapped
+            WindowManagement.windowUnmapped(window);
+        }
+        onWindowDestroyed: {
+            // A window was unmapped
+            WindowManagement.windowDestroyed(id);
+        }
+        onShellWindowMapped: {
+            // A shell window was mapped
+            WindowManagement.shellWindowMapped(window);
+        }
+    }
 
-		print(JSON.stringify(surface))
+    /*
+    * Methods
+    */
 
-		focusedApplication = applications.addWindow(window)
+    function moveFront(window) {
+        return WindowManagement.moveFront(window);
+    }
 
-		windows = windows
-		print('Window added.', window.surfaceWidth, window.surfaceHeight)
-	}
+    function enableInput() {
+        var i;
+        for (i = 0; i < compositorRoot.surfaceModel.count; i++) {
+            var window = compositorRoot.surfaceModel.get(i).item;
+            window.child.focus = true;
+        }
+    }
 
-	function windowResized(window) {
-		window.width = window.surface.size.width;
-		window.height = window.surface.size.height;
-		CompositorLogic.relayout();
-	}
-
-	function removeWindow(window) {
-		windows = windows.splice(windows.indexOf(window), 1)
-		windowOrder = windowOrder.splice(windowOrder.indexOf(window), 1)
-		window.destroy();
-		print('Window removed.')
-	}
-
-	property var focusedApplication
-
-	ListModel {
-		id: applications
-
-		function applicationForWindow(window) {
-			for (var i = 0; i < applications.count; i++) {
-				var app = applications.get(i).application
-
-				if (app.desktopFile == window.info.className) {
-					return app
-				}
-			}
-
-			var app = Utils.newObject(Qt.resolvedUrl("Application.qml"), {
-				desktopFile: window.info.className
-			}, applications)
-			append({application: app})
-
-			return app
-		}
-
-		function addWindow(window) {
-			var app = applicationForWindow(window)
-
-			print('New application!', app.desktopFile)
-
-			app.windows.append(window)
-
-			return app
-		}
-
-		function removeWindow(window) {
-
-		}
-	}
+    function disableInput() {
+        var i;
+        for (i = 0; i < compositorRoot.surfaceModel.count; i++) {
+            var window = compositorRoot.surfaceModel.get(i).item;
+            window.child.focus = false;
+        }
+    }
 }

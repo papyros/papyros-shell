@@ -80,6 +80,8 @@ View {
 
     property alias config: __config
 
+    property alias screenInfo: __screenInfo
+
     signal superPressed()
 
     signal keyPressed(var event)
@@ -132,6 +134,55 @@ View {
 
     Lockscreen {
         id: lockscreen
+    }
+
+    // ===== Compositor connections =====
+
+    Timer {
+        id: idleTimer
+        //interval: compositor.idleInterval
+        onIntervalChanged: {
+            if (running)
+            restart();
+        }
+    }
+
+    // Code taken from Hawii desktop shell
+    Connections {
+        target: compositor
+        onIdleInhibitResetRequested: compositor.idleInhibit = 0
+        onIdleTimerStartRequested: idleTimer.running = true
+        onIdleTimerStopRequested: idleTimer.running = false
+        onLockedChanged: {
+            if (compositor.locked)
+                lockScreen()
+            else
+                shell.state = "default";
+        }
+
+        // TODO: Handle session stuff.
+        // onIdle: {
+        //     // Set idle hint
+        //     session.idle = true;
+        // }
+        // onWake: {
+        //     // Unset idle hint
+        //     session.idle = false;
+        // }
+
+        // TODO: What does this do, and why?
+        // onFadeIn: {
+        //     // Bring user layer up
+        //     compositorRoot.state = "session";
+        // }
+        // onFadeOut: {
+        //     // Fade the desktop out
+        //     compositorRoot.state = "splash";
+        // }
+        onReady: {
+            // Start idle timer
+            idleTimer.running = true
+        }
     }
 
     // ===== Keyboard Shortcuts =====
@@ -214,6 +265,14 @@ View {
         onAccentColorChanged: {
             Theme.accentColor = Palette.colors[config.accentColor]['500']
         }
+    }
+
+    QtObject {
+        id: __screenInfo
+
+        readonly property string name: _greenisland_output.name
+        readonly property int number: _greenisland_output.number
+        readonly property bool primary: _greenisland_output.primary
     }
 
     GSettings {
