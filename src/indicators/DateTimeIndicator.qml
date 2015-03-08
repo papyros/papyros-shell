@@ -1,6 +1,6 @@
 /*
  * Papyros Shell - The desktop shell for Papyros following Material Design
- * Copyright (C) 2015 Michael Spencer
+ * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,7 @@
 import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
-import ".."
-import "../../components"
+import "../components"
 
 Indicator {
     id: indicator
@@ -27,12 +26,10 @@ Indicator {
     text: Qt.formatTime(now)
     tooltip: Qt.formatDate(now, Locale.LongFormat)
 
-    dropdown: DropDown {
+    view: Item {
         id: dropdown
 
-        height: titleItem.height + subItem.height +
-                calendar.height + units.dp(32)
-        width: units.dp(300)
+        implicitHeight: titleItem.height + subItem.height + calendar.height + units.dp(32)
 
         Item {
             id: titleItem

@@ -87,8 +87,6 @@ Item {
     HotCorners {
         anchors {
             fill: parent
-            topMargin: config.layout == "classic" ? 0 : panel.height
-            bottomMargin: config.layout == "classic" ? panel.height : 0
         }
 
         onTopLeftTriggered: {

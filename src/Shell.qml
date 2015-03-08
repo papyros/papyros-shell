@@ -20,6 +20,8 @@ import QtQuick.Window 2.0
 import Material 0.1
 import Material.Desktop 0.1
 import GSettings 1.0
+import QtCompositor 1.0
+import GreenIsland 1.0
 
 import "backend"
 import "components"
@@ -28,34 +30,10 @@ import "desktop"
 import "launcher"
 import "lockscreen"
 import "notifications"
-import "panel"
+import "indicators"
 
 View {
     id: shell
-
-    signal superPressed()
-
-    signal keyPressed(var event)
-    signal keyReleased(var event)
-
-    function toggleState(state) {
-        if (shell.state == state)
-            shell.state = "default"
-        else
-            shell.state = state
-    }
-
-    function toggleDashboard() {
-        toggleState("dashboard")
-    }
-
-    function toggleHelp() {
-        toggleState("help")
-    }
-
-    function lockScreen() {
-        shell.state = "locked"
-    }
 
     state: "default"
 
@@ -71,20 +49,52 @@ View {
 
         State {
             name: "exposed"
-        },
-
-        State {
-            name: "dashboard"
-        },
-
-        State {
-            name: "help"
         }
     ]
 
-    onStateChanged: panel.selectedIndicator = null
-
     backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 1)
+
+    readonly property bool hasErrors: stage.status == Loader.Error
+    readonly property string errorMessage: stage.sourceComponent.errorString()
+
+    property string stageName: "desktop"
+    property list<Indicator> indicators: [
+        NotificationsIndicator {},
+        OperationsIndicator {},
+        ActionCenterIndicator {},
+        DateTimeIndicator {}
+    ]
+    property list<Action>keybindings: [
+        Action {
+            name: "Kill session"
+            keybinding: "Ctrl+Alt+Backspace"
+            onTriggered: compositor.abortSession();
+        },
+
+        Action {
+            name: "Lock your " + Device.name
+            keybinding: "Super+L"
+            onTriggered: lockScreen();
+        }
+    ]
+
+    property alias config: __config
+
+    signal superPressed()
+
+    signal keyPressed(var event)
+    signal keyReleased(var event)
+
+    function toggleState(state) {
+        if (shell.state == state)
+        shell.state = "default"
+        else
+        shell.state = state
+    }
+
+    function lockScreen() {
+        shell.state = "locked"
+    }
 
     Desktop {
         id: desktop
@@ -92,55 +102,32 @@ View {
     }
 
     Item {
-        clip: true
+        id: overlayLayer
 
         anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            bottom: parent.bottom
-
-            topMargin: config.layout == "classic" ? 0 : panel.height
-            bottomMargin: config.layout == "classic" ? panel.height : 0
-
-            Behavior on topMargin {
-                NumberAnimation { duration: 200 }
-            }
-
-            Behavior on bottomMargin {
-                NumberAnimation { duration: 200 }
-            }
-        }
-
-        NotificationsView {
-            id: notifications
-        }
-
-        Item {
-            id: overlayLayer
-
-            anchors.fill: parent
-
-            NotificationCenter {
-                id: notificationCenter
-            }
-
-            SystemCenter {
-                id: systemCenter
-            }
-
-            HelpOverlay {
-                id: helpOverlay
-            }
+            fill: parent
+            leftMargin: stage.item.leftMargin
+            rightMargin: stage.item.rightMargin
+            topMargin: stage.item.topMargin
+            bottomMargin: stage.item.bottomMargin
         }
     }
 
-    Panel {
-        id: panel
-    }
+    Loader {
+        id: stage
 
-    Dashboard {
-        id: dashboard
+        anchors.fill: parent
+
+        Component.onCompleted: {
+            var uppercaseName = stageName.substring(0, 1).toUpperCase() +
+                    stageName.substring(1)
+
+            var source =  Qt.resolvedUrl("stages/" + stageName + "/" +
+                    uppercaseName + "Stage.qml")
+
+            var component = Qt.createComponent(source)
+            stage.sourceComponent = component
+        }
     }
 
     Lockscreen {
@@ -172,59 +159,40 @@ View {
         }
 
         superOnly = false
-        if (helpTimer.running)
-            helpTimer.stop()
 
-        // Use the grid symbol on the Mac keyboard to open the dashboard
-        if (event.key == Qt.Key_LaunchD ||
-                (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_D)) {
-            toggleDashboard()
-        }
+        for (var i = 0; i < keybindings.length; i++) {
+            var action = keybindings[i]
 
-        // Super + > triggers the help overlay
-        if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_Slash) {
-            toggleHelp()
-        }
+            var keybinding = action.keybinding.split("+")
+            var keycode = -1
+            var modifiers = 0
+            var text = ''
 
-        // Abort session
-        if (event.modifiers & (Qt.ControlModifier | Qt.AltModifier) &&
-                event.key === Qt.Key_Backspace) {
+            for (var j = 0; j < keybinding.length; j++) {
+                var key = keybinding[j]
+
+                if (key == 'Ctrl')
+                    modifiers |= Qt.ControlModifier
+                else if (key == 'Alt')
+                    modifiers |= Qt.AltModifier
+                else if (key == 'Super')
+                    modifiers |= Qt.MetaModifier
+                else if (key == 'Backspace')
+                    keycode = Qt.Key_Backspace
+                else
+                    text = key.toLowerCase()
+            }
+
+            if (modifiers != -1 && event.modifiers != modifiers)
+                continue
+            if (event != -1 && text == '' && event.key != keycode)
+                continue
+            if (text != '' && event.text != text)
+                continue
+
+            print("Action triggered: " + action.name)
             event.accepted = true;
-            print("Killing session...")
-            Qt.quit()
-
-            return;
-        }
-
-        // Lock screen
-        if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_L) {
-            shell.state = "locked";
-
-            event.accepted = true;
-            return;
-        }
-
-        // Window switcher
-        // if (event.modifiers & Qt.MetaModifier) {
-        //     if (event.key === Qt.Key_Tab || event.key === Qt.Key_Backtab) {
-        //         if (state != "windowSwitcher" && surfaceModel.count >= 2) {
-        //             // Activate only when two or more windows are available
-        //             state = "windowSwitcher";
-        //             event.accepted = true;
-        //             return;
-        //         }
-        //     }
-        // }
-
-        // Present windows
-        if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_E) {
-            if (shell.state == "exposed")
-                shell.state = "default"
-            else
-                shell.state = "exposed"
-
-            event.accepted = true;
-            return;
+            action.triggered(shell)
         }
     }
 
@@ -232,44 +200,25 @@ View {
         if (!keyFilter.enabled) return
 
         if (superOnly) {
-            print("That's super!")
-
-            if (shell.state == "help")
-                toggleHelp()
-            else
-                superPressed()
+            superPressed()
         }
 
         superOnly = false
-        helpTimer.stop()
-    }
-
-    // If the super key is held down for more than
-    // 2 seconds, show the help overlay
-    Timer {
-        id: helpTimer
-
-        interval: 2000
-        onTriggered: toggleHelp()
     }
 
     // ===== Configuration and Settings =====
 
     DesktopConfig {
-        id: config
+        id: __config
 
-        Component.onCompleted: Theme.accentColor = Qt.binding(function() {
-            return Palette.colors[config.accentColor]['500']
-        })
+        onAccentColorChanged: {
+            Theme.accentColor = Palette.colors[config.accentColor]['500']
+        }
     }
 
     GSettings {
         id: wallpaperSetting
         schema.id: "org.gnome.desktop.background"
-    }
-
-    SystemNotifications {
-
     }
 
     UPower {

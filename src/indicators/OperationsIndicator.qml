@@ -18,16 +18,15 @@
 import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
-import ".."
-import "../../components"
+import "../components"
 
 Indicator {
     id: indicator
 
-    icon: "av/loop"
+    iconName: "av/loop"
     tooltip: "Ongoing Operations"
 
-    showing: operations.length > 0
+    visible: operations.length > 0
 
     // TODO: Where does this come from?
     property var operations: [
@@ -43,10 +42,27 @@ Indicator {
         }
     ]
 
-    dropdown: DropDown {
-        id: dropdown
-
+    view: Item {
         implicitHeight:  column.height
+
+        Column {
+            anchors.centerIn: parent
+            spacing: units.dp(8)
+            visible: indicator.operations.length == 0
+
+            Icon {
+                anchors.horizontalCenter: parent.horizontalCenter
+                name: "av/loop"
+                color: Theme.light.hintColor
+            }
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "No ongoing operations"
+                color: Theme.light.hintColor
+                style: "subheading"
+            }
+        }
 
         Column {
             id: column

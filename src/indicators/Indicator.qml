@@ -1,6 +1,6 @@
 /*
  * Papyros Shell - The desktop shell for Papyros following Material Design
- * Copyright (C) 2015 Michael Spencer
+ * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,31 +17,18 @@
  */
 import QtQuick 2.0
 import Material 0.1
-import "."
 
-PopupBase {
-    id: popover
+Object {
+    id: indicator
 
-    Label {
-        id: label
+    property string iconName
+    property string text
+    property string badge
+    property string tooltip
+    property bool hidden: false
+    property bool visible: true
 
-        anchors.centerIn: parent
+    property Component view
 
-        width: parent.width - units.dp(32)
-        color: Theme.dark.textColor
-    }
-
-    width: label.implicitWidth + units.dp(32)
-    height: label.implicitHeight + units.dp(24)
-    radius: units.dp(2)
-
-    property alias text: label.text
-
-    opacity: showing ? 1 : 0
-
-    Behavior on opacity {
-        NumberAnimation { duration: 250 }
-    }
-
-    color: Qt.rgba(0,0,0,0.6)
+    property bool selected
 }

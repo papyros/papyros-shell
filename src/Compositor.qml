@@ -26,7 +26,8 @@ MainView {
     }
 
     state: loader.status == Loader.Ready
-            ? "default" : loader.status == Loader.Error ? "error" : "loading"
+            ? loader.item.hasErrors ? "error" : "default"
+            : loader.status == Loader.Error ? "error" : "loading"
 
     states: [
         State {
@@ -86,7 +87,8 @@ MainView {
         asynchronous: true
 
         Component.onCompleted: {
-            var component = Qt.createComponent(Qt.resolvedUrl("Shell.qml"), Component.Asynchronous)
+            var component = Qt.createComponent(Qt.resolvedUrl("Shell.qml"),
+                    Component.Asynchronous)
             loader.sourceComponent = component
         }
     }
@@ -177,7 +179,9 @@ MainView {
 
             style: "subheading"
             color: "white"
-            text: loader.sourceComponent.errorString()
+            text: loader.status == Loader.Ready
+                    ? loader.item.errorMessage
+                    : loader.sourceComponent.errorString()
         }
     }
 }

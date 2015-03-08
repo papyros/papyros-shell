@@ -18,7 +18,7 @@
 import QtQuick 2.3
 import Material 0.1
 
-import "../components"
+import "../../components"
 
 /*
 * The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.
@@ -30,9 +30,7 @@ Rectangle {
         left: parent.left
     }
 
-    visible: config.layout == "converge"
-
-    color: Theme.alpha(Theme.accentColor, 0.9)
+    color: Qt.rgba(1, 1, 1, 0.9)
 
     Item {
         width: parent.width
@@ -50,24 +48,35 @@ Rectangle {
         }
     }
 
-    width: units.dp(72)
+    width: units.dp(64)
 
     Column {
         anchors {
-            horizontalCenter: parent.horizontalCenter
+            left: parent.left
+            right: parent.right
             top: parent.top
-            topMargin: units.dp(16)
         }
 
         spacing: units.dp(24)
 
-        Repeater {
-            model: ["play_music", "google-inbox"]
+        Ink {
+            width: parent.width
+            height: width
 
-            delegate: AppIcon {
-                tooltip: "Google Inbox"
-                iconSource: Qt.resolvedUrl("../images/%1.png".arg(modelData))
+            Icon {
+                anchors.centerIn: parent
+                size: parent.width * 1/2
+                name: "navigation/apps"
             }
         }
+
+        // Repeater {
+        //     model: ["play_music", "google-inbox"]
+        //
+        //     delegate: AppIcon {
+        //         tooltip: "Google Inbox"
+        //         iconSource: Qt.resolvedUrl("../images/%1.png".arg(modelData))
+        //     }
+        // }
     }
 }

@@ -17,31 +17,28 @@
  */
 import QtQuick 2.0
 import Material 0.1
-import "."
+import Material.ListItems 0.1 as ListItem
+import Material.Desktop 0.1
+import Material.Extras 0.1
+import "../components"
 
-PopupBase {
-    id: popover
+Indicator {
+    id: indicator
 
-    Label {
-        id: label
+    iconName: config.silentMode ? "social/notifications_off"
+                                : hasNotifications ? "social/notifications"
+                                                   : "social/notifications_none"
 
-        anchors.centerIn: parent
+    tooltip: config.silentMode ? "Notifications silenced"
+                               : hasNotifications ? "%1 notifications".arg(notificationsCount)
+                                                  : "No notifications"
 
-        width: parent.width - units.dp(32)
-        color: Theme.dark.textColor
+    badge: notificationsCount
+
+    property bool hasNotifications: badge > 0
+    property int notificationsCount: 4
+
+    onSelectedChanged: {
+        notificationCenter.showing = selected
     }
-
-    width: label.implicitWidth + units.dp(32)
-    height: label.implicitHeight + units.dp(24)
-    radius: units.dp(2)
-
-    property alias text: label.text
-
-    opacity: showing ? 1 : 0
-
-    Behavior on opacity {
-        NumberAnimation { duration: 250 }
-    }
-
-    color: Qt.rgba(0,0,0,0.6)
 }
