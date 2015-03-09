@@ -62,8 +62,8 @@ View {
         }
     }
 
-    // DateTimeIndicator {
-    //     id: dateTimeIndicator
+    // IndicatorView {
+    //     indicator: DateTimeIndicator {}
     //
     //     anchors {
     //         horizontalCenter: parent.horizontalCenter

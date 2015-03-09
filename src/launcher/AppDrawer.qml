@@ -28,30 +28,11 @@ import "../panel/indicators"
 Indicator {
     id: appDrawer
 
-    function gotoIndex(idx) {
-        anim.running = false
-        var pos = mainLoader.item.contentY;
-        var destPos;
-        mainLoader.item.positionViewAtIndex(idx, ListView.Beginning);
-        destPos = mainLoader.item.contentY;
-        anim.from = pos;
-        anim.to = destPos;
-        anim.running = true;
-    }
-
-    icon: config.layout == "classic" ? "navigation/apps" : ""
-    iconSize: units.dp(24)
+    iconName: "navigation/apps"
     tooltip: "Applications"
-    text: config.layout == "classic" ? "" : "Applications"
-    width:  text ? label.width + (units.dp(40) - label.height)  : height
 
-    dropdown: DropDown {
-        height: units.dp(360)
-
-        Component.onCompleted: {
-            if (config.layout == "classic")
-                width = height;
-        }
+    view: Item {
+        implicitHeight: units.dp(360)
 
         Rectangle {
             id: container
@@ -73,11 +54,10 @@ Indicator {
             	}
 
             	onTextChanged: {
-           		    var possibleIndex = desktopScrobbler.getIndexByName(text);
-           			if (possibleIndex == -1) {
-                                return;
-            		} else {
-            		    gotoIndex(possibleIndex);
+           		    var possibleIndex = desktopScrobbler.getIndexByName(text)
+                       
+           			if (possibleIndex != -1) {
+                        mainLoader.item.currentIndex = possibleIndex
             		}
         	    }
             }
@@ -97,7 +77,6 @@ Indicator {
         }
     }
 
-    NumberAnimation { id: anim; target: mainLoader.item; property: "contentY"; duration: 500 }
     Connections {
         target: shell
 

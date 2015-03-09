@@ -22,32 +22,5 @@ import ".."
 Indicator {
     id: indicator
 
-    width: iconsRow.width + units.dp(20)
-
-    Row {
-        id: iconsRow
-        anchors.centerIn: parent
-
-        spacing: units.dp(10)
-
-        IndicatorIcon {
-            name: "device/signal_wifi_3_bar"
-            tooltip: "Wifi not connected"
-        }
-
-        IndicatorIcon {
-            name: sound.iconName
-            tooltip: "Volume at %1%".arg(sound.master)
-        }
-
-        IndicatorIcon {
-            name: upower.deviceIcon(upower.primaryDevice)
-            tooltip: upower.deviceSummary(upower.primaryDevice)
-        }
-
-        IndicatorIcon {
-            // TODO: Use an appropriate Material Design icon
-            name: "awesome/power_off"
-        }
-    }
+    iconName: "action/account_circle"
 }

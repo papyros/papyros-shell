@@ -17,6 +17,7 @@
 */
 import QtQuick 2.3
 import Material 0.1
+import org.hawaii.launcher 0.1 as Launcher
 
 import "../../components"
 
@@ -50,6 +51,15 @@ Rectangle {
 
     width: units.dp(64)
 
+    Dash {
+        id: dock
+
+        anchors {
+            top: parent.top
+            left: parent.right
+        }
+    }
+
     Column {
         anchors {
             left: parent.left
@@ -68,15 +78,23 @@ Rectangle {
                 size: parent.width * 1/2
                 name: "navigation/apps"
             }
+
+            onClicked: dock.showing = !dock.showing
         }
 
-        // Repeater {
-        //     model: ["play_music", "google-inbox"]
-        //
-        //     delegate: AppIcon {
-        //         tooltip: "Google Inbox"
-        //         iconSource: Qt.resolvedUrl("../images/%1.png".arg(modelData))
-        //     }
-        // }
+        Repeater {
+            model: Launcher.LauncherModel {
+                id: launcherModel
+            }
+
+            delegate: Label {
+                text: model.name
+            }
+
+            // delegate: AppIcon {
+            //     tooltip: model.name
+            //     iconSource: model.iconSource
+            // }
+        }
     }
 }
