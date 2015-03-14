@@ -44,7 +44,7 @@ MainView {
             name: "loading"
 
             PropertyChanges {
-                target: label
+                target: welcomeView
 
                 opacity: 1
             }
@@ -57,7 +57,7 @@ MainView {
             to: "*"
 
             NumberAnimation {
-                target: label
+                target: welcomeView
                 properties: "opacity"
             }
 
@@ -101,16 +101,26 @@ MainView {
         opened: true
     }
 
-    Label {
-        id: label
+    Column {
+        id: welcomeView
 
         anchors.centerIn: parent
-        //style: "headline"
-        style: "display1"
-        text: "Welcome"
-        color: "white"
 
         opacity: 0
+        spacing: units.dp(15)
+
+        ProgressCircle {
+            color: "white"
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Label {
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            style: "display1"
+            text: "Welcome"
+            color: "white"
+        }
     }
 
     Wave {
