@@ -32,7 +32,7 @@ Item {
     property bool showing
 
     Rectangle {
-        color: Qt.rgba(1, 1, 1, 0.9)
+        color: Qt.rgba(1, 1, 1, 0.95)
         radius: units.dp(5)
 
         anchors {

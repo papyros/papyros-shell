@@ -59,12 +59,12 @@ View {
 
     property string stageName: "desktop"
     property list<Indicator> indicators: [
-        DateTimeIndicator {},
         NotificationsIndicator {},
         OperationsIndicator {},
-        ActionCenterIndicator {},
         SoundIndicator {},
         BatteryIndicator {},
+        ActionCenterIndicator {},
+        DateTimeIndicator {},
         SystemIndicator {}
     ]
     property list<Action>keybindings: [

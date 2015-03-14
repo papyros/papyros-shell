@@ -17,7 +17,6 @@
 */
 import QtQuick 2.3
 import Material 0.1
-import org.hawaii.launcher 0.1 as Launcher
 
 import "../../components"
 
@@ -31,7 +30,7 @@ Rectangle {
         left: parent.left
     }
 
-    color: Qt.rgba(1, 1, 1, 0.9)
+    color: Qt.rgba(1, 1, 1, 0.95)
 
     Item {
         width: parent.width
@@ -80,21 +79,6 @@ Rectangle {
             }
 
             onClicked: dock.showing = !dock.showing
-        }
-
-        Repeater {
-            model: Launcher.LauncherModel {
-                id: launcherModel
-            }
-
-            delegate: Label {
-                text: model.name
-            }
-
-            // delegate: AppIcon {
-            //     tooltip: model.name
-            //     iconSource: model.iconSource
-            // }
         }
     }
 }
