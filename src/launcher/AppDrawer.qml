@@ -54,8 +54,8 @@ Indicator {
             	}
 
             	onTextChanged: {
-           		    var possibleIndex = desktopScrobbler.getIndexByName(text)
-                       
+           		    var possibleIndex = desktopScrobbler.indexOfName(text)
+
            			if (possibleIndex != -1) {
                         mainLoader.item.currentIndex = possibleIndex
             		}

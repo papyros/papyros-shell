@@ -17,6 +17,9 @@
 */
 import QtQuick 2.3
 import Material 0.1
+import Material.Extras 0.1
+import Material.Desktop 0.1
+import Material.ListItems 0.1 as ListItem
 
 import "../../components"
 
@@ -26,6 +29,14 @@ import "../../components"
 Item {
     width: units.dp(500)
     height: units.dp(400)
+
+    anchors {
+        leftMargin: showing ? 0 : -width
+
+        Behavior on leftMargin {
+            NumberAnimation { duration: 200 }
+        }
+    }
 
     clip: true
 
@@ -39,14 +50,56 @@ Item {
             left: parent.left
             top: parent.top
             bottom: parent.bottom
-            leftMargin: showing ? -radius : -width
+            leftMargin: -radius
             topMargin: -radius
-
-            Behavior on leftMargin {
-                NumberAnimation { duration: 200 }
-            }
         }
 
         width: parent.width + radius
+    }
+
+    DesktopScrobbler {
+        id: desktopScrobbler
+    }
+
+    ListView {
+        anchors.fill: parent
+        clip: true
+        model: desktopScrobbler.desktopFiles
+        delegate: ListItem.Subtitled {
+            action: [
+                Image {
+                    id: icon
+                    anchors.fill: parent
+                    source: "image://icon/" + edit.iconName
+                },
+
+                Rectangle {
+                    anchors.fill: parent
+                    radius: width/2
+                    visible: icon.status != Image.Ready
+                    color: {
+                        var index = edit.name.toLowerCase().charCodeAt(0)
+                                    - "a".charCodeAt(0)
+
+                        var colorNames = ListUtils.objectKeys(Palette.colors)
+                        var colorIndex = index % colorNames.length
+
+                        print(index, colorIndex)
+
+                        return Palette.colors[colorNames[colorIndex]]["400"]
+                    }
+
+                    Label {
+                        anchors.centerIn: parent
+                        text: edit.name.toUpperCase().charAt(0)
+                        style: "title"
+                        color: Theme.dark.subTextColor
+                    }
+                }
+            ]
+            text: edit.name
+            subText: edit.comment
+            onClicked: edit.launch()
+        }
     }
 }
