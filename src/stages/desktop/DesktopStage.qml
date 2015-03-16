@@ -24,7 +24,7 @@ import ".."
 */
 Stage {
     topMargin: panel.height
-    bottomMargin: launcher.width
+    bottomMargin: launcher.height
 
     onStateChanged: panel.selectedIndicator = null
 

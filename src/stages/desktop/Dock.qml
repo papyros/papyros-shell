@@ -26,7 +26,7 @@ import "../../components"
 */
 Item {
     anchors {
-        bottomMargin: units.dp(57)
+        bottomMargin: units.dp(3)
         bottom: parent.bottom
         horizontalCenter: parent.horizontalCenter
     }
@@ -41,11 +41,11 @@ Item {
             right: parent.right
             leftMargin: units.dp(-3)
             rightMargin: units.dp(-3)
-            bottomMargin: units.dp(-2)
+            bottomMargin: units.dp(-8)
         }
 
-        radius: units.dp(2)
-        height: units.dp(4)
+        radius: units.dp(3)
+        height: units.dp(8)
     }
 
     Row {
