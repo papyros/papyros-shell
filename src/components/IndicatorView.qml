@@ -72,7 +72,7 @@ View {
         anchors.centerIn: parent
         size: parent.height * 0.45
         name: indicator.iconName
-        color: Theme.dark.iconColor
+        color: indicator.color
     }
 
     Label {

@@ -17,6 +17,7 @@
 */
 import QtQuick 2.0
 import Material 0.1
+import Material.Desktop 0.1
 import Material.ListItems 0.1 as ListItem
 
 Indicator {
@@ -24,4 +25,7 @@ Indicator {
 
     iconName: upower.deviceIcon(upower.primaryDevice)
     tooltip: upower.deviceSummary(upower.primaryDevice)
+    color: upower.primaryDevice.percentage < 10 &&
+            upower.primaryDevice.state != UPowerDeviceState.Charging
+            ? Palette.colors.red["500"] : Theme.dark.iconColor
 }

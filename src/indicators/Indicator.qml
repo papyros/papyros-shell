@@ -27,6 +27,7 @@ Object {
     property string tooltip
     property bool hidden: false
     property bool visible: true
+    property color color: Theme.dark.iconColor
 
     property Component view
 
