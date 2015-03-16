@@ -27,9 +27,9 @@ View {
 
     property Indicator selectedIndicator
 
-    backgroundColor: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0.2, 0.2, 0.2, 1)
-    height: units.dp(32)
-    elevation: 2
+    //backgroundColor: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0.2, 0.2, 0.2, 1)
+    height: units.dp(40)
+    //elevation: 2
 
     Behavior on backgroundColor {
         ColorAnimation { duration: 300 }
@@ -46,7 +46,7 @@ View {
             left: parent.left
             top: parent.top
             bottom: parent.bottom
-            leftMargin: units.dp(8)
+            leftMargin: units.dp(14)
         }
 
         Label {
@@ -62,15 +62,15 @@ View {
         }
     }
 
-    // IndicatorView {
-    //     indicator: DateTimeIndicator {}
-    //
-    //     anchors {
-    //         horizontalCenter: parent.horizontalCenter
-    //         top: parent.top
-    //         bottom: parent.bottom
-    //     }
-    // }
+    IndicatorView {
+        indicator: DateTimeIndicator {}
+
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            bottom: parent.bottom
+        }
+    }
 
     Row {
         id: indicatorsRow
@@ -79,7 +79,7 @@ View {
             right: parent.right
             top: parent.top
             bottom: parent.bottom
-            rightMargin: units.dp(8)
+            rightMargin: units.dp(14)
         }
 
         Repeater {

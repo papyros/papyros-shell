@@ -24,66 +24,79 @@ import "../../components"
 /*
 * The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.
 */
-Rectangle {
+Item {
     anchors {
+        bottomMargin: units.dp(57)
         bottom: parent.bottom
-        top: parent.top
-        left: parent.left
+        horizontalCenter: parent.horizontalCenter
     }
 
-    color: Qt.rgba(1, 1, 1, 0.95)
+    height: units.dp(64)
+    width: row.width
 
-    Item {
-        width: parent.width
-        height: parent.height
-        anchors.left: parent.right
-
-        clip: true
-
-        View {
-            elevation: 2
-
-            anchors.right: parent.left
-            width: parent.width
-            height: parent.height
-        }
-    }
-
-    width: units.dp(64)
-
-    Dash {
-        id: dock
-
+    Rectangle {
         anchors {
-            top: parent.top
-            left: parent.right
-        }
-    }
-
-    Column {
-        anchors {
+            bottom: parent.bottom
             left: parent.left
             right: parent.right
-            top: parent.top
+            leftMargin: units.dp(-3)
+            rightMargin: units.dp(-3)
+            bottomMargin: units.dp(-2)
         }
 
-        Ink {
-            width: parent.width
+        radius: units.dp(2)
+        height: units.dp(4)
+    }
+
+    Row {
+        id: row
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: parent.bottom
+        }
+
+        Item {
+            width: parent.height
             height: width
 
-            Icon {
+            ActionButton {
                 anchors.centerIn: parent
-                size: parent.width * 1/2
-                name: "navigation/apps"
-            }
+                width: parent.height * 0.6
+                height: width
+                //radius: width/2
+                backgroundColor: "white"
 
-            onClicked: dock.showing = !dock.showing
+                // Ink {
+                //     anchors.fill: parent
+                //     circular: true
+                //     centered: true
+                // }
+
+                Grid {
+                    anchors.centerIn: parent
+                    columns: 3
+                    columnSpacing: units.dp(3)
+                    rowSpacing: units.dp(3)
+                    Repeater {
+                        model: 6
+                        Rectangle {
+                            color: Theme.light.iconColor
+                            width: units.dp(5)
+                            height: width
+                            radius: width/2
+                        }
+                    }
+                }
+            }
         }
 
         Repeater {
-            model: ["atom", "gedit"]
+            model: [
+                    "papyros-files", "epiphany", "geary", "gnome-dictionary",
+                    "gnome-control-center"]
             delegate: Ink {
-                width: parent.width
+                width: parent.height
                 height: width
 
                 DesktopFile {
@@ -95,7 +108,7 @@ Rectangle {
                     iconName: desktopFile.iconName
                     name: desktopFile.name
                     anchors.centerIn: parent
-                    width: parent.width * 1/2
+                    width: parent.width * 0.75
                     height: width
                 }
 

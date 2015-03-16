@@ -66,37 +66,11 @@ Item {
         clip: true
         model: desktopScrobbler.desktopFiles
         delegate: ListItem.Subtitled {
-            action: [
-                Image {
-                    id: icon
-                    anchors.fill: parent
-                    source: "image://icon/" + edit.iconName
-                },
-
-                Rectangle {
-                    anchors.fill: parent
-                    radius: width/2
-                    visible: icon.status != Image.Ready
-                    color: {
-                        var index = edit.name.toLowerCase().charCodeAt(0)
-                                    - "a".charCodeAt(0)
-
-                        var colorNames = ListUtils.objectKeys(Palette.colors)
-                        var colorIndex = index % colorNames.length
-
-                        print(index, colorIndex)
-
-                        return Palette.colors[colorNames[colorIndex]]["400"]
-                    }
-
-                    Label {
-                        anchors.centerIn: parent
-                        text: edit.name.toUpperCase().charAt(0)
-                        style: "title"
-                        color: Theme.dark.subTextColor
-                    }
-                }
-            ]
+            action: AppIcon {
+                iconName: edit.iconName
+                name: edit.name
+                anchors.fill: parent
+            }
             text: edit.name
             subText: edit.comment
             onClicked: edit.launch()

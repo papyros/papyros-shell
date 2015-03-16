@@ -64,7 +64,7 @@ View {
         SoundIndicator {},
         BatteryIndicator {},
         ActionCenterIndicator {},
-        DateTimeIndicator {},
+        //DateTimeIndicator {},
         SystemIndicator {}
     ]
     property list<Action>keybindings: [
@@ -156,12 +156,12 @@ View {
         onIdleInhibitResetRequested: compositor.idleInhibit = 0
         onIdleTimerStartRequested: idleTimer.running = true
         onIdleTimerStopRequested: idleTimer.running = false
-        onLockedChanged: {
-            if (compositor.locked)
-                lockScreen()
-            else
-                shell.state = "default";
-        }
+        // onLockedChanged: {
+        //     if (compositor.locked)
+        //         lockScreen()
+        //     else
+        //         shell.state = "default";
+        // }
 
         // TODO: Handle session stuff.
         // onIdle: {

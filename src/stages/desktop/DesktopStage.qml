@@ -24,14 +24,14 @@ import ".."
 */
 Stage {
     topMargin: panel.height
-    leftMargin: launcher.width
+    bottomMargin: launcher.width
 
     onStateChanged: panel.selectedIndicator = null
 
-    Launcher {
+    Dock {
         id: launcher
 
-        anchors.top: panel.bottom
+        //anchors.top: panel.bottom
     }
 
     Panel {

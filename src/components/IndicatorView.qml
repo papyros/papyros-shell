@@ -70,7 +70,7 @@ View {
 
     Icon {
         anchors.centerIn: parent
-        size: parent.height * 0.6
+        size: parent.height * 0.45
         name: indicator.iconName
         color: Theme.dark.iconColor
     }
