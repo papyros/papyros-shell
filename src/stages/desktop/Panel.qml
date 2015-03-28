@@ -49,16 +49,16 @@ View {
             leftMargin: units.dp(14)
         }
 
-        Label {
-            anchors {
-                verticalCenter: parent.verticalCenter
+        spacing: units.dp(12)
+
+        Repeater {
+            model: ["communication/email", "hardware/headset", "file/file_download", "image/image"]
+            delegate: Icon {
+                name: modelData
+                size: parent.height * 0.45
+                color: Theme.dark.iconColor
+                anchors.verticalCenter: parent.verticalCenter
             }
-
-            style: "subheading"
-            font.bold: true
-
-            text: "Papyros"
-            color: Theme.dark.textColor
         }
     }
 

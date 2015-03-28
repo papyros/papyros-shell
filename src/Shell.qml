@@ -59,8 +59,8 @@ View {
 
     property string stageName: "desktop"
     property list<Indicator> indicators: [
-        NotificationsIndicator {},
-        OperationsIndicator {},
+        //NotificationsIndicator {},
+        //OperationsIndicator {},
         SoundIndicator {},
         BatteryIndicator {},
         ActionCenterIndicator {},
