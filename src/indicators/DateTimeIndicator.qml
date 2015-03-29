@@ -16,6 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
+import QtOrganizer 5.0
+import QtQuick.Layouts 1.1
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import "../components"
@@ -29,7 +31,10 @@ Indicator {
     view: Item {
         id: dropdown
 
+        implicitWidth: config.showEvents ? units.dp(600) : units.dp(300)
         implicitHeight: titleItem.height + subItem.height + calendar.height + units.dp(32)
+
+        property bool showEvents: width > units.dp(300)
 
         Item {
             id: titleItem
@@ -91,16 +96,92 @@ Indicator {
             }
         }
 
-        Calendar {
-            id: calendar
+        Item {
             anchors {
                 top: subItem.bottom
                 left: parent.left
                 right: parent.right
                 margins: units.dp(16)
             }
+            height: calendar.height
 
-            frameVisible: false
+            Calendar {
+                id: calendar
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    right: dropdown.showEvents ? parent.horizontalCenter : parent.right
+                    rightMargin: dropdown.showEvents ? units.dp(16) : 0
+                }
+
+                frameVisible: false
+            }
+
+            Rectangle {
+                anchors {
+                    top: parent.top
+                    bottom: parent.bottom
+                    horizontalCenter: parent.horizontalCenter
+                }
+                color: Theme.light.dividerColor
+                width: units.dp(1)
+                visible: dropdown.showEvents
+            }
+
+            Item {
+                visible: dropdown.showEvents
+
+                anchors {
+                    top: parent.top
+                    right: parent.right
+                    left: parent.horizontalCenter
+                    leftMargin: units.dp(16)
+                }
+
+                RowLayout {
+                    anchors {
+                        right: parent.right
+                        bottom: parent.bottom
+                    }
+
+                    spacing: units.dp(16)
+
+                    IconButton {
+                        name: "content/add"
+                    }
+
+                    IconButton {
+                        name: "action/settings"
+                    }
+                }
+
+                height: parent.height
+
+                Label {
+                    anchors.centerIn: parent
+                    text: "No events today! " + organizer.availableManagers
+                    color: Theme.light.hintColor
+                    style: "subheading"
+                }
+
+                ListView {
+                    anchors.fill: parent
+
+                    model: organizer
+                    delegate: ListItem.Subtitled {
+                        text: model.item.displayLabel
+                        subText: Qt.formatTime(model.item.startDateTime) + " - " +
+                                 Qt.formatTime(model.item.endDateTime)
+                    }
+                }
+
+                OrganizerModel {
+                    id: organizer
+                    startPeriod: new Date()
+                    endPeriod: new Date()
+                    manager: "eds"
+                }
+            }
         }
     }
 
