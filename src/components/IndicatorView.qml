@@ -70,7 +70,7 @@ View {
 
     Icon {
         anchors.centerIn: parent
-        size: parent.height * 0.45
+        size: parent.height > units.dp(40) ? parent.height * 0.36 : parent.height * 0.45
         name: indicator.iconName
         color: indicator.color
     }
