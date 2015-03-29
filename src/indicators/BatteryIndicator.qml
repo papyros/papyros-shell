@@ -28,4 +28,26 @@ Indicator {
     color: upower.primaryDevice.percentage < 10 &&
             upower.primaryDevice.state != UPowerDeviceState.Charging
             ? Palette.colors.red["500"] : Theme.dark.iconColor
+
+    view: Column {
+        ListItem.Subtitled {
+            text: "Screen Brightness"
+            valueText: "25%"
+            content: Slider {
+                width: parent.width
+                value: 0.25
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: units.dp(7)
+            }
+
+            showDivider: true
+        }
+
+        Repeater {
+            model: upower
+            delegate: ListItem.Subtitled {
+                text: deviceName
+            }
+        }
+    }
 }
