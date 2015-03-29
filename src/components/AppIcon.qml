@@ -27,7 +27,7 @@ Item {
     Image {
         id: icon
         anchors.fill: parent
-        source: "image://icon/" + iconName
+        source: "image://desktoptheme/" + iconName
         sourceSize {
             width: icon.width * Screen.devicePixelRatio
             height: icon.height * Screen.devicePixelRatio
