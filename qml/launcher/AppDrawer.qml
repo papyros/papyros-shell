@@ -108,6 +108,5 @@ Indicator {
 
     DesktopScrobbler {
         id: desktopScrobbler
-        iconSize: units.dp(50)
     }
 }
