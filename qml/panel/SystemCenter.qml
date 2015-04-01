@@ -1,6 +1,7 @@
 /*
  * Papyros Shell - The desktop shell for Papyros following Material Design
  * Copyright (C) 2015 Michael Spencer
+ * Copyright (C) 2015 Ricardo Vieira <ricardo.vieira@tecnico.ulisboa.pt>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.0
+import QtQuick.Layouts 1.1
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import Material.Desktop 0.1
 import Material.Extras 0.1
+import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
 
 View {
     fullHeight: true
@@ -87,23 +90,99 @@ View {
         }
 
         // TODO: Replace with real data
-        ListItem.Standard {
-            text: "Wi-Fi"
-            valueText: "Not connected"
+        ListItem.Subtitled {
+            text: "Network"
+            subText: connectionsList.currentItem.state || "Disconnected"
 
             action: Icon {
+                property var icons: {
+                    "network-wireless-100-locked": "device/signal_wifi_4_bar",
+                    "network-wireless-80-locked": "device/signal_wifi_3_bar",
+                    "network-wireless-60-locked": "device/signal_wifi_2_bar",
+                    "network-wireless-40-locked": "device/signal_wifi_2_bar",
+                    "network-wireless-20-locked": "device/signal_wifi_1_bar",
+                    "network-wireless-0-locked": "device/signal_wifi_0_bar",
+                    "network-wired-activated": "action/settings_ethernet",
+                    "network-wired": "action/settings_ethernet",
+                    "network-vpn": "action/lock"
+                }
                 anchors.centerIn: parent
-                name: "device/signal_wifi_3_bar"
+                name: icons[connectionIconProvider.connectionTooltipIcon]
+                PlasmaNM.ConnectionIcon {
+                    id: connectionIconProvider;
+                }
+            }
+            secondaryItem: ActionButton {
+                anchors.centerIn: parent
+                iconName: "action/settings"
+                onClicked: handler.openEditor();
+            }
+            onClicked: {
+                connectionsView.expanded = !connectionsView.expanded;
             }
         }
 
-        // TODO: Replace with real data
+        Card {
+            id: connectionsView
+            property bool expanded: false
+            visible: height != 0
+            height: expanded ? connectionsList.count < 4 ? connectionsList.contentHeight : units.dp(300) : 0
+            width: parent.width - 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            ListView {
+                id: connectionsList
+                anchors.fill: parent
+                clip: true
+                header: ListItem.Standard {
+                    text: "Wi-Fi"
+                    visible: devices.wirelessDeviceAvailable
+                    secondaryItem: Switch {
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        checked: enabledConnections.wirelessEnabled
+                        onClicked: handler.enableWireless(checked);
+                    }
+                    showDivider: true
+                    PlasmaNM.EnabledConnections {
+                        id: enabledConnections;
+                    }
+                    onClicked: dropdown.close()
+                }
+
+                model: appletProxyModel;
+                boundsBehavior: Flickable.StopAtBounds;
+                delegate: ConnectionItem {
+                    id: connItem
+                }
+
+                PlasmaNM.NetworkModel {
+                    id: connectionModel;
+                }
+                PlasmaNM.AppletProxyModel {
+                    id: appletProxyModel;
+                    sourceModel: connectionModel;
+                }
+                PlasmaNM.Handler {
+                    id: handler;
+                }
+            }
+            Scrollbar {
+                flickableItem: connectionsList;
+            }
+            Behavior on height {
+                NumberAnimation { duration: 200 }
+            }
+        }
+
         ListItem.Standard {
             text: "Bluetooth"
+            visible: devices.bluetoothDeviceAvailable
             secondaryItem: Switch {
                 id: bluetoothSwitch
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
+                checked: enabledConnections.bluetoothEnabled
+                onCheckedChanged: handler.enableBluetooth(checked)
             }
 
             onClicked: bluetoothSwitch.checked = !bluetoothSwitch.checked
@@ -112,6 +191,10 @@ View {
                 anchors.centerIn: parent
                 name: "device/bluetooth"
             }
+        }
+
+        PlasmaNM.AvailableDevices {
+            id: devices
         }
 
         Repeater {
