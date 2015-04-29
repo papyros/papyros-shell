@@ -20,7 +20,7 @@ include(KDECMakeSettings)
 
 find_package(GreenIsland 0.5.9 REQUIRED)
 
-greenisland_install_plugin(io.papyros.shell src)
+greenisland_install_shell(io.papyros.shell src)
 
 # Display featute summary
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
