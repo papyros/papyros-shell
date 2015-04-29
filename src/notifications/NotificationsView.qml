@@ -22,86 +22,8 @@ import Material.Desktop 0.1
 Item {
     anchors.fill: parent
 
-    function add(notification) {
-
-        var newId = notification.hasOwnProperty("id")
-                ? notification.id : notification.notificationId
-
-        for (var i = 0; i < notifications.count; i++) {
-            var note = notifications.get(i)
-
-            var noteId = note.id ? note.id : note.notificationId
-
-            if (note.timer)
-                note.timer.stop()
-
-            if (noteId == newId) {
-                notifications.set(i, notification)
-                return
-            }
-        }
-
-        // The notification didn't already exist, so add it instead
-        notifications.insert(0, notification)
-    }
-
-    function remove(notification) {
-
-        var newId = notification.hasOwnProperty("id")
-                ? notification.id : notification.notificationId
-
-        for (var i = 0; i < notifications.count; i++) {
-            var note = notifications.get(i)
-
-            var noteId = note.id ? note.id : note.notificationId
-
-            if (noteId == newId) {
-                notifications.remove(i)
-                return
-            }
-        }
-    }
-
     NotificationServer {
         id: notifyServer
-
-        onNotificationAdded: {
-            notifications.insert(0, notification)
-        }
-
-        onNotificationUpdated: {
-            for (var i = 0; i < notifications.count; i++) {
-                var note = notifications.get(i)
-
-                if (note.id == id) {
-                    notifications.set(i, notification)
-                    return
-                }
-            }
-
-            // The notification didn't already exist, so add it instead
-            notifications.insert(0, notification)
-        }
-
-        onNotificationRemoved: {
-
-            for (var i = 0; i < notifications.count; i++) {
-                var note = notifications.get(i)
-
-                var noteId = note.id ? note.id : note.notificationId
-
-                print("ID", noteId, id)
-
-                if (noteId == id) {
-                    notifications.remove(i)
-                    return
-                }
-            }
-        }
-    }
-
-    ListModel {
-        id: notifications
     }
 
     ListView {
@@ -127,7 +49,7 @@ Item {
         orientation: Qt.Vertical
         interactive: false
 
-        model: notifications
+        model: notifyView.notifications
 
         spacing: units.dp(16)
 

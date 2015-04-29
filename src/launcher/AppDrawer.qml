@@ -23,7 +23,7 @@ import Material.Desktop 0.1
 
 import ".."
 import "../components"
-import "../panel/indicators"
+import "../indicators"
 
 Indicator {
     id: appDrawer
@@ -73,7 +73,7 @@ Indicator {
                 bottom: parent.bottom
             }
 
-            source: Qt.resolvedUrl("Use" + (config.layout == "classic" ? "Grid" : "List") + ".qml")
+            source: Qt.resolvedUrl("AppsGridLayout.qml")
         }
     }
 

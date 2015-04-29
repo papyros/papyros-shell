@@ -59,6 +59,12 @@ View {
                 height: width
                 color: Theme.dark.iconColor
             }
+
+            AppDrawer {
+                id: appDrawer
+            }
+
+            onClicked: appDrawer.selected = !appDrawer.selected
         }
 
         Repeater {
