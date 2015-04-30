@@ -30,8 +30,5 @@ Stage {
 
     Panel {
         id: panel
-
-        state: "classic"
-        anchors.bottomMargin: units.dp(55)
     }
 }

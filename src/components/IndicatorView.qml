@@ -27,12 +27,14 @@ View {
 
     height: parent.height
     width: smallMode ? indicator.text ? label.width + (height - label.height) : height
-                     : indicator.text ? label.width + (units.dp(40) - label.height) : units.dp(40)
+                     : indicator.text ? label.width + (units.dp(30) - label.height) : units.dp(30)
 
     visible: !indicator.hidden && indicator.visible
 
     property bool smallMode: height < units.dp(40)
     property Indicator indicator
+
+    property int iconSize: height > units.dp(40) ? height * 0.36 : height * 0.45
 
     onIndicatorChanged: indicator.selected = Qt.binding(function() {
         return indicator == selectedIndicator
@@ -70,7 +72,7 @@ View {
 
     Icon {
         anchors.centerIn: parent
-        size: parent.height > units.dp(40) ? parent.height * 0.36 : parent.height * 0.45
+        size: iconSize
         name: indicator.iconName
         color: indicator.color
     }

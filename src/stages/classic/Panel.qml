@@ -46,30 +46,20 @@ View {
             left: parent.left
             top: parent.top
             bottom: parent.bottom
+
         }
 
-        Ink {
-            width: parent.height
-            height: width
-
-            Icon {
-                name: "navigation/apps"
-                anchors.centerIn: parent
-                width: units.dp(24)
-                height: width
-                color: Theme.dark.iconColor
-            }
-
-            AppDrawer {
+        IndicatorView {
+            width: height
+            iconSize: units.dp(24)
+            indicator: AppDrawer {
                 id: appDrawer
             }
-
-            onClicked: appDrawer.selected = !appDrawer.selected
         }
 
         Repeater {
             model: [
-            "papyros-files", "epiphany", "geary", "gnome-dictionary",
+            "papyros-files", "firefox", "gnome-terminal",
             "gnome-control-center"]
             delegate: Ink {
                 width: parent.height
@@ -100,7 +90,7 @@ View {
             right: parent.right
             top: parent.top
             bottom: parent.bottom
-            rightMargin: units.dp(8)
+            rightMargin: units.dp(16)
         }
 
         IndicatorView {

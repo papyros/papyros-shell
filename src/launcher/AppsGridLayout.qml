@@ -18,6 +18,7 @@
 
 import QtQuick 2.0
 import Material 0.1
+import "../components"
 
 GridView {
 	z: 5
@@ -25,32 +26,37 @@ GridView {
 	boundsBehavior: Flickable.StopAtBounds
 	model: desktopScrobbler.desktopFiles
 	delegate: Item {
-	   	width: units.dp(90)
-	   	height: units.dp(90)
+	   	width: units.dp(100)
+	   	height: units.dp(100)
 
-		Image {
-			anchors {
-				horizontalCenter: parent.horizontalCenter
-				top: parent.top
-				topMargin: units.dp(1)
-			}
-			height: units.dp(40)
-			width: units.dp(40)
-			source: edit.icon
-		}
 		Ink {
 			anchors.fill: parent
 			onClicked: edit.launch()
 		}
-		Label {
-			text: edit.localizedName || edit.name
-			anchors.bottom: parent.bottom
-			anchors.bottomMargin: units.dp(0.5)
-			width: parent.width
-			wrapMode: Text.WordWrap
-			horizontalAlignment: Text.AlignHCenter
+
+		Column {
+			anchors.centerIn: parent
+			spacing: units.dp(8)
+			width: parent.width - units.dp(16)
+
+			AppIcon {
+				anchors.horizontalCenter: parent.horizontalCenter
+				height: units.dp(40)
+				width: units.dp(40)
+				iconName: edit.iconName
+	            name: edit.name
+			}
+
+			Label {
+				text: edit.name
+				anchors.horizontalCenter: parent.horizontalCenter
+				width: parent.width
+				wrapMode: Text.WordWrap
+				horizontalAlignment: Text.AlignHCenter
+			}
 		}
 	}
-        cellWidth: units.dp(90)
-	cellHeight: units.dp(90)
+       
+    cellWidth: units.dp(100)
+	cellHeight: units.dp(100)
 }
