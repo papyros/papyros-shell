@@ -150,12 +150,12 @@ View {
 
         IconButton {
             size: units.dp(30)
-            name: "action/settings"
+            iconName: "action/settings"
         }
 
         IconButton {
             size: units.dp(30)
-            name: "action/lock"
+            iconName: "action/lock"
 
             // TODO: replace with call to Logind DBus
             onClicked: shell.lockScreen()
@@ -163,7 +163,7 @@ View {
 
         IconButton {
             size: units.dp(30)
-            name: "action/settings_power"
+            iconName: "action/settings_power"
 
             onClicked: Qt.quit()
         }

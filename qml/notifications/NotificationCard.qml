@@ -58,7 +58,7 @@ View {
             }
 
             IconButton {
-                name: "navigation/close"
+                iconName: "navigation/close"
                 anchors.centerIn: parent
                 color: "white"
                 size: units.dp(16)

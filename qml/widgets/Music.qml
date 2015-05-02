@@ -51,7 +51,7 @@ Column {
                     }
 
                     IconButton {
-                        name: "navigation/more_vert"
+                        iconName: "navigation/more_vert"
                         anchors {
                             verticalCenter: parent.verticalCenter
                             right: parent.right
@@ -118,7 +118,7 @@ Column {
                     height: playbackStatus == "Stopped" ? 0 : playPauseBtn.height
 
                     IconButton {
-                        name: "av/skip_previous"
+                        iconName: "av/skip_previous"
                         onClicked: previous()
                         enabled: canGoPrevious
                     }
@@ -126,12 +126,12 @@ Column {
                     IconButton {
                         id: playPauseBtn
 
-                        name: playbackStatus == "Paused" ? "av/play_arrow" : "av/pause"
+                        iconName: playbackStatus == "Paused" ? "av/play_arrow" : "av/pause"
                         onClicked: playPause()
                     }
 
                     IconButton {
-                        name: "av/skip_next"
+                        iconName: "av/skip_next"
                         onClicked: next()
                         enabled: canGoNext
                     }

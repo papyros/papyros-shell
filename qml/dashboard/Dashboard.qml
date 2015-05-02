@@ -52,7 +52,7 @@ Rectangle {
                 verticalCenter: parent.verticalCenter
             }
 
-            name: "navigation/arrow_back"
+            iconName: "navigation/arrow_back"
             onClicked: shell.toggleDashboard()
         }
 
