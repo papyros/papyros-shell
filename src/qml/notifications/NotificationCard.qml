@@ -58,7 +58,7 @@ View {
             }
 
             IconButton {
-                name: "navigation/close"
+                iconName: "navigation/close"
                 anchors.centerIn: parent
                 color: "white"
                 size: units.dp(16)
@@ -119,7 +119,7 @@ View {
         }
 
         ProgressBar {
-            progress: visible ? notification.percent : 0
+            value: visible ? notification.percent : 0
             width: parent.width
             visible: notification.hasOwnProperty("percent")
         }

@@ -25,7 +25,7 @@ ListView {
     boundsBehavior: Flickable.StopAtBounds
     model: desktopScrobbler.desktopFiles
     delegate: ListItem.Subtitled {
-        onTriggered: edit.launch()
+        onClicked: edit.launch()
         text: edit.localizedName || edit.name
         subText: edit.localizedComment || edit.comment
     }

@@ -25,7 +25,7 @@ BaseListItem {
         height: units.dp(72)
 
         property alias text: label.text
-        property alias progress: progressBar.progress
+        property alias progress: progressBar.value
         property alias valueText: valueLabel.text
 
         property alias action: actionItem.children
@@ -101,7 +101,6 @@ BaseListItem {
 
                 width: parent.width
                 anchors.verticalCenter: parent.verticalCenter
-                alwaysShow: true
             }
         }
     }

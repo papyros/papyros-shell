@@ -62,7 +62,7 @@ View {
                 verticalCenter: parent.verticalCenter
             }
 
-            name: "navigation/close"
+            iconName: "navigation/close"
             onClicked: shell.toggleHelp()
         }
 
