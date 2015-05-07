@@ -1,5 +1,5 @@
-#! /bin/bash
+#! /bin/sh
 
 #XCURSOR_SIZE=32 XCURSOR_THEME=Adwaita QT_QPA_EGLFS_DISABLE_INPUT=1 /usr/bin/papyros-shell -platform eglfs -plugin libinput
 
-/usr/bin/papyros-shell -platform eglfs
+exec /usr/bin/papyros-shell -platform eglfs
