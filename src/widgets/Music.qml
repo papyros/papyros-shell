@@ -23,7 +23,7 @@ import Material 0.1
 import Material.Desktop 0.1
 
 Column {
-    spacing: units.dp(16)
+    spacing: Units.dp(16)
 
     Repeater {
         model: musicPlayer.playerList
@@ -34,8 +34,8 @@ Column {
             Column {
                 id: col
                 anchors.fill: parent
-                anchors.margins: units.dp(8)
-                spacing: units.dp(8)
+                anchors.margins: Units.dp(8)
+                spacing: Units.dp(8)
 
                 Item {
                     height: childrenRect.height
@@ -67,7 +67,7 @@ Column {
                 }
 
                 Row {
-                    spacing: units.dp(10)
+                    spacing: Units.dp(10)
                     anchors {
                         left: parent.left
                         right: parent.right
@@ -76,7 +76,7 @@ Column {
                     Icon {
                         id: icon
                         name: "image/audiotrack"
-                        size: units.dp(15)
+                        size: Units.dp(15)
                     }
 
                     Label {
@@ -86,16 +86,16 @@ Column {
                         anchors.top: parent.top
                         anchors.topMargin: (icon.height - albumLabel.height)/2
 
-                        width: parent.width - icon.width - units.dp(10)
+                        width: parent.width - icon.width - Units.dp(10)
                     }
                 }
 
                 Row {
-                    spacing: units.dp(10)
+                    spacing: Units.dp(10)
 
                     Icon {
                         name: "av/album"
-                        size: units.dp(15)
+                        size: Units.dp(15)
 
                         anchors.verticalCenter: parent.verticalCenter
                     }
@@ -113,7 +113,7 @@ Column {
                 Row {
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    spacing: units.dp(10)
+                    spacing: Units.dp(10)
                     opacity: playbackStatus == "Stopped" ? 0 : 1
                     height: playbackStatus == "Stopped" ? 0 : playPauseBtn.height
 

@@ -35,20 +35,20 @@ View {
         top: parent.top
         bottom: parent.bottom
 
-        rightMargin: showing ? 0 : -width - units.dp(5)
+        rightMargin: showing ? 0 : -width - Units.dp(5)
 
         Behavior on rightMargin {
             NumberAnimation { duration: 200 }
         }
     }
 
-    width: units.dp(275)
+    width: Units.dp(275)
 
     property var widgets: ["Music"]
 
     View {
         id: view
-        height: label.height + units.dp(16)
+        height: label.height + Units.dp(16)
         width: parent.width
         backgroundColor: "#fafafa"
         z: 10
@@ -59,15 +59,15 @@ View {
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
-                leftMargin: units.dp(16)
-                rightMargin: units.dp(16)
+                leftMargin: Units.dp(16)
+                rightMargin: Units.dp(16)
             }
 
             text:  Qt.formatDateTime(now, "dddd',<br>'MMMM d'<sup>%1</sup>'"
                     .arg(Utils.nth(now.getDate())))
 
             style: "title"
-            font.pixelSize: units.dp(30)
+            font.pixelSize: Units.dp(30)
             textFormat: Text.RichText
         }
     }
@@ -78,7 +78,7 @@ View {
             left: parent.left
             right: parent.right
             bottom: silentMode.bottom
-            topMargin: units.dp(16)
+            topMargin: Units.dp(16)
         }
         z: 5
         contentHeight: widgetCol.height
@@ -98,7 +98,7 @@ View {
                     anchors {
                         left: parent.left
                         right: parent.right
-                        margins: units.dp(16)
+                        margins: Units.dp(16)
                     }
                 }
             }
@@ -109,7 +109,7 @@ View {
         id: silentMode
 
         anchors.bottom: parent.bottom
-        height: units.dp(46)
+        height: Units.dp(46)
         width: parent.width
         color: "#fafafa"
         z: 10
@@ -119,10 +119,10 @@ View {
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
-                margins: units.dp(16)
+                margins: Units.dp(16)
             }
 
-            height: units.dp(30)
+            height: Units.dp(30)
 
             Label {
                 anchors.verticalCenter: parent.verticalCenter

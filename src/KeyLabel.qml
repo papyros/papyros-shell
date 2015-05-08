@@ -22,12 +22,12 @@ import Material 0.1
 Rectangle {
     color: showBorder ? "#fafafa" : "transparent"
     border.color: showBorder ? "#ddd" : "transparent"
-    radius: units.dp(2)
+    radius: Units.dp(2)
 
     property alias text: label.text
 
-    width: text.lenth == 1 ? units.dp(20) : label.width + units.dp(8)
-    height: label.height + units.dp(8)
+    width: text.length == 1 ? Units.dp(20) : label.width + Units.dp(8)
+    height: label.height + Units.dp(8)
 
     property bool showBorder: true
 

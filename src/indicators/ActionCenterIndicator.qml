@@ -37,12 +37,12 @@ Indicator {
 
     view: Item {
         implicitHeight: width
-        implicitWidth: units.dp(350)
+        implicitWidth: Units.dp(350)
 
         Column {
             id: iconsColumn
 
-            width: units.dp(50)
+            width: Units.dp(50)
 
             anchors {
                 left: parent.left
@@ -59,7 +59,7 @@ Indicator {
 
                     Icon {
                         name: modelData.iconName
-                        size: units.dp(24)
+                        size: Units.dp(24)
                         color: selectedView == modelData
                                 ? Theme.light.accentColor : Theme.light.textColor
                         anchors.centerIn: parent
@@ -75,7 +75,7 @@ Indicator {
 
         Rectangle {
             id: divider
-            width: units.dp(1)
+            width: Units.dp(1)
 
             anchors {
                 left: iconsColumn.right

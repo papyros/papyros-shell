@@ -27,8 +27,8 @@ import "../../components"
 * The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.
 */
 Item {
-    width: units.dp(500)
-    height: units.dp(400)
+    width: Units.dp(500)
+    height: Units.dp(400)
 
     anchors {
         leftMargin: showing ? 0 : -width
@@ -44,7 +44,7 @@ Item {
 
     Rectangle {
         color: Qt.rgba(1, 1, 1, 0.95)
-        radius: units.dp(5)
+        radius: Units.dp(5)
 
         anchors {
             left: parent.left

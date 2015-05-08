@@ -107,7 +107,7 @@ MainView {
         anchors.centerIn: parent
 
         opacity: 0
-        spacing: units.dp(15)
+        spacing: Units.dp(15)
 
         ProgressCircle {
             color: "white"
@@ -137,7 +137,7 @@ MainView {
         opacity: 0
 
         Icon {
-            size: units.dp(100)
+            size: Units.dp(100)
             name: "alert/warning"
             color: "white"
 
@@ -146,7 +146,7 @@ MainView {
 
         Item {
             width: parent.width
-            height: units.dp(20)
+            height: Units.dp(20)
         }
 
         Label {
@@ -158,7 +158,7 @@ MainView {
 
         Item {
             width: parent.width
-            height: units.dp(20)
+            height: Units.dp(20)
         }
 
         Label {
@@ -176,7 +176,7 @@ MainView {
 
         Item {
             width: parent.width
-            height: units.dp(10)
+            height: Units.dp(10)
         }
 
         Label {

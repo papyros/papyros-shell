@@ -21,10 +21,10 @@ import Material 0.1
 View {
     anchors.centerIn: parent
 
-    width: units.dp(500)
-    height: units.dp(350)
+    width: Units.dp(500)
+    height: Units.dp(350)
     elevation: 2
-    radius: units.dp(2)
+    radius: Units.dp(2)
 
     opacity: shell.state == "help" ? 1 : 0
 
@@ -44,14 +44,14 @@ View {
 
     Item {
         id: actionBar
-        height: units.dp(64)
+        height: Units.dp(64)
 
         anchors {
             left: parent.left
             right: parent.right
             top: parent.top
-            leftMargin: units.dp(20)
-            rightMargin: units.dp(20)
+            leftMargin: Units.dp(20)
+            rightMargin: Units.dp(20)
         }
 
         IconButton {
@@ -84,10 +84,10 @@ View {
             right: parent.right
             top: actionBar.bottom
             bottom: parent.bottom
-            margins: units.dp(20)
+            margins: Units.dp(20)
         }
 
-        spacing: units.dp(16)
+        spacing: Units.dp(16)
 
         Repeater {
             model: Object.keys(shortcuts)
@@ -108,7 +108,7 @@ View {
                         }
                     }
 
-                    width: units.dp(100)
+                    width: Units.dp(100)
 
                     anchors.verticalCenter: parent.verticalCenter
                 }

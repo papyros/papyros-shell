@@ -27,13 +27,13 @@ PopupBase {
 
         anchors.centerIn: parent
 
-        width: parent.width - units.dp(32)
+        width: parent.width - Units.dp(32)
         color: Theme.dark.textColor
     }
 
-    width: label.implicitWidth + units.dp(32)
-    height: label.implicitHeight + units.dp(24)
-    radius: units.dp(2)
+    width: label.implicitWidth + Units.dp(32)
+    height: label.implicitHeight + Units.dp(24)
+    radius: Units.dp(2)
 
     property alias text: label.text
 

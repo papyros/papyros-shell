@@ -34,14 +34,14 @@ View {
         top: parent.top
         bottom: parent.bottom
 
-        rightMargin: showing ? 0 : -width - units.dp(5)
+        rightMargin: showing ? 0 : -width - Units.dp(5)
 
         Behavior on rightMargin {
             NumberAnimation { duration: 200 }
         }
     }
 
-    width: units.dp(275)
+    width: Units.dp(275)
 
     Column {
         width: parent.width
@@ -78,10 +78,10 @@ View {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: units.dp(52 + 16)
-                    rightMargin: units.dp(16)
+                    leftMargin: Units.dp(52 + 16)
+                    rightMargin: Units.dp(16)
                     verticalCenter: parent.verticalCenter
-                    verticalCenterOffset: units.dp(2)
+                    verticalCenterOffset: Units.dp(2)
                 }
             }
         }
@@ -141,20 +141,20 @@ View {
 
     Row {
         anchors {
-            bottomMargin: units.dp(36)
+            bottomMargin: Units.dp(36)
             bottom: parent.bottom
             horizontalCenter: parent.horizontalCenter
         }
 
-        spacing: units.dp(30)
+        spacing: Units.dp(30)
 
         IconButton {
-            size: units.dp(30)
+            size: Units.dp(30)
             iconName: "action/settings"
         }
 
         IconButton {
-            size: units.dp(30)
+            size: Units.dp(30)
             iconName: "action/lock"
 
             // TODO: replace with call to Logind DBus
@@ -162,7 +162,7 @@ View {
         }
 
         IconButton {
-            size: units.dp(30)
+            size: Units.dp(30)
             iconName: "action/settings_power"
 
             onClicked: Qt.quit()

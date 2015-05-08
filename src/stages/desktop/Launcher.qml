@@ -49,7 +49,7 @@ Rectangle {
         }
     }
 
-    width: units.dp(64)
+    width: Units.dp(64)
 
     Dash {
         id: dock

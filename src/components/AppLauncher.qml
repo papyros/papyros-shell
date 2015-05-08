@@ -34,7 +34,7 @@ View {
 
     property DropDown popupMenu: DropDown {
         height: column.height
-        width: units.dp(250)
+        width: Units.dp(250)
 
         Column {
             id: column
@@ -120,7 +120,7 @@ View {
 
         anchors.centerIn: parent
 
-        width: parent.width - units.dp(24)
+        width: parent.width - Units.dp(24)
         height: width * sourceSize.height/sourceSize.width
 
         mipmap: true
@@ -170,7 +170,7 @@ View {
             NumberAnimation { duration: 200 }
         }
 
-        height: units.dp(2)
+        height: Units.dp(2)
         color: config.layout == "classic" ? "white" : Theme.secondaryColor
     }
 

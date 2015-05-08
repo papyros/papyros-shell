@@ -26,8 +26,8 @@ GridView {
 	boundsBehavior: Flickable.StopAtBounds
 	model: desktopScrobbler.desktopFiles
 	delegate: Item {
-	   	width: units.dp(100)
-	   	height: units.dp(100)
+	   	width: Units.dp(100)
+	   	height: Units.dp(100)
 
 		Ink {
 			anchors.fill: parent
@@ -36,13 +36,13 @@ GridView {
 
 		Column {
 			anchors.centerIn: parent
-			spacing: units.dp(8)
-			width: parent.width - units.dp(16)
+			spacing: Units.dp(8)
+			width: parent.width - Units.dp(16)
 
 			AppIcon {
 				anchors.horizontalCenter: parent.horizontalCenter
-				height: units.dp(40)
-				width: units.dp(40)
+				height: Units.dp(40)
+				width: Units.dp(40)
 				iconName: edit.iconName
 	            name: edit.name
 			}
@@ -57,6 +57,6 @@ GridView {
 		}
 	}
        
-    cellWidth: units.dp(100)
-	cellHeight: units.dp(100)
+    cellWidth: Units.dp(100)
+	cellHeight: Units.dp(100)
 }

@@ -47,7 +47,7 @@ Indicator {
 
         Column {
             anchors.centerIn: parent
-            spacing: units.dp(8)
+            spacing: Units.dp(8)
             visible: indicator.operations.length == 0
 
             Icon {
@@ -77,8 +77,8 @@ Indicator {
                         radius: width/2
                         Icon {
                             anchors.centerIn: parent
-                            //anchors.horizontalCenterOffset: units.gu(0.1)
-                            size: units.dp(27)
+                            //anchors.horizontalCenterOffset: Units.gu(0.1)
+                            size: Units.dp(27)
                             name: modelData.icon
                             color: "white"
                         }

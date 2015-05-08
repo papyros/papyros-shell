@@ -24,7 +24,7 @@ Rectangle {
     property bool showing
     property Item caller
     property int offset
-    property var padding: units.dp(16)
+    property var padding: Units.dp(16)
     property var side
 
     color: "transparent"

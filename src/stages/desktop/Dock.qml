@@ -26,12 +26,12 @@ import "../../components"
 */
 Item {
     anchors {
-        bottomMargin: units.dp(3)
+        bottomMargin: Units.dp(3)
         bottom: parent.bottom
         horizontalCenter: parent.horizontalCenter
     }
 
-    height: units.dp(64)
+    height: Units.dp(64)
     width: row.width
 
     Rectangle {
@@ -39,13 +39,13 @@ Item {
             bottom: parent.bottom
             left: parent.left
             right: parent.right
-            leftMargin: units.dp(-3)
-            rightMargin: units.dp(-3)
-            bottomMargin: units.dp(-8)
+            leftMargin: Units.dp(-3)
+            rightMargin: Units.dp(-3)
+            bottomMargin: Units.dp(-8)
         }
 
-        radius: units.dp(3)
-        height: units.dp(8)
+        radius: Units.dp(3)
+        height: Units.dp(8)
     }
 
     Row {
@@ -76,13 +76,13 @@ Item {
                 Grid {
                     anchors.centerIn: parent
                     columns: 3
-                    columnSpacing: units.dp(3)
-                    rowSpacing: units.dp(3)
+                    columnSpacing: Units.dp(3)
+                    rowSpacing: Units.dp(3)
                     Repeater {
                         model: 6
                         Rectangle {
                             color: Theme.light.iconColor
-                            width: units.dp(5)
+                            width: Units.dp(5)
                             height: width
                             radius: width/2
                         }

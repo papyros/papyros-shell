@@ -29,7 +29,7 @@ View {
     property Indicator selectedIndicator
 
     backgroundColor: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0.2, 0.2, 0.2, 1)
-    height: units.dp(56)
+    height: Units.dp(56)
 
     Behavior on backgroundColor {
         ColorAnimation { duration: 300 }
@@ -51,7 +51,7 @@ View {
 
         IndicatorView {
             width: height
-            iconSize: units.dp(24)
+            iconSize: Units.dp(24)
             indicator: AppDrawer {
                 id: appDrawer
             }
@@ -90,7 +90,7 @@ View {
             right: parent.right
             top: parent.top
             bottom: parent.bottom
-            rightMargin: units.dp(16)
+            rightMargin: Units.dp(16)
         }
 
         IndicatorView {

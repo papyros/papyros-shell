@@ -33,7 +33,7 @@ Item {
             right: parent.right
             top: parent.top
             bottom: parent.bottom
-            margins: units.dp(16)
+            margins: Units.dp(16)
         }
 
         opacity: panel.selectedIndicator ? 0 : 1
@@ -42,7 +42,7 @@ Item {
           NumberAnimation { duration: 200 }
         }
 
-        width: units.dp(280)
+        width: Units.dp(280)
 
         verticalLayoutDirection: config.layout == "classic"
                                  ? ListView.BottomToTop : ListView.TopToBottom 
@@ -51,7 +51,7 @@ Item {
 
         model: notifyView.notifications
 
-        spacing: units.dp(16)
+        spacing: Units.dp(16)
 
         delegate: NotificationCard {
             notification: model
@@ -60,7 +60,7 @@ Item {
         add: Transition {
             SequentialAnimation {
                 // Make sure the card is completely off-screen at the start of the animation
-                PropertyAction { properties: "y"; value: units.dp(20) }
+                PropertyAction { properties: "y"; value: Units.dp(20) }
 
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; from: 0; duration: animationDuration }

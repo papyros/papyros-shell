@@ -33,31 +33,31 @@ Item {
 
 	View {
 		elevation: 2
-		radius: units.dp(5)
+		radius: Units.dp(5)
 
 		anchors {
 			left: parent.left
 			right: parent.right
 			bottom: parent.bottom
-			bottomMargin: units.dp(-5)
+			bottomMargin: Units.dp(-5)
 		}
 
-		height: units.dp(25)
+		height: Units.dp(25)
 
 		backgroundColor: "white"
 	}
 
-	height: units.dp(64)
-	width: units.dp(600)
+	height: Units.dp(64)
+	width: Units.dp(600)
 
 	Row {
 		anchors {
 			verticalCenter: parent.verticalCenter
 			left: parent.left
-			leftMargin: units.dp(16)
+			leftMargin: Units.dp(16)
 		}
 
-		spacing: units.dp(24)
+		spacing: Units.dp(24)
 
 		Repeater {
 			model: ["play_music", "google-inbox"]

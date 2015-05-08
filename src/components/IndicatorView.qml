@@ -27,14 +27,14 @@ View {
 
     height: parent.height
     width: smallMode ? indicator.text ? label.width + (height - label.height) : height
-                     : indicator.text ? label.width + (units.dp(30) - label.height) : units.dp(30)
+                     : indicator.text ? label.width + (Units.dp(30) - label.height) : Units.dp(30)
 
     visible: !indicator.hidden && indicator.visible
 
-    property bool smallMode: height < units.dp(40)
+    property bool smallMode: height < Units.dp(40)
     property Indicator indicator
 
-    property int iconSize: height > units.dp(40) ? height * 0.36 : height * 0.45
+    property int iconSize: height > Units.dp(40) ? height * 0.36 : height * 0.45
 
     onIndicatorChanged: indicator.selected = Qt.binding(function() {
         return indicator == selectedIndicator
@@ -82,7 +82,7 @@ View {
         anchors.centerIn: parent
         text: indicator.text
         color: Theme.dark.textColor
-        font.pixelSize: units.dp(14)
+        font.pixelSize: Units.dp(14)
     }
 
     Rectangle {
@@ -92,7 +92,7 @@ View {
             bottom: parent.bottom
         }
 
-        height: units.dp(2)
+        height: Units.dp(2)
         color: Theme.dark.accentColor
 
         opacity: indicator.selected ? 1 : 0
@@ -106,7 +106,7 @@ View {
         id: dropdown
 
         height: content.implicitHeight
-        width: content.implicitWidth > 0 ? content.implicitWidth : units.dp(300)
+        width: content.implicitWidth > 0 ? content.implicitWidth : Units.dp(300)
 
         Loader {
             id: content

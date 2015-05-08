@@ -38,7 +38,7 @@ Calendar {
 
 
         navigationBar: RowLayout {
-            height: units.dp(40)
+            height: Units.dp(40)
 
             Item {
                 anchors.left:parent.left
@@ -83,7 +83,7 @@ Calendar {
         }
 
         dayOfWeekDelegate: Rectangle {
-            height: units.dp(30)
+            height: Units.dp(30)
             Label {
                 text: getDay(styleData.dayOfWeek).substring(0, 1)
                 anchors.centerIn: parent

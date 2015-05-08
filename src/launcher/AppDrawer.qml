@@ -32,7 +32,7 @@ Indicator {
     tooltip: "Applications"
 
     view: Item {
-        implicitHeight: units.dp(360)
+        implicitHeight: Units.dp(360)
 
         Rectangle {
             id: container
@@ -50,8 +50,8 @@ Indicator {
             	anchors {
             	    left: parent.left
             	    right: parent.right
-            	    leftMargin: units.dp(10)
-            	    rightMargin: units.dp(10)
+            	    leftMargin: Units.dp(10)
+            	    rightMargin: Units.dp(10)
             	}
 
             	onTextChanged: {

@@ -41,7 +41,7 @@ Rectangle {
             left: parent.left
             right: parent.right
             top: parent.top
-            margins: units.dp(20)
+            margins: Units.dp(20)
         }
 
         IconButton {
@@ -59,7 +59,7 @@ Rectangle {
         Label {
             anchors {
                 left: backIcon.right
-                leftMargin: units.dp(20)
+                leftMargin: Units.dp(20)
                 verticalCenter: parent.verticalCenter
             }
 
@@ -76,33 +76,33 @@ Rectangle {
                 verticalCenter: parent.verticalCenter
             }
 
-            spacing: units.dp(20)
+            spacing: Units.dp(20)
 
             Label {
                 text: Qt.formatTime(now)
                 color: Theme.light.iconColor
-                font.pixelSize: units.dp(16)
+                font.pixelSize: Units.dp(16)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             Icon {
                 name: "device/signal_wifi_3_bar"
-                size: units.dp(20)
+                size: Units.dp(20)
             }
 
             Icon {
                 name: sound.iconName
-                size: units.dp(20)
+                size: Units.dp(20)
             }
 
             Icon {
                 name: upower.deviceIcon(upower.primaryDevice)
-                size: units.dp(20)
+                size: Units.dp(20)
             }
 
             Icon {
                 name: "awesome/power_off"
-                size: units.dp(20)
+                size: Units.dp(20)
                 color: "gray"
             }
         }

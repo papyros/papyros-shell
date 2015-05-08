@@ -75,13 +75,13 @@ Item {
         anchors {
             right: parent.right
             bottom: parent.bottom
-            margins: units.dp(20)
+            margins: Units.dp(20)
         }
 
-        width: row.width + units.dp(24)
-        height: row.height + units.dp(24)
+        width: row.width + Units.dp(24)
+        height: row.height + Units.dp(24)
 
-        radius: units.dp(2)
+        radius: Units.dp(2)
         elevation: 2
 
         Row {
@@ -89,32 +89,32 @@ Item {
 
             anchors.centerIn: parent
 
-            spacing: units.dp(16)
+            spacing: Units.dp(16)
 
             Label {
                 text: Qt.formatTime(now)
-                font.pixelSize: units.dp(16)
+                font.pixelSize: Units.dp(16)
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             Icon {
                 name: "device/signal_wifi_3_bar"
-                size: units.dp(20)
+                size: Units.dp(20)
             }
 
             Icon {
                 name: "av/volume_up"
-                size: units.dp(20)
+                size: Units.dp(20)
             }
 
             Icon {
                 name: upower.deviceIcon(upower.primaryDevice)
-                size: units.dp(20)
+                size: Units.dp(20)
             }
 
             Icon {
                 name: "awesome/power_off"
-                size: units.dp(20)
+                size: Units.dp(20)
                 color: "gray"
             }
         }
@@ -125,22 +125,22 @@ Item {
 
         anchors.centerIn: parent
 
-        width: units.dp(240)
-        height: units.dp(260)
+        width: Units.dp(240)
+        height: Units.dp(260)
 
-        radius: units.dp(2)
+        radius: Units.dp(2)
         elevation: 2
 
         CircleImage {
             id: image
 
             source: Qt.resolvedUrl("../images/face.jpg")
-            width: units.dp(80)
+            width: Units.dp(80)
             height: width
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 top: parent.top
-                topMargin: units.dp(45)
+                topMargin: Units.dp(45)
             }
 
             Rectangle {
@@ -160,7 +160,7 @@ Item {
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 top: image.bottom
-                topMargin: units.dp(20)
+                topMargin: Units.dp(20)
             }
         }
 
@@ -169,13 +169,13 @@ Item {
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
-                margins: units.dp(20)
+                margins: Units.dp(20)
             }
 
             floatingLabel: true
             placeholderText: "Password"
 
-            input.echoMode: TextInput.Password
+            echoMode: TextInput.Password
 
             onAccepted: shell.state = "default"
         }

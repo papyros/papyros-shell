@@ -37,7 +37,7 @@ Indicator {
                 width: parent.width
                 value: 0.25
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.verticalCenterOffset: units.dp(7)
+                anchors.verticalCenterOffset: Units.dp(7)
             }
 
             showDivider: true

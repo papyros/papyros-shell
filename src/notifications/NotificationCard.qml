@@ -25,27 +25,27 @@ View {
 
     property var notification
 
-    radius: units.dp(2)
+    radius: Units.dp(2)
     elevation: 3
 
     clipContent: false
 
     width: parent.width
     height: mouseArea.containsMouse && notification.text
-            ? column.height + units.dp(32) : units.dp(70)
+            ? column.height + Units.dp(32) : Units.dp(70)
 
     MouseArea {
         id: mouseArea
 
         anchors.fill: parent
-        anchors.margins: -units.dp(10)
+        anchors.margins: -Units.dp(10)
         hoverEnabled: true
 
         Rectangle {
             anchors.top: parent.top
             anchors.left: parent.left
 
-            width: units.dp(30)
+            width: Units.dp(30)
             height: width
             radius: width/2
 
@@ -61,7 +61,7 @@ View {
                 iconName: "navigation/close"
                 anchors.centerIn: parent
                 color: "white"
-                size: units.dp(16)
+                size: Units.dp(16)
 
                 onClicked: {
                     print("Closing...")
@@ -77,15 +77,15 @@ View {
 
         anchors {
             left: parent.left
-            leftMargin: units.dp(16)
+            leftMargin: Units.dp(16)
             verticalCenter: parent.verticalCenter
         }
 
         height: width
-        width: units.dp(40)
+        width: Units.dp(40)
 
         Icon {
-            size: units.dp(36)
+            size: Units.dp(36)
             anchors.centerIn: parent
             name: notification.iconName
         }
@@ -96,10 +96,10 @@ View {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: units.dp(72)
-        anchors.margins: units.dp(16)
+        anchors.leftMargin: Units.dp(72)
+        anchors.margins: Units.dp(16)
 
-        spacing: units.dp(8)
+        spacing: Units.dp(8)
 
         Label {
             style: "subheading"

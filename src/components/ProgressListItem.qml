@@ -22,7 +22,7 @@ import Material.ListItems 0.1
 BaseListItem {
         id: listItem
 
-        height: units.dp(72)
+        height: Units.dp(72)
 
         property alias text: label.text
 
@@ -42,7 +42,7 @@ BaseListItem {
                 }
 
                 height: width
-                width: units.dp(40)
+                width: Units.dp(40)
         }
 
         dividerInset: actionItem.children.length == 0 ? 0 : listItem.height
@@ -53,10 +53,10 @@ BaseListItem {
             left: parent.left
             right: parent.right
             rightMargin: listItem.margins
-            leftMargin: actionItem.children.length == 0 ? listItem.margins : listItem.margins + units.dp(56)
+            leftMargin: actionItem.children.length == 0 ? listItem.margins : listItem.margins + Units.dp(56)
         }
 
-        spacing: units.dp(3)
+        spacing: Units.dp(3)
 
         Item {
             width: parent.width
@@ -77,7 +77,7 @@ BaseListItem {
                 color: Theme.light.subTextColor
                 elide: Text.ElideRight
                 anchors.left: label.right
-                anchors.leftMargin: units.dp(16)
+                anchors.leftMargin: Units.dp(16)
                 anchors.right: parent.right
                 horizontalAlignment: Text.AlignRight
 
@@ -95,7 +95,7 @@ BaseListItem {
 
         Item {
             width: parent.width
-            height: progressBar.height > 0 ? units.dp(20) : 0
+            height: progressBar.height > 0 ? Units.dp(20) : 0
 
             ProgressBar {
                 id: progressBar

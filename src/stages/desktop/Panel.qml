@@ -28,7 +28,7 @@ View {
     property Indicator selectedIndicator
 
     //backgroundColor: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0.2, 0.2, 0.2, 1)
-    height: units.dp(40)
+    height: Units.dp(40)
     //elevation: 2
 
     Behavior on backgroundColor {
@@ -46,10 +46,10 @@ View {
             left: parent.left
             top: parent.top
             bottom: parent.bottom
-            leftMargin: units.dp(14)
+            leftMargin: Units.dp(14)
         }
 
-        spacing: units.dp(12)
+        spacing: Units.dp(12)
 
         Repeater {
             model: ["communication/email", "hardware/headset", "file/file_download", "image/image"]
@@ -79,7 +79,7 @@ View {
             right: parent.right
             top: parent.top
             bottom: parent.bottom
-            rightMargin: units.dp(14)
+            rightMargin: Units.dp(14)
         }
 
         Repeater {

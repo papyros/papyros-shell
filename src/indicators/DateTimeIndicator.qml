@@ -29,19 +29,19 @@ Indicator {
     view: Item {
         id: dropdown
 
-        implicitHeight: titleItem.height + subItem.height + calendar.height + units.dp(32)
+        implicitHeight: titleItem.height + subItem.height + calendar.height + Units.dp(32)
 
         Item {
             id: titleItem
 
             width: parent.width
-            height: dayLabel.height + units.dp(16)
+            height: dayLabel.height + Units.dp(16)
             clip: true
 
             Rectangle {
                 width: parent.width
                 height: dropdown.height
-                radius: units.dp(2)
+                radius: Units.dp(2)
 
                 color: Palette.colors[config.accentColor]['700']
             }
@@ -59,7 +59,7 @@ Indicator {
             anchors.top: titleItem.bottom
 
             width: parent.width
-            height: column.height + units.dp(32)
+            height: column.height + Units.dp(32)
             color: Palette.colors[config.accentColor]['500']
 
             Column {
@@ -71,7 +71,7 @@ Indicator {
                     text: Qt.formatDate(now, "MMM").toUpperCase()
                     style: "title"
                     color: Theme.dark.textColor
-                    font.pixelSize: units.dp(27)
+                    font.pixelSize: Units.dp(27)
                 }
 
                 Label {
@@ -86,7 +86,7 @@ Indicator {
                     text: Qt.formatDate(now, "yyyy")
                     style: "title"
                     color: Theme.dark.subTextColor
-                    font.pixelSize: units.dp(27)
+                    font.pixelSize: Units.dp(27)
                 }
             }
         }
@@ -97,7 +97,7 @@ Indicator {
                 top: subItem.bottom
                 left: parent.left
                 right: parent.right
-                margins: units.dp(16)
+                margins: Units.dp(16)
             }
 
             frameVisible: false

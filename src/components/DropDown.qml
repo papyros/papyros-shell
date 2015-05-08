@@ -22,7 +22,7 @@ import "."
 PopupBase {
     id: popover
 
-    implicitWidth: units.dp(300)
+    implicitWidth: Units.dp(300)
 
     width: implicitWidth
     height: implicitHeight
@@ -33,7 +33,7 @@ PopupBase {
         id: container
 
         elevation: 2
-        radius: units.dp(2)
+        radius: Units.dp(2)
 
         opacity: showing ? 1 : 0
         visible: opacity > 0
