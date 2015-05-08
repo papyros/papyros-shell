@@ -36,7 +36,7 @@ Item {
 
     // FIXME: Size depends on DPIs
     width: type == Item.Top || type == Item.Bottom ||
-            type == Item.Left || type == Item.Right ? units.dp(64) : units.dp(80)
+            type == Item.Left || type == Item.Right ? Units.dp(64) : Units.dp(80)
     height: width
 
     QtObject {
@@ -132,8 +132,8 @@ Item {
 
         anchors.centerIn: parent
 
-        width: units.dp(5)
-        height: units.dp(5)
+        width: Units.dp(5)
+        height: Units.dp(5)
         acceptedButtons: Qt.NoButton
         hoverEnabled: true
         onExited: {

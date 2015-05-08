@@ -2,7 +2,8 @@ import QtQuick 2.4
 import Material 0.1
 import Material.Extras 0.1
 import GreenIsland 1.0
-import "WindowManagement.js" as WindowManagement
+import GreenIsland.Desktop 1.0
+import "../components"
 
 /*
  * The desktop consists of multiple workspaces, one of which is shown at a time. The desktop
@@ -17,27 +18,22 @@ Item {
 
     property bool expanded: shell.state == "exposed"
 
-    property Workspace currentWorksace: listView.currentItem
-
-    VisualItemModel {
-        id: workspaces
-
-        Workspace { index: 0 }
-
-        Workspace { id: workspace1; index: 1 }
-    }
-
     property real verticalOffset: height * 0.1
     property real horizontalOffset: width * 0.1
 
-    function switchToWorkspace(workspace) {
-        print("Switching to index: ", workspace, listView.currentIndex)
+    WindowManager {
+        id: windowManager
+        anchors.fill: parent
 
-        if (workspace == listView.currentIndex) {
-            print("Switching to default!")
-            shell.state = "default"
-        } else {
-            listView.currentIndex = workspace
+        onSelectWorkspace: {
+            print("Switching to index: ", workspace, listView.currentIndex)
+
+            if (workspace == listView.currentIndex) {
+                print("Switching to default!")
+                shell.state = "default"
+            } else {
+                listView.currentIndex = workspace
+            }
         }
     }
 
@@ -85,7 +81,40 @@ Item {
             NumberAnimation { duration: 300 }
         }
 
-        model: workspaces
+        model: 2
+        delegate: View {
+            elevation: 5
+            width: listView.width
+            height: listView.height
+
+            CrossFadeImage {
+                id: wallpaper
+
+                anchors.fill: parent
+
+                fadeDuration: 500
+                fillMode: Image.Stretch
+
+                source: {
+                    var filename = wallpaperSetting.pictureUri
+
+                    if (filename.indexOf("xml") != -1) {
+                        // We don't support GNOME's time-based wallpapers. Default to our default wallpaper
+                        return Qt.resolvedUrl("../images/papyros_wallpaper.png")
+                    } else {
+                        return filename
+                    }
+                }
+            }
+
+            Workspace {
+                id: workspace
+                isCurrentWorkspace: ListView.currentItem == workspace
+
+                scale: parent.width/width
+                anchors.centerIn: parent
+            }
+        }
     }
 
     HotCorners {
@@ -98,64 +127,6 @@ Item {
                 shell.state = "default"
             else
                 shell.state = "exposed"
-        }
-    }
-
-    // ===== Window Management =====
-
-    property var activeWindow: null
-
-    readonly property alias surfaceModel: surfaceModel
-    readonly property int activeWindowIndex: WindowManagement.getActiveWindowIndex()
-    readonly property var windowList: WindowManagement.windowList
-
-    ListModel {
-        id: surfaceModel
-    }
-
-    // Code taken from Hawii desktop shell
-    Connections {
-        target: compositor
-
-        onWindowMapped: {
-            // A window was mapped
-            WindowManagement.windowMapped(window);
-        }
-        onWindowUnmapped: {
-            // A window was unmapped
-            WindowManagement.windowUnmapped(window);
-        }
-        onWindowDestroyed: {
-            // A window was unmapped
-            WindowManagement.windowDestroyed(id);
-        }
-        onShellWindowMapped: {
-            // A shell window was mapped
-            WindowManagement.shellWindowMapped(window);
-        }
-    }
-
-    /*
-    * Methods
-    */
-
-    function moveFront(window) {
-        return WindowManagement.moveFront(window);
-    }
-
-    function enableInput() {
-        var i;
-        for (i = 0; i < compositorRoot.surfaceModel.count; i++) {
-            var window = compositorRoot.surfaceModel.get(i).item;
-            window.child.focus = true;
-        }
-    }
-
-    function disableInput() {
-        var i;
-        for (i = 0; i < compositorRoot.surfaceModel.count; i++) {
-            var window = compositorRoot.surfaceModel.get(i).item;
-            window.child.focus = false;
         }
     }
 }
