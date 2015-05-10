@@ -87,6 +87,7 @@ View {
                     } else if (windowPreview.showing) {
                         windowPreview.close()
                         delayCloseTimer.restart()
+                        previewTimer.stop()
                     }
                 }               
 

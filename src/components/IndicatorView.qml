@@ -68,6 +68,8 @@ View {
             else
                 selectedIndicator = indicator
         }
+
+        onContainsMouseChanged: desktop.updateTooltip(indicatorView, containsMouse)
     }
 
     Icon {

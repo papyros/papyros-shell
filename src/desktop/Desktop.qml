@@ -170,4 +170,19 @@ Item {
         objectName: "desktopTooltipOverlayLayer"
         z: 100
     }
+
+    function updateTooltip(indicator, containsMouse) {
+        if (containsMouse) {
+            if (indicator.indicator.tooltip) {
+                tooltip.text =indicator.indicator.tooltip
+                tooltip.open(indicator, 0, Units.dp(16))
+            }
+        } else if (tooltip.showing) {
+            tooltip.close()
+        }
+    }
+
+    Tooltip {
+        id: tooltip
+    }
 }
