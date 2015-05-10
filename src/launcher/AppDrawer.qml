@@ -47,20 +47,22 @@ Indicator {
 
                 placeholderText: "Search"
 
-            	anchors {
-            	    left: parent.left
-            	    right: parent.right
-            	    leftMargin: Units.dp(10)
-            	    rightMargin: Units.dp(10)
-            	}
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    leftMargin: Units.dp(8)
+                    rightMargin: Units.dp(8)
+                    topMargin: Units.dp(8)
+                }
 
-            	onTextChanged: {
-           		    var possibleIndex = desktopScrobbler.indexOfName(text)
+                onTextChanged: {
+                    var possibleIndex = desktopScrobbler.indexOfName(text)
 
-           			if (possibleIndex != -1) {
+                    if (possibleIndex != -1) {
                         mainLoader.item.currentIndex = possibleIndex
-            		}
-        	    }
+                    }
+                }
             }
         }
 

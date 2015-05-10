@@ -21,42 +21,45 @@ import Material 0.1
 import "../components"
 
 GridView {
-	z: 5
-	clip: true
-	boundsBehavior: Flickable.StopAtBounds
-	model: desktopScrobbler.desktopFiles
-	delegate: Item {
-	   	width: Units.dp(100)
-	   	height: Units.dp(100)
+    z: 5
+    clip: true
+    boundsBehavior: Flickable.StopAtBounds
+    model: desktopScrobbler.desktopFiles
+    delegate: Item {
+        width: Units.dp(100)
+        height: Units.dp(100)
 
-		Ink {
-			anchors.fill: parent
-			onClicked: edit.launch()
-		}
+        Ink {
+            anchors.fill: parent
+            onClicked: {
+                edit.launch()
+                selectedIndicator = null
+            }
+        }
 
-		Column {
-			anchors.centerIn: parent
-			spacing: Units.dp(8)
-			width: parent.width - Units.dp(16)
+        Column {
+            anchors.centerIn: parent
+            spacing: Units.dp(8)
+            width: parent.width - Units.dp(16)
 
-			AppIcon {
-				anchors.horizontalCenter: parent.horizontalCenter
-				height: Units.dp(40)
-				width: Units.dp(40)
-				iconName: edit.iconName
-	            name: edit.name
-			}
+            AppIcon {
+                anchors.horizontalCenter: parent.horizontalCenter
+                height: Units.dp(40)
+                width: Units.dp(40)
+                iconName: edit.iconName
+                name: edit.name
+            }
 
-			Label {
-				text: edit.name
-				anchors.horizontalCenter: parent.horizontalCenter
-				width: parent.width
-				wrapMode: Text.WordWrap
-				horizontalAlignment: Text.AlignHCenter
-			}
-		}
-	}
+            Label {
+                text: edit.name
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignHCenter
+            }
+        }
+    }
        
     cellWidth: Units.dp(100)
-	cellHeight: Units.dp(100)
+    cellHeight: Units.dp(100)
 }

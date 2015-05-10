@@ -22,6 +22,7 @@ import Material.Desktop 0.1
 import "../../components"
 import "../../indicators"
 import "../../launcher"
+import "../../desktop"
 
 View {
     id: panel
@@ -61,8 +62,11 @@ View {
             model: windowManager.windows
 
             delegate: Ink {
+                id: appLauncher
                 width: parent.height
                 height: width
+
+                hoverEnabled: true
 
                 DesktopFile {
                     id: desktopFile
@@ -76,6 +80,21 @@ View {
                     width: parent.width * 0.55
                     height: width
                 }
+
+                onEntered: {
+                    windowPreview.item = item
+                    windowPreview.window = window
+                    
+                    if (!windowPreview.showing) {
+                        print("Opening")
+                        windowPreview.open(appLauncher, 0, Units.dp(8))
+                    }
+                }
+
+                onExited: {
+                    if (windowPreview.showing)
+                        windowPreview.close()
+                }               
 
                 onClicked: windowManager.moveFront(item)
 
@@ -110,5 +129,10 @@ View {
                 indicator: modelData
             }
         }
+    }
+
+    WindowTooltip {
+        id: windowPreview
+        overlayLayer: "desktopTooltipOverlayLayer"
     }
 }

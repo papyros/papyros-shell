@@ -28,13 +28,13 @@ Item {
         anchors.fill: parent
 
         onSelectWorkspace: {
-            print("Switching to index: ", workspace, listView.currentIndex)
+            print("Switching to index: ", workspace.index, listView.currentIndex)
 
             if (workspace == listView.currentIndex) {
                 print("Switching to default!")
                 shell.state = "default"
             } else {
-                listView.currentIndex = workspace
+                listView.currentIndex = workspace.index
             }
         }
     }
@@ -83,7 +83,7 @@ Item {
             NumberAnimation { duration: 300 }
         }
 
-        model: 2
+        model: 1
         delegate: View {
             elevation: 5
             width: listView.width
@@ -130,5 +130,11 @@ Item {
             else
                 shell.state = "exposed"
         }
+    }
+
+    OverlayLayer {
+        id: tooltipOverlayLayer
+        objectName: "desktopTooltipOverlayLayer"
+        z: 100
     }
 }
