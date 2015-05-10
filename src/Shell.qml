@@ -57,6 +57,8 @@ View {
     readonly property bool hasErrors: stage.status == Loader.Error
     readonly property string errorMessage: stage.sourceComponent.errorString()
 
+    property alias windowManager: desktop.windowManager
+
     property string stageName: "classic"
     property list<Indicator> indicators: [
         //NotificationsIndicator {},

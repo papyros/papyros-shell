@@ -58,16 +58,15 @@ View {
         }
 
         Repeater {
-            model: [
-            "papyros-files", "firefox", "gnome-terminal",
-            "gnome-control-center"]
+            model: windowManager.windows
+
             delegate: Ink {
                 width: parent.height
                 height: width
 
                 DesktopFile {
                     id: desktopFile
-                    appId: modelData
+                    appId: window.appId
                 }
 
                 AppIcon {
@@ -78,7 +77,15 @@ View {
                     height: width
                 }
 
-                onClicked: desktopFile.launch()
+                onClicked: windowManager.moveFront(item)
+
+                Rectangle {
+                    width: parent.width
+                    height: Units.dp(2)
+                    anchors.bottom: parent.bottom
+                    color: "white"
+                    visible: windowManager.activeWindow == item
+                }
             }
         }
     }

@@ -21,6 +21,8 @@ Item {
     property real verticalOffset: height * 0.1
     property real horizontalOffset: width * 0.1
 
+    property alias windowManager: windowManager
+
     WindowManager {
         id: windowManager
         anchors.fill: parent
