@@ -41,6 +41,7 @@ Item {
 
     property alias windowManager: windowManager
     property alias windowSwitcher: windowSwitcher
+    property alias overlayLayer: desktopOverlayLayer
 
     function switchNext() {
         windowManager.moveFront(windowManager.orderedWindows.get(1).item)
@@ -169,11 +170,18 @@ Item {
         id: tooltipOverlayLayer
         objectName: "desktopTooltipOverlayLayer"
         z: 100
+        enabled: desktopOverlayLayer.currentOverlay == null
+    }
+
+    OverlayLayer {
+        id: desktopOverlayLayer
+        z: 99
+        objectName: "desktopOverlayLayer"
     }
 
     function updateTooltip(indicator, containsMouse) {
         if (containsMouse) {
-            if (indicator.indicator.tooltip && selectedIndicator == null) {
+            if (indicator.indicator.tooltip) {
                 tooltip.text =indicator.indicator.tooltip
                 tooltip.open(indicator, 0, Units.dp(16))
             }
@@ -184,10 +192,6 @@ Item {
 
     Tooltip {
         id: tooltip
-    }
-
-    Connections {
-        target: shell
-        onSelectedIndicatorChanged: tooltip.close()
+        overlayLayer: "desktopTooltipOverlayLayer"
     }
 }

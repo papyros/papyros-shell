@@ -59,55 +59,7 @@ View {
         Repeater {
             model: windowManager.windows
 
-            delegate: View {
-                id: appLauncher
-                
-                width: parent.height
-                height: width
-
-                tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
-
-                Ink {
-                    id: ink
-                    anchors.fill: parent
-
-                    hoverEnabled: true
-
-                    onContainsMouseChanged: {
-                        if (containsMouse) {
-                            if (selectedIndicator == null)
-                                previewTimer.delayShow(appLauncher, window, item)
-                        } else if (windowPreview.showing) {
-                            windowPreview.close()
-                            delayCloseTimer.restart()
-                            previewTimer.stop()
-                        }
-                    }               
-
-                    onClicked: windowManager.moveFront(item)
-                }
-
-                DesktopFile {
-                    id: desktopFile
-                    appId: window.appId
-                }
-
-                AppIcon {
-                    iconName: desktopFile.iconName
-                    name: desktopFile.name
-                    anchors.centerIn: parent
-                    width: parent.width * 0.55
-                    height: width
-                }
-
-                Rectangle {
-                    width: parent.width
-                    height: Units.dp(2)
-                    anchors.bottom: parent.bottom
-                    color: "white"
-                    visible: windowManager.activeWindow == item
-                }
-            }
+            delegate: AppLauncher {}
         }
     }
 

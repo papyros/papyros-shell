@@ -87,8 +87,6 @@ View {
         }
     ]
 
-    property Indicator selectedIndicator
-
     property alias config: __config
 
     property alias screenInfo: __screenInfo

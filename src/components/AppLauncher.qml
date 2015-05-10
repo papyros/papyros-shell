@@ -17,24 +17,95 @@
  */
 import QtQuick 2.3
 import Material 0.1
+import Material.Desktop 0.1
 import Material.ListItems 0.1 as ListItem
 
-View {
-    id: indicator
+import "../launcher"
+import "../desktop"
 
-    property alias iconSource: icon.source
-    property string tooltip
+View {
+    id: appLauncher
+    
+    width: parent.height
+    height: width
+
+    tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
 
     signal clicked()
     signal rightClicked()
 
-    property var app
+    onClicked: windowManager.moveFront(item)
 
-    property bool focused: desktop.focusedApplication == application
+    onRightClicked: {
+        if (popupMenu) {
+            if (!popupMenu.showing) {
+                popupMenu.open(appLauncher, 0, Units.dp(16))
+            } else {
+                popupMenu.close()
+            }
+        }
+    }
 
-    property DropDown popupMenu: DropDown {
+    Ink {
+        id: ink
+        anchors.fill: parent
+
+        hoverEnabled: true
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+        onClicked: {
+            print("Clicked!")
+            if (mouse.button == Qt.RightButton)
+                appLauncher.rightClicked()
+            else
+                appLauncher.clicked()
+        }
+
+        onContainsMouseChanged: {
+            if (containsMouse) {
+                previewTimer.delayShow(appLauncher, window, item)
+            } else if (windowPreview.showing) {
+                windowPreview.close()
+                delayCloseTimer.restart()
+                previewTimer.stop()
+            }
+        }               
+    }
+
+    DesktopFile {
+        id: desktopFile
+        appId: window.appId
+    }
+
+    AppIcon {
+        iconName: desktopFile.iconName
+        name: desktopFile.name
+        anchors.centerIn: parent
+        width: parent.width * 0.55
+        height: width
+    }
+
+    Rectangle {
+        width: parent.width
+        height: Units.dp(2)
+        anchors.bottom: parent.bottom
+        color: "white"
+        visible: windowManager.activeWindow == item
+    }
+
+    Popover {
+        id: popupMenu
+
+        overlayLayer: "desktopOverlayLayer"
+
         height: column.height
         width: Units.dp(250)
+
+        View {
+            anchors.fill: parent
+            elevation: 2
+            radius: Units.dp(2)
+        }
 
         Column {
             id: column
@@ -42,11 +113,19 @@ View {
 
             ListItem.Standard {
                 text: "New Window"
+                enabled: false
                 showDivider: true
             }
 
             ListItem.Standard {
+                text: "Close window"
+                showDivider: true
+                onClicked: item.kill()
+            }
+
+            ListItem.Standard {
                 text: "Pinned to dock"
+                enabled: false
 
                 onClicked: checkbox.checked = !checkbox.checked
 
@@ -60,123 +139,5 @@ View {
                 }
             }
         }
-    }
-
-    onRightClicked: {
-        // Show the right-click menu
-
-        if (tooltip.showing)
-            tooltip.close()
-
-        if (popupMenu) {
-            if (!popupMenu.showing) {
-                popupMenu.open(indicator)
-            } else {
-                popupMenu.close()
-            }
-        }
-    }
-
-    onClicked: {
-        // If the application is open,
-        if (app.windows.count > 0) {
-            print("App is open")
-        	if (focused) {
-                print("Spreading windows...")
-        		// Window spread!
-                desktop.spread(app.windows)
-        	} else {
-        		// Focus the application
-                    print("Focusing the app...")
-        	}
-        } else {
-        	// Launch the application
-            print ("Launching the app")
-        }
-    }
-
-    opacity: screenLocked ? 0 : 1
-
-    height: parent.height
-    width: height
-
-    backgroundColor: "transparent"
-    tintColor: mouseArea.containsMouse ? Qt.rgba(0,0,0,0.2) : "transparent"
-
-    Behavior on opacity {
-        NumberAnimation {
-            duration: 250
-        }
-    }
-
-    Behavior on width {
-        NumberAnimation {
-            duration: 250
-        }
-    }
-
-    Image {
-        id: icon
-
-        anchors.centerIn: parent
-
-        width: parent.width - Units.dp(24)
-        height: width * sourceSize.height/sourceSize.width
-
-        mipmap: true
-    }
-
-    MouseArea {
-        id: mouseArea
-
-        anchors.fill: parent
-        onClicked: {
-            print("Clicked!")
-            if (mouse.button == Qt.RightButton)
-                indicator.rightClicked()
-            else
-                indicator.clicked()
-        }
-
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-        hoverEnabled: true
-
-        onContainsMouseChanged: {
-            if (!tooltip.text) return
-
-            if (containsMouse) {
-                if (!tooltip.showing)
-                    tooltip.open(indicator)
-            } else {
-                if (tooltip.showing)
-                    tooltip.close()
-            }
-        }
-    }
-
-    Rectangle {
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-
-            //bottomMargin: selected ? 0 : -height
-        }
-
-        opacity: focused ? 1 : 0
-
-        Behavior on opacity {
-            NumberAnimation { duration: 200 }
-        }
-
-        height: Units.dp(2)
-        color: config.layout == "classic" ? "white" : Theme.secondaryColor
-    }
-
-    Tooltip {
-        id: tooltip
-
-        text: indicator.tooltip
     }
 }

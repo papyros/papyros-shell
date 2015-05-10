@@ -37,20 +37,10 @@ View {
     property int iconSize: height > Units.dp(40) ? height * 0.36 : height * 0.45
 
     onIndicatorChanged: indicator.selected = Qt.binding(function() {
-        return indicator == selectedIndicator
+        return desktop.overlayLayer.currentOverlay == dropdown
     })
 
     readonly property bool selected: indicator.selected
-
-    onSelectedChanged: {
-        if (indicator.view) {
-            if (selected) {
-                dropdown.open(indicatorView)
-            } else {
-                dropdown.close()
-            }
-        }
-    }
 
     Ink {
         id: ink
@@ -61,9 +51,9 @@ View {
 
         onClicked: {
             if (selected)
-                selectedIndicator = null
+                dropdown.close()
             else
-                selectedIndicator = indicator
+                dropdown.open(indicatorView, 0, Units.dp(16))
         }
 
         onContainsMouseChanged: desktop.updateTooltip(indicatorView, containsMouse)
@@ -101,11 +91,19 @@ View {
         }
     }
 
-    DropDown {
+    Popover {
         id: dropdown
+
+        overlayLayer: "desktopOverlayLayer"
 
         height: content.implicitHeight
         width: content.implicitWidth > 0 ? content.implicitWidth : Units.dp(300)
+
+        View {
+            anchors.fill: parent
+            elevation: 2
+            radius: Units.dp(2)
+        }
 
         Loader {
             id: content

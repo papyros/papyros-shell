@@ -33,7 +33,7 @@ GridView {
             anchors.fill: parent
             onClicked: {
                 edit.launch()
-                selectedIndicator = null
+                desktop.overlayLayer.currentOverlay.close()
             }
         }
 
