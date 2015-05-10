@@ -31,8 +31,10 @@ Indicator {
     iconName: "navigation/apps"
     tooltip: "Applications"
 
-    view: Item {
+    view: FocusScope {
         implicitHeight: Units.dp(360)
+
+        Component.onCompleted: input.forceActiveFocus()
 
         Rectangle {
             id: container

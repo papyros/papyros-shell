@@ -85,15 +85,14 @@ View {
                     windowPreview.item = item
                     windowPreview.window = window
                     
-                    if (!windowPreview.showing) {
-                        print("Opening")
-                        windowPreview.open(appLauncher, 0, Units.dp(8))
-                    }
+                    previewTimer.delayShow(appLauncher, window, item)
                 }
 
                 onExited: {
-                    if (windowPreview.showing)
+                    if (windowPreview.showing) {
                         windowPreview.close()
+                        delayCloseTimer.restart()
+                    }
                 }               
 
                 onClicked: windowManager.moveFront(item)
@@ -128,6 +127,40 @@ View {
             delegate: IndicatorView {
                 indicator: modelData
             }
+        }
+    }
+
+    Timer {
+        id: delayCloseTimer
+        interval: 10
+    }
+
+    Timer {
+        id: previewTimer
+
+        property var window
+        property var item
+        property var caller
+
+        interval: 1000
+
+        function delayShow(caller, window, item) {
+            if (windowPreview.showing || delayCloseTimer.running) {
+                windowPreview.window = window
+                windowPreview.item = item
+                windowPreview.open(caller, 0, Units.dp(16))
+            } else {
+                previewTimer.window = window
+                previewTimer.item = item
+                previewTimer.caller = caller
+                restart()
+            }
+        }
+
+        onTriggered: {
+            windowPreview.window = previewTimer.window
+            windowPreview.item = previewTimer.item
+            windowPreview.open(previewTimer.caller, 0, Units.dp(16))
         }
     }
 
