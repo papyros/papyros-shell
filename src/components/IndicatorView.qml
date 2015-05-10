@@ -43,9 +43,6 @@ View {
     readonly property bool selected: indicator.selected
 
     onSelectedChanged: {
-        // if (tooltip.showing)
-        //     tooltip.close()
-
         if (indicator.view) {
             if (selected) {
                 dropdown.open(indicatorView)

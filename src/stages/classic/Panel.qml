@@ -59,12 +59,33 @@ View {
         Repeater {
             model: windowManager.windows
 
-            delegate: Ink {
+            delegate: View {
                 id: appLauncher
+                
                 width: parent.height
                 height: width
 
-                hoverEnabled: true
+                tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
+
+                Ink {
+                    id: ink
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+
+                    onContainsMouseChanged: {
+                        if (containsMouse) {
+                            if (selectedIndicator == null)
+                                previewTimer.delayShow(appLauncher, window, item)
+                        } else if (windowPreview.showing) {
+                            windowPreview.close()
+                            delayCloseTimer.restart()
+                            previewTimer.stop()
+                        }
+                    }               
+
+                    onClicked: windowManager.moveFront(item)
+                }
 
                 DesktopFile {
                     id: desktopFile
@@ -78,19 +99,6 @@ View {
                     width: parent.width * 0.55
                     height: width
                 }
-
-                onContainsMouseChanged: {
-                    if (containsMouse) {
-                        if (selectedIndicator == null)
-                            previewTimer.delayShow(appLauncher, window, item)
-                    } else if (windowPreview.showing) {
-                        windowPreview.close()
-                        delayCloseTimer.restart()
-                        previewTimer.stop()
-                    }
-                }               
-
-                onClicked: windowManager.moveFront(item)
 
                 Rectangle {
                     width: parent.width
