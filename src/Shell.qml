@@ -49,6 +49,10 @@ View {
 
         State {
             name: "exposed"
+        },
+
+        State {
+            name: "switcher"
         }
     ]
 
@@ -148,7 +152,7 @@ View {
         //interval: compositor.idleInterval
         onIntervalChanged: {
             if (running)
-            restart();
+                restart();
         }
     }
 
@@ -216,6 +220,45 @@ View {
 
         superOnly = false
 
+        // Window switcher
+        if (event.modifiers === Qt.ControlModifier) {
+            if (state === "switcher") {
+                if (event.key === Qt.Key_Tab) {
+                    desktop.windowSwitcher.next()
+                    event.accepted = true;
+                    return
+                } else if (event.key === Qt.Key_Backtab) {
+                    desktop.windowSwitcher.previous()
+                    event.accepted = true;
+                    return
+                }
+            } else if (event.key === Qt.Key_Tab) {
+                print("Forward window")
+                if (windowManager.orderedWindows.count > 1) {
+                    if (windowNextTimer.running) {
+                        desktop.windowSwitcher.show()
+                        desktop.windowSwitcher.next()
+                    } else {
+                        windowNextTimer.start()
+                    }
+                    event.accepted = true;
+                    return;
+                }
+            } else if (event.key === Qt.Key_Backtab) {
+                print("Previous window")
+                if (windowManager.orderedWindows.count > 1) {
+                    if (windowPreviousTimer.running) {
+                        desktop.windowSwitcher.show()
+                        desktop.windowSwitcher.previous()
+                    } else {
+                        windowPreviousTimer.start()
+                    }
+                    event.accepted = true;
+                    return;
+                }
+            }
+        }
+
         for (var i = 0; i < keybindings.length; i++) {
             var action = keybindings[i]
 
@@ -249,6 +292,7 @@ View {
             print("Action triggered: " + action.name)
             event.accepted = true;
             action.triggered(shell)
+            return
         }
     }
 
@@ -260,6 +304,37 @@ View {
         }
 
         superOnly = false
+
+        if (event.key == Qt.Key_Control) {
+            print("Releasing control!", event.key)
+            if (state == "switcher") {
+                desktop.windowSwitcher.dismiss()
+            } else if (windowNextTimer.running) {
+                windowNextTimer.stop()
+                desktop.switchNext()
+            } else if (windowPreviousTimer.running) {
+                windowPreviousTimer.stop()
+                desktop.switchPrevious()
+            }
+        }
+    }
+
+    Timer {
+        id: windowNextTimer
+        interval: 100
+        onTriggered: {
+            desktop.windowSwitcher.show()
+            desktop.windowSwitcher.next()
+        }
+    }
+
+    Timer {
+        id: windowPreviousTimer
+        interval: 100
+        onTriggered: {
+            desktop.windowSwitcher.show()
+            desktop.windowSwitcher.previous()
+        }
     }
 
     // ===== Configuration and Settings =====
