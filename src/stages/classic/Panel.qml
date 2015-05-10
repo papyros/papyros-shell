@@ -27,8 +27,6 @@ import "../../desktop"
 View {
     id: panel
 
-    property Indicator selectedIndicator
-
     backgroundColor: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0.2, 0.2, 0.2, 1)
     height: Units.dp(56)
 
@@ -83,7 +81,8 @@ View {
 
                 onContainsMouseChanged: {
                     if (containsMouse) {
-                        previewTimer.delayShow(appLauncher, window, item)
+                        if (selectedIndicator == null)
+                            previewTimer.delayShow(appLauncher, window, item)
                     } else if (windowPreview.showing) {
                         windowPreview.close()
                         delayCloseTimer.restart()
@@ -163,5 +162,14 @@ View {
     WindowTooltip {
         id: windowPreview
         overlayLayer: "desktopTooltipOverlayLayer"
+    }
+
+    Connections {
+        target: shell
+        onSelectedIndicatorChanged: {
+            previewTimer.stop()
+            delayCloseTimer.stop()
+            windowPreview.close()
+        }
     }
 }

@@ -173,7 +173,7 @@ Item {
 
     function updateTooltip(indicator, containsMouse) {
         if (containsMouse) {
-            if (indicator.indicator.tooltip) {
+            if (indicator.indicator.tooltip && selectedIndicator == null) {
                 tooltip.text =indicator.indicator.tooltip
                 tooltip.open(indicator, 0, Units.dp(16))
             }
@@ -184,5 +184,10 @@ Item {
 
     Tooltip {
         id: tooltip
+    }
+
+    Connections {
+        target: shell
+        onSelectedIndicatorChanged: tooltip.close()
     }
 }
