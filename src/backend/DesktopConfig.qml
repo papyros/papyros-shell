@@ -5,4 +5,5 @@ Object {
 
     property bool silentMode
     property string accentColor: 'teal'
+    property bool showWindowSwitcherPreviews: false
 }

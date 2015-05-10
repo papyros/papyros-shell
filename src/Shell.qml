@@ -234,7 +234,7 @@ View {
                 }
             } else if (event.key === Qt.Key_Tab) {
                 print("Forward window")
-                if (windowManager.orderedWindows.count > 1) {
+                if (desktop.windowSwitcher.enabled) {
                     if (windowNextTimer.running) {
                         desktop.windowSwitcher.show()
                         desktop.windowSwitcher.next()
@@ -246,7 +246,7 @@ View {
                 }
             } else if (event.key === Qt.Key_Backtab) {
                 print("Previous window")
-                if (windowManager.orderedWindows.count > 1) {
+                if (desktop.windowSwitcher.enabled) {
                     if (windowPreviousTimer.running) {
                         desktop.windowSwitcher.show()
                         desktop.windowSwitcher.previous()

@@ -21,6 +21,7 @@ import Material 0.1
 import Material.Extras 0.1
 import GreenIsland 1.0
 import GreenIsland.Desktop 1.0
+import "../components"
 
 View {
     id: windowSwitcher
@@ -43,7 +44,12 @@ View {
 
     property bool showing: shell.state == "switcher"
     property int index
-    property bool enabled: windowManager.orderedWindows.count > 1
+    property bool enabled: count > 0
+    property int count: windowManager.orderedWindows.count
+
+    onCountChanged: {
+        index = Math.min(index, count - 1)
+    }
 
     onEnabled: {
         if (!enabled && showing)
@@ -62,15 +68,15 @@ View {
 
     function next() {
         print("Next!")
-        index = (index + 1) % windowManager.orderedWindows.count
+        index = (index + 1) % count
     }
 
     function prev() {
         print("Previ!")
-        index = (index - 1) % windowManager.orderedWindows.count
+        index = (index - 1) % count
     }
 
-    ColumnLayout {
+    Column {
         id: column
         anchors.centerIn: parent
 
@@ -83,7 +89,7 @@ View {
                 model: windowManager.orderedWindows
                 delegate: Rectangle {
                     height: Units.dp(100)
-                    width: preview.implicitWidth
+                    width: config.showWindowSwitcherPreviews ? preview.implicitWidth : height
 
                     color: "transparent"
 
@@ -91,8 +97,18 @@ View {
                     border.width: Units.dp(2)
                     radius: Units.dp(2)
 
+                    AppIcon {
+                        anchors {
+                            fill: parent
+                            margins: Units.dp(8) 
+                        }
+
+                        iconName: window.iconName
+                    }
+
                     WindowPreview {
                         id: preview
+                        visible: config.showWindowSwitcherPreviews
                         anchors {
                             fill: parent
                             margins: Units.dp(8) 
@@ -109,7 +125,7 @@ View {
         }
 
         Label {
-            Layout.fillWidth: true
+            width: parent.width
 
             horizontalAlignment: Qt.AlignHCenter
 

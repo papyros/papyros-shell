@@ -81,15 +81,10 @@ View {
                     height: width
                 }
 
-                onEntered: {
-                    windowPreview.item = item
-                    windowPreview.window = window
-                    
-                    previewTimer.delayShow(appLauncher, window, item)
-                }
-
-                onExited: {
-                    if (windowPreview.showing) {
+                onContainsMouseChanged: {
+                    if (containsMouse) {
+                        previewTimer.delayShow(appLauncher, window, item)
+                    } else if (windowPreview.showing) {
                         windowPreview.close()
                         delayCloseTimer.restart()
                     }
