@@ -28,16 +28,17 @@ Tooltip {
 
     ColumnLayout {
         id: layout
-        anchors.fill: parent
-        anchors.margins: Units.dp(8)
+        anchors.centerIn: parent
 
-        spacing: units.dp(8)
+        spacing: Units.dp(8)
 
         WindowPreview {
             id: preview
 
             Layout.fillHeight: true
             Layout.fillWidth: true
+
+            height: Units.dp(160)
 
             property var item
             property var window
@@ -51,6 +52,6 @@ Tooltip {
         }
     }
 
-    height: Units.dp(160)
-    width: layout.implicitWidth + Units.dp(16)
+    width: layout.width + Units.dp(16)
+    height: layout.height + Units.dp(16)
 }
