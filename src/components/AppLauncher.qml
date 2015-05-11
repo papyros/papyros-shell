@@ -26,9 +26,6 @@ import "../desktop"
 View {
     id: appLauncher
     
-    width: parent.height
-    height: width
-
     tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
 
     signal clicked()

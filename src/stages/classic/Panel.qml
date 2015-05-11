@@ -16,6 +16,7 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 import QtQuick 2.3
+import QtQuick.Layouts 1.0
 import Material 0.1
 import Material.Desktop 0.1
 
@@ -40,26 +41,56 @@ View {
         bottom: parent.bottom
     }
 
-    Row {
+    RowLayout {
         anchors {
             left: parent.left
+            right: indicatorsRow.left
             top: parent.top
             bottom: parent.bottom
-
         }
 
         IndicatorView {
-            width: height
+            Layout.preferredWidth: height
             iconSize: Units.dp(24)
             indicator: AppDrawer {
                 id: appDrawer
             }
         }
 
-        Repeater {
-            model: windowManager.windows
+        ListView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
-            delegate: AppLauncher {}
+            orientation: Qt.Horizontal
+
+            interactive: contentWidth > width
+
+            model: windowManager.windows
+            delegate: AppLauncher {
+                width: parent.height
+                height: width
+            }
+
+            remove: Transition {
+                ParallelAnimation {
+                    NumberAnimation { property: "opacity"; to: 0; duration: 250 }
+                    NumberAnimation { properties: "y"; to: height; duration: 250 }
+                }
+            }
+
+            removeDisplaced: Transition {
+                SequentialAnimation {
+                    PauseAnimation { duration: 250 }
+                    NumberAnimation { properties: "x,y"; duration: 250 }
+                }
+            }
+
+            add: Transition {
+                ParallelAnimation {
+                    NumberAnimation { property: "opacity"; to: 1; from: 0; duration: 250 }
+                    NumberAnimation { properties: "y"; to: 0; from: height; duration: 250 }
+                }
+            }
         }
     }
 
