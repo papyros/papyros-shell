@@ -11,43 +11,37 @@ Brought to you by the [Papyros development team](https://github.com/papyros/papy
 
 ### Implementation Details ###
 
-The shell is built as a compositor for Wayland using the QtCompositor API and QtQuick. The goal is to develop a convergent shell that adapts to the form factor of the device it is running on, and to also support HIDPI screens.
+The shell is built as a compositor for Wayland using the Green Island compositor framework and QtQuick. The goal is to develop a convergent shell that adapts to the form factor of the device it is running on, and to also support HIDPI screens.
 
-QtCompositor requires a small C++ wrapper, but the majority of the shell will be implemented in QML and Javascript.
-
-### Installation ###
-
-Papyros Shell is a wayland compositor based on QtCompositor, and requires Wayland and Qt 5.4. In addition, will also need the [qml-material](https://github.com/papyros/qml-material) repo installed as a QML system module.
-
-	$ git clone https://github.com/papyros/qml-material
-	$ cd qml-material/
-	$ qmake
-	$ make
-	# make install
-
-As well as [qml-extras](https://github.com/papyros/qml-extras) and [qml-desktop](https://github.com/papyros/qml-desktop) that can be installed the same way as [qml-material](https://github.com/papyros/qml-material)
-
-Once you have that set up, run the following commands to compile the C++ wrapper:
-
-    $ qmake
-    $ make
-
-And run the compositor from an X11 desktop:
-
-    $ ./papyros-shell -platform xcb
+Green Island provides the C++ code necessary to interact with Wayland, and QML Desktop provides C++ plugins for QML for the desktop indicators, so the majority of the shell is implemented in QML and Javascript.
 
 ### Dependencies ###
 
- * Qt 5.4
- * QtWayland 5.4 with QtCompositor (a CONFIG option is required to enable QtCompositor as it is not compiled by default)
- * The [GSettings QML module](https://launchpad.net/gsettings-qt). This is developed for Ubuntu Touch, but is not Ubuntu-specific
+ * Qt 5.5
+ * Wayland
+ * [GreenIsland](https://github.com/greenisland/greenisland)
+   * Requires an in-development branch ([feature/window_manager](https://github.com/papyros/greenisland/tree/feature/window_manager). This is branch is currently awaiting upstream review.
+ * A Green Island development version of QtCompositor, as described on the Green Island GitHub page.
+ * [QML Extras](https://github.com/papyros/qml-extras) (the `develop` branch).
+ * [QML Material](https://github.com/papyros/qml-material) (the `develop` branch).
+ * [QML Desktop](https://github.com/papyros/qml-desktop)
+ * [GSettings QML module](https://launchpad.net/gsettings-qt) (AUR package available for Arch Linux users).
 
-If you're using Arch Linux, you can install the required dependencies using these packages from the [AUR](http://aur.archlinux.org):
+### Installation ###
 
- * qt5-base-git
- * qt5-declarative-git
- * qt5-wayland-dev-git
- * gsettings-qt-bzr
+Once the necessary dependencies are installed, you can build and install the Papyros shell as follows:
+
+    mkdir build; cd build
+    cmake ..
+    make && sudo make install
+
+And run the compositor from an X11 desktop:
+
+    greenisland --shell io.papyros.shell
+
+Or as from a virtual terminal as a full Wayland compositor:
+
+    greenisland --platform eglfs --shell io.papyros.shell
 
 ### Licensing ###
 
