@@ -67,6 +67,34 @@ Item {
                 listView.currentIndex = workspace.index
             }
         }
+
+        topLevelWindowComponent: TopLevelWindow {
+            id: window
+
+            animation: WindowAnimation {
+                mapAnimation: NumberAnimation {
+                    target: window
+                    property: "opacity"
+                    from: 0; to: 1
+                    duration: 250
+                }
+
+                unmapAnimation: ParallelAnimation {
+                    NumberAnimation {
+                        target: window
+                        property: "opacity"
+                        from: 1; to: 0
+                        duration: 250
+                    }
+                    NumberAnimation {
+                        target: window
+                        property: "scale"
+                        from: 1; to: 0.5
+                        duration: 250
+                    }
+                }
+            }
+        }
     }
 
     ListView {

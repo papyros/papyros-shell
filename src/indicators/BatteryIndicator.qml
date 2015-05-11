@@ -26,9 +26,7 @@ Indicator {
     iconName: upower.deviceIcon(upower.primaryDevice)
     tooltip: upower.deviceSummary(upower.primaryDevice)
     color: {
-        if (upower.primaryDevice.state == UPowerDeviceState.Charging) {
-            return Theme.dark.iconColor
-        } else {
+        if (upower.primaryDevice.state != UPowerDeviceState.Charging) {
             if (upower.primaryDevice.percentage < 10) {
                 return Palette.colors.red["500"]
             } else if (upower.primaryDevice.percentage < 15) {
@@ -37,6 +35,8 @@ Indicator {
                 return Palette.colors.yellow["500"]
             }
         }
+
+        return Theme.dark.iconColor
     }
 
     view: Column {
