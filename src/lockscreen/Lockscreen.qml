@@ -134,7 +134,7 @@ Item {
         CircleImage {
             id: image
 
-            source: Qt.resolvedUrl("../images/face.jpg")
+            source: currentUser.faceIconUrl
             width: Units.dp(80)
             height: width
             anchors {

@@ -22,5 +22,11 @@ import ".."
 Indicator {
     id: indicator
 
-    iconName: "action/account_circle"
+    iconSource: currentUser.faceIconUrl != "" 
+            ? currentUser.faceIconUrl : "icon://action/account_circle" 
+
+    // TODO: Handle guest users here
+    tooltip: currentUser.fullName !== "" ? currentUser.fullName : currentUser.loginName
+
+    circleClipIcon: currentUser.faceIconUrl != ""
 }

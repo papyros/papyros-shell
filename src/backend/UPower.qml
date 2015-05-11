@@ -36,6 +36,7 @@ UPowerConnection {
             print(device.type, device.percentage)
             if (device.type == UPowerDeviceType.Battery) {
                 primaryDevice = device
+                return
             }
         }
     }

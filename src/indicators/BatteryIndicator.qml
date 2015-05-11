@@ -25,11 +25,22 @@ Indicator {
 
     iconName: upower.deviceIcon(upower.primaryDevice)
     tooltip: upower.deviceSummary(upower.primaryDevice)
-    color: upower.primaryDevice.percentage < 10 &&
-            upower.primaryDevice.state != UPowerDeviceState.Charging
-            ? Palette.colors.red["500"] : Theme.dark.iconColor
+    color: {
+        if (upower.primaryDevice.state == UPowerDeviceState.Charging) {
+            return Theme.dark.iconColor
+        } else {
+            if (upower.primaryDevice.percentage < 10) {
+                return Palette.colors.red["500"]
+            } else if (upower.primaryDevice.percentage < 15) {
+                return Palette.colors.orange["500"]
+            } else if (upower.primaryDevice.percentage < 20) {
+                return Palette.colors.yellow["500"]
+            }
+        }
+    }
 
     view: Column {
+
         ListItem.Subtitled {
             text: "Screen Brightness"
             valueText: "25%"

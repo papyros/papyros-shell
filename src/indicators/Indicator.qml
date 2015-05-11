@@ -22,12 +22,14 @@ Object {
     id: indicator
 
     property string iconName
+    property url iconSource: "icon://" + iconName
     property string text
     property string badge
     property string tooltip
     property bool hidden: false
     property bool visible: true
     property color color: Theme.dark.iconColor
+    property bool circleClipIcon
 
     property Component view
 

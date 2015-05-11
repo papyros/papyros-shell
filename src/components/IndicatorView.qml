@@ -18,6 +18,7 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.0
 import Material 0.1
+import Material.Extras 0.1
 import "../indicators"
 import "."
 
@@ -28,7 +29,9 @@ View {
 
     height: parent.height
     width: smallMode ? indicator.text ? label.width + (height - label.height) : height
-                     : indicator.text ? label.width + (Units.dp(30) - label.height) : Units.dp(30)
+                     : indicator.text ? label.width + (Units.dp(30) - label.height) 
+                                      : indicator.circleClipIcon ? Units.dp(30 * 1.2) 
+                                                                 : Units.dp(30)
 
     visible: !indicator.hidden && indicator.visible
 
@@ -63,8 +66,18 @@ View {
     Icon {
         anchors.centerIn: parent
         size: iconSize
-        name: indicator.iconName
+        source: indicator.iconSource
         color: indicator.color
+        visible: !indicator.circleClipIcon
+    }
+
+    CircleImage {
+        id: circleImage
+        anchors.centerIn: parent
+        width: iconSize * 1.2
+        height: width
+        source: visible ? indicator.iconSource : ""
+        visible: indicator.circleClipIcon
     }
 
     Label {
@@ -98,7 +111,7 @@ View {
         overlayLayer: "desktopOverlayLayer"
 
         height: content.status == Loader.Ready ? content.implicitHeight : Units.dp(250)
-        width: content.implicitWidth > 0 ? content.implicitWidth : Units.dp(300)
+        width: Math.max(content.implicitWidth, Units.dp(300))
 
         View {
             anchors.fill: parent

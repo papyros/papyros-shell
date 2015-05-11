@@ -22,6 +22,7 @@ import Material.Desktop 0.1
 import GSettings 1.0
 import QtCompositor 1.0
 import GreenIsland 1.0
+import org.kde.kcoreaddons 1.0 as KCoreAddons
 
 import "backend"
 import "components"
@@ -70,7 +71,6 @@ View {
         SoundIndicator {},
         BatteryIndicator {},
         ActionCenterIndicator {},
-        //DateTimeIndicator {},
         SystemIndicator {}
     ]
     property list<Action>keybindings: [
@@ -82,7 +82,7 @@ View {
 
         Action {
             name: "Lock your " + Device.name
-            keybinding: "Super+L"
+            keybinding: "Alt+L"
             onTriggered: lockScreen();
         }
     ]
@@ -210,7 +210,7 @@ View {
     onKeyPressed: {
         if (!keyFilter.enabled) return
 
-        print("Key pressed", event.key)
+        print("Key pressed", event.key, event.text)
 
         if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_Meta) {
             superOnly = true
@@ -233,7 +233,6 @@ View {
                     return
                 }
             } else if (event.key === Qt.Key_Tab) {
-                print("Forward window")
                 if (desktop.windowSwitcher.enabled) {
                     if (windowNextTimer.running) {
                         desktop.windowSwitcher.show()
@@ -245,7 +244,6 @@ View {
                     return;
                 }
             } else if (event.key === Qt.Key_Backtab) {
-                print("Previous window")
                 if (desktop.windowSwitcher.enabled) {
                     if (windowPreviousTimer.running) {
                         desktop.windowSwitcher.show()
@@ -288,7 +286,7 @@ View {
                 continue
             if (text != '' && event.text != text)
                 continue
-
+            
             print("Action triggered: " + action.name)
             event.accepted = true;
             action.triggered(shell)
@@ -358,6 +356,10 @@ View {
     GSettings {
         id: wallpaperSetting
         schema.id: "org.gnome.desktop.background"
+    }
+
+    KCoreAddons.KUser {
+        id: currentUser
     }
 
     UPower {
