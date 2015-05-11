@@ -64,8 +64,10 @@ View {
         onContainsMouseChanged: {
             if (containsMouse) {
                 previewTimer.delayShow(appLauncher, window, item)
-            } else if (windowPreview.showing) {
-                windowPreview.close()
+            } else {
+                if (windowPreview.showing)
+                    windowPreview.close()
+                    
                 delayCloseTimer.restart()
                 previewTimer.stop()
             }

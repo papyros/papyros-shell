@@ -16,6 +16,7 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 import QtQuick 2.3
+import QtQuick.Layouts 1.0
 import Material 0.1
 import "../indicators"
 import "."
@@ -23,7 +24,7 @@ import "."
 View {
     id: indicatorView
 
-    tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
+    tintColor: ink.containsMouse || selected ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
 
     height: parent.height
     width: smallMode ? indicator.text ? label.width + (height - label.height) : height
@@ -52,7 +53,7 @@ View {
         onClicked: {
             if (selected)
                 dropdown.close()
-            else
+            else if (indicator.view)
                 dropdown.open(indicatorView, 0, Units.dp(16))
         }
 
@@ -96,7 +97,7 @@ View {
 
         overlayLayer: "desktopOverlayLayer"
 
-        height: content.implicitHeight
+        height: content.status == Loader.Ready ? content.implicitHeight : Units.dp(250)
         width: content.implicitWidth > 0 ? content.implicitWidth : Units.dp(300)
 
         View {
@@ -108,7 +109,7 @@ View {
         Loader {
             id: content
             sourceComponent: indicator.view
-            active: dropdown.showing
+            //active: dropdown.showing
 
             anchors.fill: parent
 

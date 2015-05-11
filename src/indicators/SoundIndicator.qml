@@ -23,5 +23,5 @@ Indicator {
     id: indicator
 
     iconName: sound.iconName
-    tooltip: "Volume at %1%".arg(sound.master)
+    tooltip: sound.master == 0 ? "Muted" : "Volume at %1%".arg(sound.master)
 }

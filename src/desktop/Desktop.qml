@@ -182,7 +182,7 @@ Item {
     function updateTooltip(indicator, containsMouse) {
         if (containsMouse) {
             if (indicator.indicator.tooltip) {
-                tooltip.text =indicator.indicator.tooltip
+                tooltip.text = Qt.binding(function() { return indicator.indicator.tooltip })
                 tooltip.open(indicator, 0, Units.dp(16))
             }
         } else if (tooltip.showing) {
