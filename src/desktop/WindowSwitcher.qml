@@ -21,6 +21,7 @@ import Material 0.1
 import Material.Extras 0.1
 import GreenIsland 1.0
 import GreenIsland.Desktop 1.0
+import Material.Desktop 0.1
 import "../components"
 
 View {
@@ -104,6 +105,12 @@ View {
                         }
 
                         iconName: window.iconName
+                        name: desktopFile.name !== "" ? desktopFile.name : window.appId
+                    }
+
+                    DesktopFile {
+                        id: desktopFile
+                        appId: window.appId
                     }
 
                     WindowPreview {

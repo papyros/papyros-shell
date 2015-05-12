@@ -78,7 +78,7 @@ View {
 
     AppIcon {
         iconName: desktopFile.iconName
-        name: desktopFile.name
+        name: desktopFile.name !== "" ? desktopFile.name : window.appId
         anchors.centerIn: parent
         width: parent.width * 0.55
         height: width

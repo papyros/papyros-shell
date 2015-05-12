@@ -41,9 +41,13 @@ Item {
         radius: width/2
         visible: icon.status != Image.Ready
         color: {
-            var index = name.toLowerCase().charCodeAt(0)
-            - "a".charCodeAt(0)
+            if (name === "") {
+                return Palette.colors["blue"]["400"]
+            }
 
+            // Use the last character for uniqueness
+            var index = name.toLowerCase().charCodeAt(name.length - 1) - "a".charCodeAt(0)
+            
             var colorNames = ListUtils.objectKeys(Palette.colors)
             var colorIndex = index % colorNames.length
 
