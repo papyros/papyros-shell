@@ -18,10 +18,53 @@
 import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
+import "../components"
 
 Indicator {
     id: indicator
 
     iconName: sound.iconName
     tooltip: sound.master == 0 ? "Muted" : "Volume at %1%".arg(sound.master)
+
+    view: Column {
+
+        ListItem.Subtitled {
+            text: qsTr("Volume")
+            valueText: sound.master == 0 ? qsTr("Muted") : sound.master + "%"
+            content: Slider {
+                width: parent.width
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: Units.dp(7)
+
+                minimumValue: 0
+                maximumValue: 100
+                
+                value: sound.master
+
+                onValueChanged: {
+                    if (value != sound.master) {
+                        sound.master = value
+                        value = Qt.binding(function() { return sound.master })
+                    }
+                }
+            }
+
+            showDivider: musicRepeater.count > 0
+        }
+
+        Repeater {
+            id: musicRepeater
+            model: musicPlayer.playerList
+            delegate: Column {
+                width: parent.width
+                visible: model.metadata["xesam:title"] != undefined
+
+                ListItem.Subheader {
+                    text: name
+                }
+
+                MusicPlayerListItem {}
+            }
+        }
+    }
 }

@@ -122,6 +122,7 @@ View {
             topMargin: stage.item.topMargin
             bottomMargin: stage.item.bottomMargin
         }
+
         NotificationsView {
             
         }
@@ -367,6 +368,10 @@ View {
 
     UPower {
         id: upower
+    }
+    
+    MprisConnection {
+        id: musicPlayer
     }
 
     Sound {
