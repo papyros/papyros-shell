@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import QtQuick 2.3
+import QtQuick.Layouts 1.0
 import Material 0.1
 
 View {
@@ -31,8 +32,7 @@ View {
     clipContent: false
 
     width: parent.width
-    height: mouseArea.containsMouse && notification.text
-            ? column.height + Units.dp(32) : Units.dp(70)
+    height: subLabel.lineCount == 1  ? Units.dp(72) : Units.dp(88)
 
     MouseArea {
         id: mouseArea
@@ -72,56 +72,120 @@ View {
         }
     }
 
-    Item {
-        id: actionItem
+    GridLayout {
+        anchors.fill: parent
 
-        anchors {
-            left: parent.left
-            leftMargin: Units.dp(16)
-            verticalCenter: parent.verticalCenter
+        anchors.leftMargin: Units.dp(16)
+        anchors.rightMargin: Units.dp(16)
+
+        columns: 4
+        rows: 1
+        columnSpacing: Units.dp(16)
+
+        Item {
+            id: actionItem
+
+            Layout.preferredWidth: Units.dp(40)
+            Layout.preferredHeight: width
+            Layout.alignment: Qt.AlignCenter
+            Layout.column: 1
+
+            visible: children.length > 1 || icon.valid
+
+            Icon {
+                id: icon
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                }
+
+                visible: valid
+                color: Theme.light.iconColor
+                size: Units.dp(24)
+                source: {
+                    print(notification.iconName)
+                    if (!notification.iconName) {
+                        return ""
+                    } else if (notification.iconName.indexOf("/") === 0 || notification.iconName.indexOf("://") !== -1) {
+                        return notification.iconName
+                    } else {
+                        return "image://desktoptheme/" + notification.iconName
+                    }
+                }
+            }
         }
 
-        height: width
-        width: Units.dp(40)
+        ColumnLayout {
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+            Layout.fillWidth: true
+            Layout.column: 2
 
-        Icon {
-            size: Units.dp(36)
-            anchors.centerIn: parent
-            name: notification.iconName
+            spacing: Units.dp(3)
+
+            RowLayout {
+                Layout.fillWidth: true
+
+                spacing: Units.dp(8)
+
+                Label {
+                    id: label
+
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+
+                    elide: Text.ElideRight
+                    style: "subheading"
+                    text: notification.summary
+                }
+
+                Label {
+                    id: valueLabel
+
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredWidth: visible ? implicitWidth : 0
+
+                    color: Theme.light.subTextColor
+                    elide: Text.ElideRight
+                    horizontalAlignment: Qt.AlignHCenter
+                    style: "body1"
+                    visible: text != ""
+                }
+            }
+
+            Item {
+                id: contentItem
+
+                Layout.fillWidth: true
+
+                visible: children.length > 0
+                height: visible ? subLabel.implicitHeight : 0
+            }
+
+            Label {
+                id: subLabel
+
+                Layout.fillWidth: true
+
+                color: Theme.light.subTextColor
+                elide: Text.ElideRight
+                wrapMode: Text.WordWrap
+                style: "body1"
+
+                visible: text != "" && !contentItem.visible
+                text: "~~"  + notification.body + "~~"
+                maximumLineCount: 2
+            }
         }
-    }
 
-    Column {
-        id: column
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: Units.dp(72)
-        anchors.margins: Units.dp(16)
+        Item {
+            id: secondaryItem
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: childrenRect.width
+            Layout.preferredHeight: parent.height
+            Layout.column: 4
 
-        spacing: Units.dp(8)
-
-        Label {
-            style: "subheading"
-            text: notification.summary
-            elide: Text.ElideRight
-            width: parent.width
-            visible: text != ""
-        }
-
-        Label {
-            style: "body1"
-            text: notification.body
-            elide: Text.ElideRight
-            width: parent.width
-            maximumLineCount: mouseArea.containsMouse ? 0 : 1
-            visible: text != ""
-        }
-
-        ProgressBar {
-            value: visible ? notification.percent : 0
-            width: parent.width
-            visible: notification.hasOwnProperty("percent")
+            visible: childrenRect.width > 0
         }
     }
 }

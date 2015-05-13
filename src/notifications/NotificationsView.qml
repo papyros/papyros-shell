@@ -36,25 +36,25 @@ Item {
             margins: Units.dp(16)
         }
 
-        opacity: panel.selectedIndicator ? 0 : 1
+        opacity: desktop.overlayLayer.currentOverlays ? 0 : 1
 
         Behavior on opacity {
-          NumberAnimation { duration: 200 }
+            NumberAnimation { duration: 200 }
         }
 
         width: Units.dp(280)
 
-        verticalLayoutDirection: config.layout == "classic"
+        verticalLayoutDirection: shell.stageName === "classic"
                                  ? ListView.BottomToTop : ListView.TopToBottom 
         orientation: Qt.Vertical
         interactive: false
 
-        model: notifyView.notifications
+        model: notifyServer.notifications
 
         spacing: Units.dp(16)
 
         delegate: NotificationCard {
-            notification: model
+            notification: edit
         }
 
         add: Transition {

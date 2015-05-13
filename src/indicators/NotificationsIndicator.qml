@@ -37,8 +37,4 @@ Indicator {
 
     property bool hasNotifications: badge > 0
     property int notificationsCount: 4
-
-    onSelectedChanged: {
-        notificationCenter.showing = selected
-    }
 }

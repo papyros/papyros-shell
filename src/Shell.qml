@@ -66,7 +66,7 @@ View {
 
     property string stageName: "classic"
     property list<Indicator> indicators: [
-        //NotificationsIndicator {},
+        NotificationsIndicator {},
         //OperationsIndicator {},
         SoundIndicator {},
         BatteryIndicator {},
@@ -121,6 +121,9 @@ View {
             rightMargin: stage.item.rightMargin
             topMargin: stage.item.topMargin
             bottomMargin: stage.item.bottomMargin
+        }
+        NotificationsView {
+            
         }
     }
 

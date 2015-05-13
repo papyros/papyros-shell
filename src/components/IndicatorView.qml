@@ -105,6 +105,31 @@ View {
         }
     }
 
+    Rectangle {
+        anchors {
+            left: parent.horizontalCenter
+            top: parent.verticalCenter
+            margins: Units.dp(1)
+        }
+
+        color: Palette.colors.red["500"]
+        border.color: Palette.colors.red["700"]
+        radius: width//Units.dp(1)
+
+        width: Units.dp(10)//Math.min(parent.width/2, Math.max(badgeLabel.width,
+                //badgeLabel.height) + Units.dp(2))
+        height: width
+        
+        visible: indicator.badge !== ""
+
+        // Label {
+        //     id: badgeLabel
+        //     text: indicator.badge
+        //     anchors.centerIn: parent
+        //     color: Theme.dark.textColor
+        // }
+    }
+
     Popover {
         id: dropdown
 
