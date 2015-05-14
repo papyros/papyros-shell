@@ -17,7 +17,7 @@
  */
 import QtQuick 2.0
 import Material.Extras 0.1
-import Material.Desktop 0.1
+import Papyros.Desktop 0.1
 
 UPowerConnection {
     id: upower

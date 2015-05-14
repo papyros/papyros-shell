@@ -1,8 +1,8 @@
-#include "qmldesktop_plugin.h"
+#include "papyrosdesktop_plugin.h"
 
 void DesktopPlugin::registerTypes(const char *uri)
 {
-    // @uri Material.Desktop
+    // @uri Papyros.Desktop
     qmlRegisterType<MprisConnection>(uri, 0, 1, "MprisConnection");
     qmlRegisterUncreatableType<Mpris2Player>(uri, 0, 1, "Mpris2Player", "Player class");
 

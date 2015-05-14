@@ -24,7 +24,6 @@ Green Island provides the C++ code necessary to interact with Wayland, and QML D
  * A Green Island development version of QtCompositor, as described on the Green Island GitHub page.
  * [QML Extras](https://github.com/papyros/qml-extras) (the `develop` branch).
  * [QML Material](https://github.com/papyros/qml-material) (the `develop` branch).
- * [QML Desktop](https://github.com/papyros/qml-desktop)
  * [GSettings QML module](https://launchpad.net/gsettings-qt) (AUR package available for Arch Linux users).
 
 ### Installation ###
@@ -32,7 +31,7 @@ Green Island provides the C++ code necessary to interact with Wayland, and QML D
 Once the necessary dependencies are installed, you can build and install the Papyros shell as follows:
 
     mkdir build; cd build
-    cmake ..
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DQML_INSTALL_DIR=lib/qt/qml
     make && sudo make install
 
 And run the compositor from an X11 desktop:
