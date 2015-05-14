@@ -1,0 +1,3 @@
+module Papyros.Desktop
+plugin papyrosdesktop
+
