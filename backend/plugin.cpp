@@ -1,8 +1,34 @@
-#include "papyrosdesktop_plugin.h"
+#include "plugin.h"
+
+#include "mpris/mprisconnection.h"
+#include "mpris/mpris2player.h"
+
+#include "notifications/notification.h"
+#include "notifications/notificationserver.h"
+
+#include "upower/upowerconnection.h"
+#include "upower/upowerdevicetype.h"
+#include "upower/upowerdevicestate.h"
+#include "upower/upowerdevice.h"
+
+#include "mixer/sound.h"
+
+#include "keyeventfilter/keyeventfilter.h"
+
+#include "desktop/desktopfile.h"
+#include "desktop/desktopscrobbler.h"
+
+#include "processhelper/processhelper.h"
+
+#include "loginhelper/loginhelper.h"
+
+#include "hardware/hardwareengine.h"
 
 void DesktopPlugin::registerTypes(const char *uri)
 {
     // @uri Papyros.Desktop
+    Q_ASSERT(uri == QStringLiteral("Papyros.Desktop"));
+
     qmlRegisterType<MprisConnection>(uri, 0, 1, "MprisConnection");
     qmlRegisterUncreatableType<Mpris2Player>(uri, 0, 1, "Mpris2Player", "Player class");
 
@@ -25,4 +51,12 @@ void DesktopPlugin::registerTypes(const char *uri)
     qmlRegisterSingletonType<ProcessHelper>(uri, 0, 1, "ProcessHelper", ProcessHelper::process_helper);
 
     qmlRegisterSingletonType<LoginHelper>(uri, 0, 1, "LoginHelper", LoginHelper::login_helper);
+
+    // Hardware (battery and storage)
+
+    qmlRegisterType<HardwareEngine>(uri, 0, 1, "HardwareEngine");
+    qmlRegisterUncreatableType<Battery>(uri, 0, 1, "Battery",
+            QStringLiteral("Cannot create Battery object"));
+    qmlRegisterUncreatableType<StorageDevice>(uri, 0, 1, "StorageDevice",
+            QStringLiteral("Cannot create StorageDevice object"));
 }

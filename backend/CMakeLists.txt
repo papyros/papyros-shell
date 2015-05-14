@@ -29,7 +29,8 @@ target_link_libraries(papyrosdesktop
                       Qt5::Core
                       Qt5::Qml
                       Qt5::DBus
-                      Qt5::Quick)
+                      Qt5::Quick
+                      KF5::Solid)
 
 if(ALSA_FOUND)
     include_directories(${ALSA_INCLUDE_DIRS})

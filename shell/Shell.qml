@@ -68,6 +68,7 @@ View {
     property list<Indicator> indicators: [
         NotificationsIndicator {},
         //OperationsIndicator {},
+        StorageIndicator {},
         SoundIndicator {},
         BatteryIndicator {},
         ActionCenterIndicator {},
@@ -381,6 +382,10 @@ View {
                                   : sound.master <= 33 ? "av/volume_mute"
                                   : sound.master >= 67 ? "av/volume_up"
                                   : "av/volume_down"
+    }
+
+    HardwareEngine {
+        id: hardware
     }
 
     property var now: new Date()

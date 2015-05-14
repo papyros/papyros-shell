@@ -36,6 +36,10 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
              Qml
              Quick)
 
+# Find KF5
+find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
+             Solid)
+
 greenisland_install_shell(io.papyros.shell shell)
 
 add_subdirectory(backend)
