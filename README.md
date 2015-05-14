@@ -25,6 +25,10 @@ Green Island provides the C++ code necessary to interact with Wayland, and QML D
  * [QML Extras](https://github.com/papyros/qml-extras) (the `develop` branch).
  * [QML Material](https://github.com/papyros/qml-material) (the `develop` branch).
  * [GSettings QML module](https://launchpad.net/gsettings-qt) (AUR package available for Arch Linux users).
+ * Several KDE Frameworks
+   * [KDeclarative](api.kde.org/frameworks-api/frameworks5-apidocs/kdeclarative/html/)
+   * [Solid](api.kde.org/frameworks-api/frameworks5-apidocs/solid/html/)
+ * ALSA or PulseAudio for the sound indicator
 
 ### Installation ###
 
