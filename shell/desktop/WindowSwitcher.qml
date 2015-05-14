@@ -21,7 +21,7 @@ import Material 0.1
 import Material.Extras 0.1
 import GreenIsland 1.0
 import GreenIsland.Desktop 1.0
-import Material.Desktop 0.1
+import Papyros.Desktop 0.1
 import "../components"
 
 View {

@@ -18,7 +18,7 @@
 import QtQuick 2.3
 import QtQuick.Layouts 1.0
 import Material 0.1
-import Material.Desktop 0.1
+import Papyros.Desktop 0.1
 
 import "../../components"
 import "../../indicators"

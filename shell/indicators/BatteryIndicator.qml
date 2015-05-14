@@ -17,7 +17,7 @@
 */
 import QtQuick 2.0
 import Material 0.1
-import Material.Desktop 0.1
+import Papyros.Desktop 0.1
 import Material.ListItems 0.1 as ListItem
 
 Indicator {
