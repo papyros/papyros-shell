@@ -38,6 +38,8 @@ Indicator {
             model: hardware.storageDevices
             delegate: ListItem.Standard {
                 text: modelData.name
+                visible: !modelData.ignored
+
                 iconSource: {
                     if (modelData.iconName.indexOf("harddisk") !== -1) {
                         return Qt.resolvedUrl("../images/harddisk.svg")
@@ -47,7 +49,10 @@ Indicator {
                         return Qt.resolvedUrl("../images/harddisk.svg")
                     }
                 }
-                visible: !modelData.ignored
+                
+                onClicked: {
+                    Qt.openUrlExternally(modelData.filePath)
+                }
             }
         }
     }

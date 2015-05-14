@@ -73,6 +73,12 @@ QString StorageDevice::iconName() const
     return m_device.icon();
 }
 
+QString StorageDevice::filePath() const
+{
+    const Solid::StorageAccess *access = m_device.as<Solid::StorageAccess>();
+    return access->filePath();
+}
+
 bool StorageDevice::isMounted() const
 {
     const Solid::StorageAccess *access = m_device.as<Solid::StorageAccess>();

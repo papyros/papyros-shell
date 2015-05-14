@@ -40,9 +40,10 @@ class StorageDevice : public QObject
     Q_PROPERTY(QString udi READ udi CONSTANT)
     Q_PROPERTY(QString name READ name CONSTANT)
     Q_PROPERTY(QString iconName READ iconName CONSTANT)
+    Q_PROPERTY(QString filePath READ filePath CONSTANT)
     Q_PROPERTY(bool mounted READ isMounted NOTIFY mountedChanged)
     Q_PROPERTY(bool ignored READ isIgnored CONSTANT)
-    
+
 public:
     StorageDevice(const QString &udi, QObject *parent = 0);
     ~StorageDevice();
@@ -50,6 +51,7 @@ public:
     QString udi() const;
     QString name() const;
     QString iconName() const;
+    QString filePath() const;
 
     bool isMounted() const;
     bool isIgnored() const;
