@@ -17,15 +17,20 @@
 */
 import QtQuick 2.0
 import Material 0.1
-import Papyros.Desktop 0.1
 import Material.ListItems 0.1 as ListItem
+import Material.Extras 0.1
+import Papyros.Desktop 0.1
 
 Indicator {
     id: indicator
 
     iconSource: Qt.resolvedUrl("../images/harddisk.svg")
-    tooltip: qsTr("%1 storage devices").arg(hardware.storageDevices.length)
-    visible: hardware.storageDevices.length > 0
+    tooltip: qsTr("%1 storage devices").arg(deviceCount)
+    visible: deviceCount > 0
+
+    property int deviceCount: ListUtils.filteredCount(hardware.storageDevices, function(device) {
+        return !device.ignored
+    })
 
     view: Column {
 
@@ -33,7 +38,16 @@ Indicator {
             model: hardware.storageDevices
             delegate: ListItem.Standard {
                 text: modelData.name
-                iconSource: "image://desktoptheme/" + modelData.iconName
+                iconSource: {
+                    if (modelData.iconName.indexOf("harddisk") !== -1) {
+                        return Qt.resolvedUrl("../images/harddisk.svg")
+                    } else if (modelData.iconName.indexOf("usb") !== -1) {
+                        return "icon://device/usb"
+                    } else {
+                        return Qt.resolvedUrl("../images/harddisk.svg")
+                    }
+                }
+                visible: !modelData.ignored
             }
         }
     }

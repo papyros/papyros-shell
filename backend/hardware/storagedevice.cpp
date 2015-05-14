@@ -79,6 +79,11 @@ bool StorageDevice::isMounted() const
     return access->isAccessible();
 }
 
+bool StorageDevice::isIgnored() const {
+    const Solid::StorageAccess *access = m_device.as<Solid::StorageAccess>();
+    return access->isIgnored();
+}
+
 void StorageDevice::mount()
 {
     Solid::StorageAccess *access = m_device.as<Solid::StorageAccess>();
