@@ -31,7 +31,13 @@ View {
     signal clicked()
     signal rightClicked()
 
-    onClicked: windowManager.moveFront(item)
+    onClicked: {
+        if (focused) {
+            windowManager.moveFront(item)
+        } else {
+            windowManager.focusApplication(appId)
+        }
+    }
 
     onRightClicked: {
         if (popupMenu) {
@@ -71,17 +77,17 @@ View {
         }               
     }
 
-    DesktopFile {
-        id: desktopFile
-        appId: window.appId
-    }
-
     AppIcon {
         iconName: desktopFile.iconName
-        name: desktopFile.name !== "" ? desktopFile.name : window.appId
+        name: desktopFile && desktopFile.name !== "" ? desktopFile.name : appId
         anchors.centerIn: parent
         width: parent.width * 0.55
         height: width
+        opacity: running ? 1 : 0.7
+
+        Behavior on opacity {
+            NumberAnimation { duration: 200 }
+        }
     }
 
     Rectangle {
@@ -89,7 +95,7 @@ View {
         height: Units.dp(2)
         anchors.bottom: parent.bottom
         color: "white"
-        visible: windowManager.activeWindow == item
+        visible: focused
     }
 
     Popover {
@@ -130,6 +136,9 @@ View {
 
                 Switch {
                     id: checkbox
+
+                    checked: pinned
+
                     anchors {
                         right: parent.right
                         verticalCenter: parent.verticalCenter

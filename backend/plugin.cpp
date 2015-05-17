@@ -24,6 +24,9 @@
 
 #include "hardware/hardwareengine.h"
 
+#include "launcher/application.h"
+#include "launcher/launchermodel.h"
+
 void DesktopPlugin::registerTypes(const char *uri)
 {
     // @uri Papyros.Desktop
@@ -46,6 +49,8 @@ void DesktopPlugin::registerTypes(const char *uri)
 
     qmlRegisterType<DesktopFile>(uri, 0, 1, "DesktopFile");
     qmlRegisterType<DesktopScrobbler>(uri, 0, 1, "DesktopScrobbler");
+    qmlRegisterType<LauncherModel>(uri, 0, 1, "LauncherModel");
+    qmlRegisterUncreatableType<Application>(uri, 0, 1, "Application", "Applications are managed by the launcher model");
     qmlRegisterUncreatableType<QObjectListModel>(uri, 0, 1, "QObjectListModel", "For cool animations");
     
     qmlRegisterSingletonType<ProcessHelper>(uri, 0, 1, "ProcessHelper", ProcessHelper::process_helper);

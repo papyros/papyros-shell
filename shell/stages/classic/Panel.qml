@@ -65,7 +65,7 @@ View {
 
             interactive: contentWidth > width
 
-            model: windowManager.windows
+            model: LauncherModel {}
             delegate: AppLauncher {
                 width: parent.height
                 height: width
