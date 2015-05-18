@@ -73,15 +73,11 @@ bool Application::launch()
 	if (isRunning())
         return true;
 
-    const QDBusConnection bus = QDBusConnection::sessionBus();
-    QDBusInterface interface("org.hawaii.session", "/HawaiiSession", "org.hawaii.launcher", bus);
-    QDBusMessage msg = interface.call("launchDesktopFile", m_desktopFile->m_path);
-    bool ran = msg.arguments().at(0).toBool();
+    desktopFile()->launch();
 
-    if (ran)
-        Q_EMIT launched();
+    Q_EMIT launched();
 
-    return ran;
+    return true;
 }
 
 bool Application::quit()

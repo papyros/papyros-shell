@@ -138,28 +138,28 @@ View {
     Timer {
         id: previewTimer
 
-        property var window
-        property var item
+        property var windows
+        property var app
         property var caller
 
         interval: 1000
 
-        function delayShow(caller, window, item) {
+        function delayShow(caller, app, windows) {
             if (windowPreview.showing || delayCloseTimer.running) {
-                windowPreview.window = window
-                windowPreview.item = item
+                windowPreview.windows = windows
+                windowPreview.app = app
                 windowPreview.open(caller, 0, Units.dp(16))
             } else {
-                previewTimer.window = window
-                previewTimer.item = item
+                previewTimer.windows = windows
+                previewTimer.app = app
                 previewTimer.caller = caller
                 restart()
             }
         }
 
         onTriggered: {
-            windowPreview.window = previewTimer.window
-            windowPreview.item = previewTimer.item
+            windowPreview.windows = windows
+            windowPreview.app = app
             windowPreview.open(previewTimer.caller, 0, Units.dp(16))
         }
     }
@@ -167,14 +167,5 @@ View {
     WindowTooltip {
         id: windowPreview
         overlayLayer: "desktopTooltipOverlayLayer"
-    }
-
-    Connections {
-        target: shell
-        onSelectedIndicatorChanged: {
-            previewTimer.stop()
-            delayCloseTimer.stop()
-            windowPreview.close()
-        }
     }
 }

@@ -17,8 +17,9 @@
  */
 import QtQuick 2.3
 import Material 0.1
-import Papyros.Desktop 0.1
 import Material.ListItems 0.1 as ListItem
+import Material.Extras 0.1
+import Papyros.Desktop 0.1
 
 import "../launcher"
 import "../desktop"
@@ -33,9 +34,15 @@ View {
     signal clicked()
     signal rightClicked()
 
+    property var windows: ListUtils.filter(windowManager.windows, function(modelData) {
+        return modelData.window.appId == appId
+    })
+
     onClicked: {
-        if (focused) {
-            windowManager.moveFront(item)
+        if (!running) {
+            appLauncher.listView.model.get(index).launch()
+        } else if (focused) {
+            // TODO: Spread windows
         } else {
             windowManager.focusApplication(appId)
         }
@@ -68,7 +75,7 @@ View {
 
         onContainsMouseChanged: {
             if (containsMouse) {
-                previewTimer.delayShow(appLauncher, window, item)
+                previewTimer.delayShow(appLauncher, model, windows)
             } else {
                 if (windowPreview.showing)
                     windowPreview.close()
@@ -118,16 +125,29 @@ View {
             id: column
             width: parent.width
 
-            ListItem.Standard {
-                text: "New Window"
-                enabled: false
-                showDivider: true
+            Repeater {
+                model: windows
+                delegate: ListItem.Standard {
+                    text: modelData.window.title
+                    showDivider: index == windows.length - 1
+                }
             }
 
             ListItem.Standard {
-                text: "Close window"
+                text: "New Window"
+                enabled: false
+                showDivider: !closeItem.visible
+            }
+
+            ListItem.Standard {
+                id: closeItem
+                text: "Close application"
                 showDivider: true
-                onClicked: item.kill()
+                visible: running
+                onClicked: {
+                    popupMenu.close()
+                    appLauncher.listView.model.get(index).quit()
+                }
             }
 
             ListItem.Standard {
