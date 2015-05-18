@@ -68,6 +68,9 @@ private:
     QList<Application *> m_list;
 
     void pinLauncher(const QString &appId, bool pinned);
+
+    bool moveRows(int sourceRow, int count, int destinationChild);
+    bool moveRows(const QModelIndex & sourceParent, int sourceRow, int count, const QModelIndex & destinationParent, int destinationChild) Q_DECL_OVERRIDE;
 };
 
 QML_DECLARE_TYPE(LauncherModel)
