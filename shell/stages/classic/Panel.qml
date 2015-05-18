@@ -49,6 +49,8 @@ View {
             bottom: parent.bottom
         }
 
+        spacing: 0
+
         IndicatorView {
             Layout.preferredWidth: height
             iconSize: Units.dp(24)

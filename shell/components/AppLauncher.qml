@@ -92,11 +92,6 @@ View {
         anchors.centerIn: parent
         width: parent.width * 0.55
         height: width
-        opacity: running ? 1 : 0.3
-
-        Behavior on opacity {
-            NumberAnimation { duration: 200 }
-        }
     }
 
     Rectangle {

@@ -31,6 +31,7 @@
 
 #include <QtCore/QAbstractListModel>
 #include <QtQml/QQmlComponent>
+#include <KConfigCore/KConfig>
 
 class Application;
 
@@ -66,6 +67,9 @@ public:
 
 private:
     QList<Application *> m_list;
+    KConfig *m_config;
+
+    QStringList defaultPinnedApps();
 
     void pinLauncher(const QString &appId, bool pinned);
 
