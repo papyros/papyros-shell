@@ -29,6 +29,8 @@
 #include <QtGui/QIcon>
 #include <QDebug>
 
+#include <KConfigCore/KConfigGroup>
+
 #include <GreenIsland/ApplicationManager>
 
 #include "launchermodel.h"
@@ -40,9 +42,7 @@ LauncherModel::LauncherModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     // Settings
-    // m_settings = new QGSettings(QStringLiteral("org.hawaii.desktop.panel"),
-    //                             QStringLiteral("/org/hawaii/desktop/panel/"),
-    //                             this);
+    m_config = new KConfig("papyros-shell");
 
     // Application manager instance
     ApplicationManager *appMan = ApplicationManager::instance();
@@ -119,10 +119,14 @@ LauncherModel::LauncherModel(QObject *parent)
     });
 
     // Add pinned launchers
-    //const QStringList pinnedLaunchers = m_settings->value(QStringLiteral("pinnedLaunchers")).toStringList();
-    beginInsertRows(QModelIndex(), m_list.size(), m_list.size() + 2);
-    m_list.append(new Application("papyros-files", true, this));
-    m_list.append(new Application("gnome-dictionary", true, this));
+    const QStringList pinnedLaunchers = m_config->group("appshelf")
+            .readEntry("pinned_apps", defaultPinnedApps());
+    beginInsertRows(QModelIndex(), 0, m_list.size());
+
+    for (QString appId : pinnedLaunchers) {
+        m_list.append(new Application(appId, true, this));
+    }
+
     endInsertRows();
 }
 
@@ -131,6 +135,14 @@ LauncherModel::~LauncherModel()
     // Delete the items
     while (!m_list.isEmpty())
         m_list.takeFirst()->deleteLater();
+    delete m_config;
+}
+
+QStringList LauncherModel::defaultPinnedApps() {
+    QStringList defaultApps; 
+    defaultApps << "org.gnome.Dictionary";
+
+    return defaultApps;
 }
 
 QHash<int, QByteArray> LauncherModel::roleNames() const
@@ -275,15 +287,20 @@ void LauncherModel::unpin(const QString &appId)
 
 void LauncherModel::pinLauncher(const QString &appId, bool pinned)
 {
-    // Currently pinned launchers
-    //QStringList pinnedLaunchers = m_settings->value(QStringLiteral("pinnedLaunchers")).toStringList();
+    KConfigGroup group = m_config->group("appshelf");
 
+    // Currently pinned launchers
+    QStringList pinnedLaunchers = m_config->group("appshelf")
+            .readEntry("pinned_apps", defaultPinnedApps());
+    
     // Add or remove from the pinned launchers
-    // if (pinned)
-    //     pinnedLaunchers.append(appId);
-    // else
-    //     pinnedLaunchers.removeOne(appId);
-    // m_settings->setValue(QStringLiteral("pinnedLaunchers"), pinnedLaunchers);
+    if (pinned)
+         pinnedLaunchers.append(appId);
+    else
+         pinnedLaunchers.removeOne(appId);
+
+    group.writeEntry("pinned_apps", pinnedLaunchers);
+    group.sync();
 }
 
 bool LauncherModel::moveRows(int sourceRow, int count, int destinationChild) {
