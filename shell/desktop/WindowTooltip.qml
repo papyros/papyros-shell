@@ -23,35 +23,50 @@ import GreenIsland.Desktop 1.0
 Tooltip {
     id: dropdown
 
-    property alias window: preview.window
-    property alias item: preview.item
+    property var windows: []
+    property var app
 
     ColumnLayout {
         id: layout
         anchors.centerIn: parent
 
-        spacing: Units.dp(8)
+        spacing: Units.dp(16)
 
-        WindowPreview {
-            id: preview
-
+        Row {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            height: Units.dp(160)
+            visible: windows.length > 0
+            spacing: Units.dp(16)
 
-            property var item
-            property var window
+            Repeater {
+                model: windows
+
+                WindowPreview {
+                    id: preview
+
+                    height: Units.dp(100)
+                    width: item.width * height/item.height
+
+                    property var item: modelData.item 
+                    property var window: modelData.window
+                }
+            }
         }
 
         Label {
+            id: tooltipLabel
             Layout.alignment: Qt.AlignHCenter
-            text: window.title
+            text: app && app.desktopFile.name !== "" ? app.desktopFile.name : app.appId
             color: Theme.dark.textColor
             style: "subheading"
         }
     }
 
-    width: layout.width + Units.dp(16)
-    height: layout.height + Units.dp(16)
+    width: windows.length == 0 
+            ? tooltipLabel.paintedWidth + Units.dp(32)
+            : layout.width + Units.dp(32)
+    height: windows.length == 0 
+            ? Device.isMobile ? Units.dp(44) : Units.dp(40) 
+            : layout.height + Units.dp(32)
 }
