@@ -27,6 +27,24 @@ import "../components"
 View {
     id: windowSwitcher
 
+    property var apps: {
+        var list = []
+        var appIds = []
+
+        for (var i = 0; i < windowManager.orderedWindows.count; i++) {
+            var entry = windowManager.orderedWindows.get(i)
+
+            if (appIds.indexOf(entry.window.appId) == -1) {
+                appIds.push(entry.window.appId)
+                list.push(desktopFileComponent.createObject(windowSwitcher, {
+                    appId: entry.window.appId
+                }))
+            }
+        }
+
+        return list
+    }
+
     anchors.centerIn: parent
     elevation: 2
     radius: Units.dp(2)
@@ -36,8 +54,8 @@ View {
 
     backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 0.9)
 
-    opacity: showing ? 1 : 0
-    visible: opacity > 0
+    //opacity: showing ? 1 : 0
+    //visible: opacity > 0
 
     Behavior on opacity {
         NumberAnimation { duration: 200 }
@@ -46,7 +64,7 @@ View {
     property bool showing: shell.state == "switcher"
     property int index
     property bool enabled: count > 0
-    property int count: windowManager.orderedWindows.count
+    property int count: apps.length
 
     onCountChanged: {
         index = Math.min(index, count - 1)
@@ -63,21 +81,25 @@ View {
     }
 
     function dismiss() {
-        windowManager.moveFront(windowManager.orderedWindows.get(index).item)
+        windowManager.focusApplication(windowSwitcher.apps[index].appId)
         shell.state = "default"
     }
 
     function next() {
-        print("Next!")
         index = (index + 1) % count
     }
 
     function prev() {
-        print("Previ!")
         index = (index - 1) % count
     }
 
-    Column {
+    Component {
+        id: desktopFileComponent
+
+        DesktopFile {}
+    }
+
+    ColumnLayout {
         id: column
         anchors.centerIn: parent
 
@@ -87,10 +109,11 @@ View {
             spacing: Units.dp(8)
 
             Repeater {
-                model: windowManager.orderedWindows
+                id: repeater
+                model: windowSwitcher.apps
                 delegate: Rectangle {
                     height: Units.dp(100)
-                    width: config.showWindowSwitcherPreviews ? preview.implicitWidth : height
+                    width: height
 
                     color: "transparent"
 
@@ -104,41 +127,34 @@ View {
                             margins: Units.dp(8) 
                         }
 
-                        iconName: window.iconName
-                        name: desktopFile.name !== "" ? desktopFile.name : window.appId
-                    }
-
-                    DesktopFile {
-                        id: desktopFile
-                        appId: window.appId
-                    }
-
-                    WindowPreview {
-                        id: preview
-                        visible: config.showWindowSwitcherPreviews
-                        anchors {
-                            fill: parent
-                            margins: Units.dp(8) 
-                        }
+                        iconName: modelData.iconName
+                        name: modelData.name !== "" 
+                                ? modelData.name : modelData.appId
                     }
 
                     MouseArea {
                         anchors.fill: parent
                         acceptedButtons: Qt.AllButtons
-                        onClicked: preview.activate()
+                        onClicked: {
+                            shell.state = "default"
+                            windowManager.focusApplication(modelData.appId)
+                        }
                     }
                 }
             }
         }
 
         Label {
-            width: parent.width
+            Layout.fillWidth: true
 
             horizontalAlignment: Qt.AlignHCenter
 
             elide: Text.ElideRight
 
-            text: windowManager.orderedWindows.get(windowSwitcher.index).window.title
+            property var selectedApp: windowSwitcher.apps[index]
+
+            text: selectedApp.name 
+                    ? selectedApp.name : selectedApp.appId
             style: "subheading"
             color: Theme.dark.textColor
         }

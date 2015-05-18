@@ -38,6 +38,9 @@ class LauncherModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_ENUMS(Roles)
+
+    Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
+
 public:
     enum Roles {
         AppIdRole = Qt::UserRole + 1,
@@ -63,6 +66,9 @@ public:
 
     Q_INVOKABLE void pin(const QString &appId);
     Q_INVOKABLE void unpin(const QString &appId);
+
+signals:
+    void countChanged();
 
 private:
     QList<Application *> m_list;

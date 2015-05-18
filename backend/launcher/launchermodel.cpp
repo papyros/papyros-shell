@@ -68,6 +68,8 @@ LauncherModel::LauncherModel(QObject *parent)
         app->m_pids.insert(pid);
         m_list.append(app);
         endInsertRows();
+
+        emit countChanged();
     });
     connect(appMan, &ApplicationManager::applicationRemoved, this, [this](const QString &appId, pid_t pid) {
         for (int i = 0; i < m_list.size(); i++) {
@@ -90,6 +92,8 @@ LauncherModel::LauncherModel(QObject *parent)
                     beginRemoveRows(QModelIndex(), i, i);
                     m_list.takeAt(i)->deleteLater();
                     endRemoveRows();
+
+                    emit countChanged();
                 }
                 break;
             }
@@ -124,6 +128,8 @@ LauncherModel::LauncherModel(QObject *parent)
     m_list.append(new Application("papyros-files", true, this));
     m_list.append(new Application("gnome-dictionary", true, this));
     endInsertRows();
+
+    emit countChanged();
 }
 
 LauncherModel::~LauncherModel()
