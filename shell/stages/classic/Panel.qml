@@ -85,6 +85,20 @@ View {
                 }
             }
 
+            move: Transition {
+                SequentialAnimation {
+                    PauseAnimation { duration: 250 }
+                    NumberAnimation { properties: "x,y"; duration: 250 }
+                }
+            }
+
+            moveDisplaced: Transition {
+                SequentialAnimation {
+                    PauseAnimation { duration: 250 }
+                    NumberAnimation { properties: "x,y"; duration: 250 }
+                }
+            }
+
             add: Transition {
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; to: 1; from: 0; duration: 250 }

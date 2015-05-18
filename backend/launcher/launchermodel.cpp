@@ -63,9 +63,10 @@ LauncherModel::LauncherModel(QObject *parent)
 
         // Otherwise create one
         beginInsertRows(QModelIndex(), m_list.size(), m_list.size());
-        Application *item = new Application(appId, this);
-        item->m_pids.insert(pid);
-        m_list.append(item);
+        Application *app = new Application(appId, this);
+        app->setState(Application::Running);
+        app->m_pids.insert(pid);
+        m_list.append(app);
         endInsertRows();
     });
     connect(appMan, &ApplicationManager::applicationRemoved, this, [this](const QString &appId, pid_t pid) {
@@ -200,9 +201,15 @@ int LauncherModel::indexFromAppId(const QString &appId) const
 
 void LauncherModel::pin(const QString &appId)
 {
+    qDebug() << "Pinning in C++!";
     Application *found = Q_NULLPTR;
 
+    int pinAtIndex = 0;
+
     Q_FOREACH (Application *item, m_list) {
+        if (item->isPinned())
+            pinAtIndex++;
+
         if (item->appId() != appId)
             continue;
 
@@ -214,9 +221,20 @@ void LauncherModel::pin(const QString &appId)
     if (!found)
         return;
 
+    Q_ASSERT(!found->isPinned());
+
     found->setPinned(true);
-    QModelIndex modelIndex = index(m_list.indexOf(found));
-    Q_EMIT dataChanged(modelIndex, modelIndex);
+
+    int foundIndex = m_list.indexOf(found);
+
+    if (foundIndex != pinAtIndex) {
+        qDebug() << "Moving rows!";
+        moveRows(foundIndex, 1, pinAtIndex);
+    } else {
+        qDebug() << "Same row, updating";
+        QModelIndex modelIndex = index(foundIndex);
+        Q_EMIT dataChanged(modelIndex, modelIndex);
+    }
 
     pinLauncher(appId, true);
 }
@@ -226,23 +244,26 @@ void LauncherModel::unpin(const QString &appId)
     Application *found = Q_NULLPTR;
 
     Q_FOREACH (Application *item, m_list) {
+        if (!item->isPinned())
+            break;
+
         if (item->appId() != appId)
             continue;
 
         found = item;
-        break;
     }
 
     if (!found)
         return;
+
+    Q_ASSERT(found->isPinned());
 
     int i = m_list.indexOf(found);
 
     // Remove the item when unpinned and not running
     if (found->isRunning()) {
         found->setPinned(false);
-        QModelIndex modelIndex = index(i);
-        Q_EMIT dataChanged(modelIndex, modelIndex);
+        moveRows(i, 1, m_list.size() - 1);
     } else {
         beginRemoveRows(QModelIndex(), i, i);
         m_list.takeAt(i)->deleteLater();
@@ -263,4 +284,40 @@ void LauncherModel::pinLauncher(const QString &appId, bool pinned)
     // else
     //     pinnedLaunchers.removeOne(appId);
     // m_settings->setValue(QStringLiteral("pinnedLaunchers"), pinnedLaunchers);
+}
+
+bool LauncherModel::moveRows(int sourceRow, int count, int destinationChild) {
+    return moveRows(QModelIndex(), sourceRow, count, QModelIndex(), destinationChild);
+}
+
+bool LauncherModel::moveRows(const QModelIndex & sourceParent, int sourceRow, int count, const QModelIndex & destinationParent, int destinationChild) {
+    QList<Application *> tmp;
+
+    Q_UNUSED(sourceParent);
+    Q_UNUSED(destinationParent);
+
+    if (sourceRow + count - 1 < destinationChild) {
+        beginMoveRows(QModelIndex(), sourceRow, sourceRow + count - 1, QModelIndex(), destinationChild + 1);
+        for (int i = sourceRow; i < sourceRow + count; i++) {
+            Q_ASSERT(m_list[i]);
+            tmp << m_list.takeAt(i);
+        }
+        for (int i = 0; i < count; i++) {
+            Q_ASSERT(tmp[i]);
+            m_list.insert(destinationChild - count + 2 + i,tmp[i]);
+        }
+        endMoveRows();
+    } else if (sourceRow > destinationChild) {
+        beginMoveRows(QModelIndex(), sourceRow, sourceRow + count - 1, QModelIndex(), destinationChild);
+        for (int i = sourceRow; i < sourceRow + count; i++) {
+            Q_ASSERT(m_list[i]);
+            tmp << m_list.takeAt(i);
+        }
+        for (int i = 0; i < count; i++) {
+            Q_ASSERT(tmp[i]);
+            m_list.insert(destinationChild + i,tmp[i]);
+        }
+        endMoveRows();
+    }
+    return true;
 }

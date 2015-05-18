@@ -25,6 +25,8 @@ import "../desktop"
 
 View {
     id: appLauncher
+
+    property var listView: ListView.view
     
     tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
 
@@ -83,7 +85,7 @@ View {
         anchors.centerIn: parent
         width: parent.width * 0.55
         height: width
-        opacity: running ? 1 : 0.7
+        opacity: running ? 1 : 0.3
 
         Behavior on opacity {
             NumberAnimation { duration: 200 }
@@ -129,15 +131,25 @@ View {
             }
 
             ListItem.Standard {
-                text: "Pinned to dock"
-                enabled: false
-
+                text: "Pin to dock"
+                
                 onClicked: checkbox.checked = !checkbox.checked
 
                 Switch {
                     id: checkbox
 
                     checked: pinned
+
+                    onCheckedChanged: {
+                        if (pinned) {
+                            appLauncher.listView.model.unpin(model.appId);
+                        } else {
+                            appLauncher.listView.model.pin(model.appId);
+                        }
+
+                        checked = Qt.binding(function() { return pinned })
+                        popupMenu.close()
+                    }
 
                     anchors {
                         right: parent.right
