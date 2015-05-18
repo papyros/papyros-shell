@@ -69,7 +69,6 @@ void Application::setFocused(bool focused)
 
 bool Application::launch()
 {
-	// TODO: Don't depend on the Hawaii session!
 	if (isRunning())
         return true;
 
@@ -86,5 +85,6 @@ bool Application::quit()
         return false;
 
     GreenIsland::ApplicationManager::instance()->quit(appId());
+    
     return true;
 }

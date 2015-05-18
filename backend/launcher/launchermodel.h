@@ -38,7 +38,9 @@ class Application;
 class LauncherModel : public QAbstractListModel
 {
     Q_OBJECT
+
     Q_ENUMS(Roles)
+
 public:
     enum Roles {
         AppIdRole = Qt::UserRole + 1,
