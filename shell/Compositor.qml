@@ -109,6 +109,33 @@ MainView {
         opacity: 0
         spacing: Units.dp(15)
 
+        populate: Transition {
+            id: populateTransition
+            SequentialAnimation {
+                PropertyAction {
+                    property: "opacity"; value: 0
+                }
+
+                PauseAnimation {
+                    duration: (populateTransition.ViewTransition.index -
+                            populateTransition.ViewTransition.targetIndexes[0]) * 250 + 100
+                }
+
+                ParallelAnimation {
+                    NumberAnimation {
+                        property: "opacity"; duration: 250
+                        from: 0; to: 1
+                    }
+
+                    NumberAnimation {
+                        property: "y"; duration: 250
+                        from: populateTransition.ViewTransition.destination.y + Units.dp(50);
+                        easing.type: Easing.OutQuad
+                    }
+                }
+            }
+        }
+
         ProgressCircle {
             color: "white"
             anchors.horizontalCenter: parent.horizontalCenter
