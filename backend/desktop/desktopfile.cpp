@@ -40,8 +40,8 @@ QString DesktopFile::pathFromAppId(QString appId)
 {
     QStringList paths;
     paths << "~/.local/share/applications"
-          << "/usr/local/share/applications/"
-          << "/usr/share/applications/";
+          << "/usr/local/share/applications"
+          << "/usr/share/applications";
 
     return findFileInPaths(appId + ".desktop", paths);
 }
