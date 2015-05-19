@@ -173,9 +173,9 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case Qt::DecorationRole:
-        return QIcon::fromTheme(item->desktopFile()->m_iconName);
+        return QIcon::fromTheme(item->desktopFile()->iconName());
     case Qt::DisplayRole:
-        return item->desktopFile()->m_name;
+        return item->desktopFile()->name();
     case AppIdRole:
         return item->appId();
     case DesktopFileRole:

@@ -26,35 +26,12 @@
 #include <QLocale>
 #include <QProcess>
 
+#include <qt5xdg/xdgdesktopfile.h>
+
 DesktopFile::DesktopFile(QString path, QObject *parent)
         : QObject(parent)
 {
-    if (path.startsWith("/")) {
-        setPath(path);
-    } else {
-        setAppId(path);
-    }
-}
-
-QString DesktopFile::pathFromAppId(QString appId)
-{
-    QStringList paths;
-    paths << "~/.local/share/applications"
-          << "/usr/local/share/applications/"
-          << "/usr/share/applications/";
-
-    return findFileInPaths(appId + ".desktop", paths);
-}
-
-QString DesktopFile::findFileInPaths(QString fileName, QStringList paths)
-{
-    for (QString path : paths) {
-        if (QFile::exists(path + "/" + fileName)) {
-            return path + "/" + fileName;
-        }
-    }
-
-    return "";
+    setPath(path);
 }
 
 QString DesktopFile::getEnvVar(int pid)
@@ -73,77 +50,57 @@ QString DesktopFile::getEnvVar(int pid)
 
 void DesktopFile::setAppId(QString appId)
 {
-    setPath(pathFromAppId(appId));
-
-    load();
+    setPath(appId);
 }
 
 void DesktopFile::setPath(QString path)
 {
     m_path = path;
-    m_isValid = m_path != "";
 
     // Extracts "papyros-files" from "/path/to/papyros-files.desktop"
     m_appId = QFileInfo(path).baseName();
 
     emit pathChanged();
-    emit isValidChanged();
+    emit appIdChanged();
 
     load();
 }
 
-void DesktopFile::launch()
+void DesktopFile::load() {
+    m_desktopFile = XdgDesktopFileCache::getFile(m_path);
+    emit dataChanged();
+}
+
+void DesktopFile::launch(const QStringList& urls) const
 {
-    QString tempString = m_exec;
-    tempString.replace("%f", "", Qt::CaseInsensitive);
-    tempString.replace("%u", "", Qt::CaseInsensitive);
-    QProcess::startDetached(tempString);
+    if (m_desktopFile) {
+        m_desktopFile->startDetached(urls);
+    }
 
     // TODO: Set DESKTOP_FILE env variable
     // TODO: Set Qt and Gtk env variables to force the use of Wayland
 }
 
-QVariant DesktopFile::localizedValue(const QSettings &desktopFile, QString key)
-{
-    QLocale locale;
-    QString fullLocale = locale.name();
-    QString onlyLocale = fullLocale;
-    onlyLocale.truncate(2);
-
-    QStringList keys;
-    keys << QString("%1[%2]").arg(key).arg(fullLocale)
-         << QString("%1[%2]").arg(key).arg(onlyLocale)
-         << key;
-
-    for (QString keyName : keys) {
-        QVariant value = desktopFile.value(keyName);
-
-        if (!value.isNull())
-            return value;
-    }
-
-    return QVariant();
+QString DesktopFile::name() const {
+    return m_desktopFile ? m_desktopFile->name() : "";
 }
 
-void DesktopFile::load()
-{
-    if (m_path == "") {
-        m_name = "";
-        m_exec = "";
-        m_comment = "";
-        m_darkColor = "";
-        m_iconName = "";
-    } else {
-        QSettings desktopFile(m_path, QSettings::IniFormat);
-        desktopFile.setIniCodec("UTF-8");
-        desktopFile.beginGroup("Desktop Entry");
+QString DesktopFile::iconName() const {
+    return m_desktopFile ? m_desktopFile->iconName() : "";
+}
 
-        m_name = localizedValue(desktopFile, "Name").toString();
-        m_exec = desktopFile.value("Exec").toString();
-        m_comment = localizedValue(desktopFile, "Comment").toString();
-        m_darkColor = desktopFile.value("X-Papyros-DarkColor").toString();
-        m_iconName = desktopFile.value("Icon").toString();
-    }
+QIcon DesktopFile::icon() const {
+    return m_desktopFile ? m_desktopFile->icon() : QIcon();
+}
 
-    emit dataChanged();
+QString DesktopFile::comment() const {
+    return m_desktopFile ? m_desktopFile->comment() : "";
+}
+
+bool DesktopFile::isValid() const {
+    return m_desktopFile ? m_desktopFile->isValid() : false;
+}
+
+bool DesktopFile::isShown(const QString &environment) const {
+    return m_desktopFile ? m_desktopFile->isShown(environment) : false;
 }

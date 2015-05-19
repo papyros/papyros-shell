@@ -22,39 +22,42 @@
 #define DESKTOPFILE_H
 
 #include <QObject>
-#include <QSettings>
+
+#include <qt5xdg/xdgdesktopfile.h>
 
 class DesktopFile : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString name MEMBER m_name NOTIFY dataChanged)
-    Q_PROPERTY(QString iconName MEMBER m_iconName NOTIFY dataChanged)
-    Q_PROPERTY(QString comment MEMBER m_comment NOTIFY dataChanged)
-    Q_PROPERTY(QString exec MEMBER m_exec NOTIFY dataChanged)
+    Q_PROPERTY(QString name READ name NOTIFY dataChanged)
+    Q_PROPERTY(QString iconName READ iconName NOTIFY dataChanged)
+    Q_PROPERTY(QIcon icon READ icon NOTIFY dataChanged)
+    Q_PROPERTY(QString comment READ comment NOTIFY dataChanged)
     Q_PROPERTY(QString darkColor MEMBER m_darkColor NOTIFY dataChanged)
 
     Q_PROPERTY(QString appId MEMBER m_appId WRITE setAppId NOTIFY appIdChanged);
     Q_PROPERTY(QString path MEMBER m_path WRITE setPath NOTIFY pathChanged)
 
-    Q_PROPERTY(bool isValid MEMBER m_isValid NOTIFY isValidChanged)
+    Q_PROPERTY(bool isValid READ isValid NOTIFY dataChanged)
+    Q_PROPERTY(bool isShown READ isShown NOTIFY dataChanged)
 
 public:
     explicit DesktopFile(QString path = "", QObject *parent = 0);
 
     static QString getEnvVar(int pid);
 
-    Q_INVOKABLE void launch();
+    Q_INVOKABLE void launch(const QStringList& urls) const;
 
     QString m_appId;
     QString m_path;
-
-    QString m_name;
-    QString m_iconName;
-    QString m_exec;
     QString m_darkColor;
-    QString m_comment;
-    bool m_isValid;
+
+    QString name() const;
+    QString iconName() const;
+    QIcon icon() const;
+    QString comment() const;
+    bool isValid() const;
+    bool isShown(const QString &environment = QString()) const;
 
 public slots:
     void setAppId(QString appId);
@@ -71,6 +74,8 @@ private:
     QString pathFromAppId(QString appId);
     QString findFileInPaths(QString fileName, QStringList paths);
     QVariant localizedValue(const QSettings &desktopFile, QString key);
+
+    XdgDesktopFile *m_desktopFile;
 };
 
 #endif // DESKTOPFILE_H

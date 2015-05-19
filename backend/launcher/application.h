@@ -109,7 +109,7 @@ public:
 public slots:
     void setPinned(bool pinned);
 
-    Q_INVOKABLE bool launch();
+    Q_INVOKABLE bool launch(const QStringList& urls);
     Q_INVOKABLE bool quit();
 
 protected slots:

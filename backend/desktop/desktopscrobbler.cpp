@@ -48,11 +48,14 @@ void DesktopScrobbler::componentComplete()
     QStringList files = filesInPaths(paths, filter);
 
     for (QString fileName : files) {
-        desktopList << new DesktopFile(fileName, this);
+        DesktopFile *desktopFile = new DesktopFile(fileName, this);
+
+        if (desktopFile->isShown())
+            desktopList << desktopFile;
     }
 
-    desktopList.sort(DesktopScrobbler::compare)
-    ;
+    desktopList.sort(DesktopScrobbler::compare);
+
     fileWatcher = new QFileSystemWatcher(files, this);
     dirWatcher = new QFileSystemWatcher(paths, this);
 
@@ -118,7 +121,7 @@ void DesktopScrobbler::onDirectoryChanged(const QString &directory)
 
 bool DesktopScrobbler::compare(const DesktopFile *a, const DesktopFile *b)
 {
-    return a->m_name.toLower() < b->m_name.toLower();
+    return a->name().toLower() < b->name().toLower();
 }
 
 int DesktopScrobbler::indexOfName(QString name)
@@ -126,7 +129,7 @@ int DesktopScrobbler::indexOfName(QString name)
     for (int i = 0; i < desktopList.length(); i++) {
         DesktopFile *desktopFile = desktopList.at(i);
 
-        if (desktopFile->m_name.startsWith(name, Qt::CaseInsensitive))
+        if (desktopFile->name().startsWith(name, Qt::CaseInsensitive))
             return i;
     }
     return -1;

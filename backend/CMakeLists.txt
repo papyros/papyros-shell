@@ -32,7 +32,8 @@ target_link_libraries(papyrosdesktop
                       Qt5::Quick
                       KF5::Solid
                       KF5::ConfigCore
-                      GreenIsland::GreenIsland)
+                      GreenIsland::GreenIsland
+                      ${QTXDG_LIBRARIES})
 
 if(ALSA_FOUND)
     include_directories(${ALSA_INCLUDE_DIRS})

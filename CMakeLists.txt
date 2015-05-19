@@ -40,6 +40,8 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
              Solid Config)
 
+find_package(QT5XDG REQUIRED)
+
 greenisland_install_shell(io.papyros.shell shell)
 
 add_subdirectory(backend)
