@@ -74,8 +74,6 @@ QString DesktopFile::getEnvVar(int pid)
 void DesktopFile::setAppId(QString appId)
 {
     setPath(pathFromAppId(appId));
-
-    load();
 }
 
 void DesktopFile::setPath(QString path)
