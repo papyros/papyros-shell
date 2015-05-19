@@ -40,8 +40,8 @@ QString DesktopFile::pathFromAppId(QString appId)
 {
     QStringList paths;
     paths << "~/.local/share/applications"
-          << "/usr/local/share/applications/"
-          << "/usr/share/applications/";
+          << "/usr/local/share/applications"
+          << "/usr/share/applications";
 
     return findFileInPaths(appId + ".desktop", paths);
 }
@@ -74,8 +74,6 @@ QString DesktopFile::getEnvVar(int pid)
 void DesktopFile::setAppId(QString appId)
 {
     setPath(pathFromAppId(appId));
-
-    load();
 }
 
 void DesktopFile::setPath(QString path)
