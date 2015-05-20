@@ -40,7 +40,7 @@ View {
 
     onClicked: {
         if (!running) {
-            appLauncher.listView.model.get(index).launch()
+            appLauncher.listView.model.get(index).launch([])
         } else if (focused) {
             // TODO: Spread windows
         } else {

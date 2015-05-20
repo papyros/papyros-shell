@@ -95,6 +95,8 @@ public:
         }
     }
 
+    Q_INVOKABLE QVariant get(int index) const;
+
 protected:
     //! Emits the notifications of changes done on the underlying QObject properties
     void timerEvent(QTimerEvent * ev);

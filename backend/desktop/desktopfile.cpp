@@ -25,13 +25,18 @@
 #include <QTextStream>
 #include <QLocale>
 #include <QProcess>
+#include <QDebug>
 
 #include <qt5xdg/xdgdesktopfile.h>
+#include <qt5xdg/xdgdirs.h>
 
 DesktopFile::DesktopFile(QString path, QObject *parent)
         : QObject(parent)
 {
-    setPath(path);
+    if (path.endsWith(".desktop"))
+        setPath(path);
+    else
+        setAppId(path);
 }
 
 QString DesktopFile::getEnvVar(int pid)
@@ -50,7 +55,28 @@ QString DesktopFile::getEnvVar(int pid)
 
 void DesktopFile::setAppId(QString appId)
 {
-    setPath(appId);
+    setPath(appId + ".desktop");
+}
+
+QString DesktopFile::pathFromAppId(QString appId)
+{
+    QStringList paths;
+    paths << "~/.local/share/applications"
+          << "/usr/local/share/applications/"
+          << "/usr/share/applications/";
+
+    return findFileInPaths(appId + ".desktop", paths);
+}
+
+QString DesktopFile::findFileInPaths(QString fileName, QStringList paths)
+{
+    for (QString path : paths) {
+        if (QFile::exists(path + "/" + fileName)) {
+            return path + "/" + fileName;
+        }
+    }
+
+    return "";
 }
 
 void DesktopFile::setPath(QString path)
@@ -58,7 +84,10 @@ void DesktopFile::setPath(QString path)
     m_path = path;
 
     // Extracts "papyros-files" from "/path/to/papyros-files.desktop"
-    m_appId = QFileInfo(path).baseName();
+    m_appId = QFileInfo(path).completeBaseName();
+
+    if (!m_path.startsWith("/"))
+        m_path = pathFromAppId(m_appId);
 
     emit pathChanged();
     emit appIdChanged();
@@ -73,9 +102,28 @@ void DesktopFile::load() {
 
 void DesktopFile::launch(const QStringList& urls) const
 {
-    if (m_desktopFile) {
-        m_desktopFile->startDetached(urls);
+    if (isValid()) {
+        QStringList args = m_desktopFile->expandExecString(urls);
+
+        if (args.isEmpty())
+            return;
+
+        if (m_desktopFile->value("Terminal").toBool())
+        {
+            QString term = getenv("TERM");
+            if (term.isEmpty())
+                term = "xterm";
+
+            args.prepend("-e");
+            args.prepend(term);
+        }
+
+        QString cmd = args.takeFirst();
+
+        QProcess::startDetached(cmd, args);
     }
+
+    qDebug() << "Launched!";
 
     // TODO: Set DESKTOP_FILE env variable
     // TODO: Set Qt and Gtk env variables to force the use of Wayland

@@ -44,6 +44,10 @@ QVariant QObjectListModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
+QVariant QObjectListModel::get(int index) const {
+    return QVariant::fromValue(m_data.at(index));
+}
+
 bool QObjectListModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     Q_UNUSED(role);
     QObject* object = value.value<QObject*>();
