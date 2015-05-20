@@ -127,6 +127,15 @@ View {
         NotificationsView {
             
         }
+
+        onXChanged: updateOutputGeometry()
+        onYChanged: updateOutputGeometry()
+        onWidthChanged: updateOutputGeometry()
+        onHeightChanged: updateOutputGeometry()
+
+        function updateOutputGeometry() {
+            _greenisland_output.availableGeometry = Qt.rect(x,y,width,height)
+        }
     }
 
     Loader {
