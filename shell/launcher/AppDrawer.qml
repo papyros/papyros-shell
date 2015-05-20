@@ -19,6 +19,7 @@
 
 import QtQuick 2.0
 import Material 0.1
+import Material.ListItems 0.1 as ListItem
 import Papyros.Desktop 0.1
 
 import ".."
@@ -32,44 +33,73 @@ Indicator {
     tooltip: "Applications"
 
     view: FocusScope {
-        implicitHeight: Units.dp(360)
+        implicitHeight: container.height + Units.dp(95 * 4) + Units.dp(48)
+        implicitWidth: Units.dp(95 * 4) + Units.dp(16)
 
-        Component.onCompleted: input.forceActiveFocus()
+        Component.onCompleted: textField.forceActiveFocus()
+
+        Rectangle {
+            anchors.fill: parent
+            color: "#f6f6f6"
+            radius: Units.dp(2)
+        }
 
         Rectangle {
             id: container
 
-            z: 10
+            radius: Units.dp(2)
             width: parent.width
-            height: input.height
-            color: "white"
+            height: Units.dp(48)
+
+            View {
+                anchors {
+                    topMargin: parent.radius
+                    fill: parent
+                }
+                backgroundColor: "white"
+                elevation: 1
+            }
 
             TextField {
-                id: input
+                id: textField
 
-                placeholderText: "Search"
+                placeholderText: "Search..."
+                showBorder: false
 
                 anchors {
                     left: parent.left
                     right: parent.right
-                    top: parent.top
-                    leftMargin: Units.dp(8)
-                    rightMargin: Units.dp(8)
-                    topMargin: Units.dp(8)
-                }
-
-                onTextChanged: {
-                    var possibleIndex = desktopScrobbler.indexOfName(text)
-
-                    if (possibleIndex != -1) {
-                        mainLoader.item.currentIndex = possibleIndex
-                    }
+                    verticalCenter: parent.verticalCenter
+                    leftMargin: Units.dp(16)
+                    rightMargin: Units.dp(16)
                 }
             }
         }
 
-        Loader {
-            id: mainLoader
+        Column {
+            anchors.centerIn: listView
+            visible: listView.visible && listView.contentHeight == 0
+        
+            spacing: Units.dp(8)
+
+            Icon {
+                anchors.horizontalCenter: parent.horizontalCenter
+                name: "action/search"
+                color: Theme.light.hintColor
+                size: Units.dp(48)
+            }
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "No apps match your search"
+                style: "subheading"
+                font.pixelSize: Units.dp(18)
+                color: Theme.light.hintColor
+            }
+        }
+
+        ListView {
+            id: listView
 
             anchors {
                 left: parent.left
@@ -78,7 +108,137 @@ Indicator {
                 bottom: parent.bottom
             }
 
-            source: Qt.resolvedUrl("AppsGridLayout.qml")
+            visible: textField.text !== ""
+
+            topMargin: Units.dp(8)
+            bottomMargin: Units.dp(8)
+
+            model: desktopScrobbler.desktopFiles
+            delegate: ListItem.Standard {
+                action: AppIcon {
+                    iconName: edit.iconName
+                    name: edit.name
+                    anchors.fill: parent
+                }
+
+                text: edit.name
+                visible: textField.text === "" || 
+                        text.toLowerCase().indexOf(textField.text.toLowerCase()) !== -1
+                height: visible ? implicitHeight : 0
+
+                onClicked: {
+                    edit.launch([])
+                    desktop.overlayLayer.currentOverlay.close()
+                }
+            }
+        }
+
+        Scrollbar {
+            flickableItem: listView
+        }
+
+        ListView {
+            id: gridView
+
+            visible: textField.text === ""
+
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: container.bottom
+                bottom: parent.bottom
+                topMargin: Units.dp(8)
+                bottomMargin: Units.dp(40)
+                leftMargin: Units.dp(8)
+                rightMargin: Units.dp(8)
+            }
+
+            orientation: Qt.Horizontal
+            snapMode: ListView.SnapOneItem
+            highlightFollowsCurrentItem: true
+            highlightRangeMode: ListView.StrictlyEnforceRange
+            highlightMoveDuration: 500
+            currentIndex: 0
+
+            model: Math.ceil(desktopScrobbler.desktopFiles.rowCount()/pageCount)
+            delegate: Grid {
+                id: page
+
+                property int pageIndex: index
+
+                Repeater {
+                    model: pageIndex == gridView.count - 1 
+                            ? gridView.model % gridView.pageCount : gridView.pageCount
+                    delegate: Item {
+                        id: appIcon
+
+                        property var edit: desktopScrobbler.desktopFiles.get(index + page.pageIndex * 16)
+
+                        width: gridView.width/4
+                        height: gridView.height/4
+
+                        Ink {
+                            anchors.fill: parent
+                            onClicked: {
+                                appIcon.edit.launch([])
+                                desktop.overlayLayer.currentOverlay.close()
+                            }
+                        }
+
+                        Column {
+                            anchors.centerIn: parent
+                            spacing: Units.dp(8)
+                            width: parent.width - Units.dp(16)
+
+                            AppIcon {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: Units.dp(40)
+                                width: Units.dp(40)
+                                iconName: appIcon.edit.iconName
+                                name: appIcon.edit.name
+                            }
+
+                            Label {
+                                text: appIcon.edit.name
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: parent.width
+                                height: implicitHeight * maximumLineCount/lineCount
+                                horizontalAlignment: Text.AlignHCenter
+                                elide: Text.ElideRight
+                                wrapMode: Text.Wrap
+                                maximumLineCount: 2
+                            }
+                        }
+                    }
+                }
+            }
+
+            property int pageCount: 16
+
+            Component.onCompleted: print("COUNT:", model)
+        }
+
+        Row {
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                bottom: parent.bottom
+                bottomMargin: Units.dp(16)
+            }
+
+            spacing: Units.dp(16)
+            visible: gridView.visible
+
+            Repeater {
+                model: gridView.model
+                delegate: Rectangle {
+                    color: "gray"
+                    width: height
+                    height: Units.dp(8)
+                    radius: height/2
+
+                    opacity: index == gridView.currentIndex ? 1 : 0.5
+                }
+            }
         }
     }
 

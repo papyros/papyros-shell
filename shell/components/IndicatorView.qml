@@ -144,19 +144,16 @@ View {
             radius: Units.dp(2)
         }
 
+        onOpened: {
+            content.item.forceActiveFocus()
+        }
+
         Loader {
             id: content
             sourceComponent: indicator.view
             //active: dropdown.showing
 
             anchors.fill: parent
-
-            onStatusChanged: {
-                if (status == Loader.Ready) {
-                    print("Forcing focus!")
-                    item.forceActiveFocus()
-                }
-            }
         }
     }
 }
