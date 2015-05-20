@@ -18,6 +18,7 @@
  */
 
 import QtQuick 2.0
+import QtQuick.Layouts 1.2
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import Papyros.Desktop 0.1
@@ -60,18 +61,32 @@ Indicator {
                 elevation: 1
             }
 
-            TextField {
-                id: textField
-
-                placeholderText: "Search..."
-                showBorder: false
-
+            RowLayout {
                 anchors {
                     left: parent.left
                     right: parent.right
                     verticalCenter: parent.verticalCenter
                     leftMargin: Units.dp(16)
                     rightMargin: Units.dp(16)
+                }
+
+                spacing: Units.dp(8)
+
+                Icon {
+                    Layout.alignment: Qt.AlignVCenter
+
+                    name: "action/search"
+                    color: Theme.light.hintColor
+                }
+
+                TextField {
+                    id: textField
+
+                    Layout.alignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
+
+                    placeholderText: "Search..."
+                    showBorder: false
                 }
             }
         }
@@ -231,12 +246,11 @@ Indicator {
             Repeater {
                 model: gridView.model
                 delegate: Rectangle {
-                    color: "gray"
+                    color: index == gridView.currentIndex 
+                            ? Theme.dark.accentColor : "#ddd"
                     width: height
                     height: Units.dp(8)
                     radius: height/2
-
-                    opacity: index == gridView.currentIndex ? 1 : 0.5
                 }
             }
         }
