@@ -24,7 +24,7 @@ Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the
  * Qt 5.5
  * Wayland
  * [GreenIsland](https://github.com/greenisland/greenisland)
-   * Requires an in-development branch ([feature/window_manager](https://github.com/papyros/greenisland/tree/feature/window_manager). This is branch is currently awaiting upstream review.
+   * Requires an in-development branch ([feature/window_manager](https://github.com/papyros/greenisland/tree/feature/window_manager)). This is branch is currently awaiting upstream review.
  * A Green Island development version of QtCompositor, as described on the Green Island GitHub page.
  * [QML Extras](https://github.com/papyros/qml-extras) (the `develop` branch).
  * [QML Material](https://github.com/papyros/qml-material) (the `develop` branch).
@@ -46,7 +46,7 @@ And run the compositor from an X11 desktop:
 
     greenisland --shell io.papyros.shell
 
-Or as from a virtual terminal as a full Wayland compositor:
+Or from a virtual terminal as a full Wayland compositor:
 
     greenisland --platform eglfs --shell io.papyros.shell
 
