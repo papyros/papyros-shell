@@ -1,0 +1,16 @@
+[SddmGreeterTheme]
+Type=sddm-theme
+Name=Papyros
+Description=Official theme for Papyros
+Author=Michael Spencer
+Email=sonrisesoftware@gmail.com
+Copyright=(C) 2015 Michael Spencer
+License=GPLv3
+Version=0.1
+Website=http://papyros.io
+Screenshot=screenshot.jpg # TODO: Take screenshot!
+ConfigFile=theme.conf
+MainScript=Main.qml
+TranslationsDirectory=translations
+Theme-Id=papyros
+Theme-API=2.0

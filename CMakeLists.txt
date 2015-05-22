@@ -44,6 +44,10 @@ find_package(QT5XDG REQUIRED)
 
 greenisland_install_shell(io.papyros.shell shell)
 
+install(DIRECTORY sddm/
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/sddm/themes/papyros
+        PATTERN dummydata EXCLUDE)
+
 add_subdirectory(backend)
 
 # Display featute summary
