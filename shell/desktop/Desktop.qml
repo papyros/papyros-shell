@@ -100,31 +100,32 @@ Item {
     ListView {
         id: listView
         anchors {
-            fill: parent
-            leftMargin: expanded ? horizontalOffset : 0
-            rightMargin: expanded ? horizontalOffset : 0
-            topMargin: expanded ? verticalOffset : 0
-            bottomMargin: expanded ? verticalOffset : 0
-
-            Behavior on leftMargin {
-                NumberAnimation { duration: 300 }
-            }
-
-            Behavior on rightMargin {
-                NumberAnimation { duration: 300 }
-            }
-
+            top: parent.top
+            horizontalCenter: parent.horizontalCenter
+            topMargin: expanded ? Units.dp(32) : 0
+            
             Behavior on topMargin {
-                NumberAnimation { duration: 300 }
-            }
-
-            Behavior on bottomMargin {
                 NumberAnimation { duration: 300 }
             }
         }
 
-        displayMarginBeginning: horizontalOffset
-        displayMarginEnd: horizontalOffset
+        height: expanded ? Units.dp(100) : parent.height
+        width: {
+            if (expanded) {
+                var targetWidth = Units.dp(100) * windowManager.width/windowManager.height
+                return count * targetWidth + (count - 1) * Units.dp(32)
+            } else {
+                return parent.width
+            }
+        }
+
+        Behavior on width {
+            NumberAnimation { duration: 300 }
+        }
+
+        Behavior on height {
+            NumberAnimation { duration: 300 }
+        }
 
         snapMode: ListView.SnapOneItem
 
@@ -135,17 +136,18 @@ Item {
         highlightMoveDuration: 500
         currentIndex: 0
 
-        spacing: expanded ? horizontalOffset * 0.70 : 0
+        spacing: expanded ? Units.dp(32) : 0
 
         Behavior on spacing {
             NumberAnimation { duration: 300 }
         }
 
-        model: 1
+        model: 2
         delegate: View {
-            elevation: 5
-            width: listView.width
+            elevation: 3
+            width: height * windowManager.width/windowManager.height
             height: listView.height
+            clipContent: false
 
             CrossFadeImage {
                 id: wallpaper
@@ -173,6 +175,24 @@ Item {
 
                 scale: parent.width/width
                 anchors.centerIn: parent
+            }
+
+            Label {
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                    top: parent.bottom
+                    topMargin: Units.dp(16)
+                }
+
+                text: listView.count > 1 ? "Desktop " + (index + 1) : "Desktop"
+                color: Theme.dark.textColor
+                style: "subheading"
+
+                opacity: expanded ? 1 : 0
+
+                Behavior on opacity {
+                    NumberAnimation { duration: 300 }
+                }
             }
         }
     }

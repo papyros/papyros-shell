@@ -28,12 +28,8 @@ import "../../desktop"
 View {
     id: panel
 
-    backgroundColor: shell.state == "exposed" ? Qt.rgba(0,0,0,0) : Qt.rgba(0.2, 0.2, 0.2, 1)
+    backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 1)
     height: Units.dp(56)
-
-    Behavior on backgroundColor {
-        ColorAnimation { duration: 300 }
-    }
 
     anchors {
         left: parent.left
