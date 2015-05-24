@@ -22,6 +22,7 @@ import Material.Extras 0.1
 import GreenIsland 1.0
 import GreenIsland.Desktop 1.0
 import "../components"
+import "effects"
 
 /*
  * The desktop consists of multiple workspaces, one of which is shown at a time. The desktop
@@ -35,9 +36,6 @@ Item {
     anchors.fill: parent
 
     property bool expanded: shell.state == "exposed"
-
-    property real verticalOffset: height * 0.1
-    property real horizontalOffset: width * 0.1
 
     property alias windowManager: windowManager
     property alias windowSwitcher: windowSwitcher
@@ -60,12 +58,7 @@ Item {
         onSelectWorkspace: {
             print("Switching to index: ", workspace.index, listView.currentIndex)
 
-            if (workspace == listView.currentIndex) {
-                print("Switching to default!")
-                shell.state = "default"
-            } else {
-                listView.currentIndex = workspace.index
-            }
+            workspacesView.currentIndex = workspace.index
         }
 
         topLevelWindowComponent: TopLevelWindow {
@@ -97,110 +90,14 @@ Item {
         }
     }
 
-    ListView {
-        id: listView
-        anchors {
-            top: parent.top
-            horizontalCenter: parent.horizontalCenter
-            topMargin: expanded ? Units.dp(32) : 0
-            
-            Behavior on topMargin {
-                NumberAnimation { duration: 300 }
-            }
-        }
-
-        height: expanded ? Units.dp(100) : parent.height
-        width: {
-            if (expanded) {
-                var targetWidth = Units.dp(100) * windowManager.width/windowManager.height
-                return count * targetWidth + (count - 1) * Units.dp(32)
-            } else {
-                return parent.width
-            }
-        }
-
-        Behavior on width {
-            NumberAnimation { duration: 300 }
-        }
-
-        Behavior on height {
-            NumberAnimation { duration: 300 }
-        }
-
-        snapMode: ListView.SnapOneItem
-
-        orientation: Qt.Horizontal
-        interactive: desktop.expanded
-        highlightFollowsCurrentItem: true
-        highlightRangeMode: ListView.StrictlyEnforceRange
-        highlightMoveDuration: 500
-        currentIndex: 0
-
-        spacing: expanded ? Units.dp(32) : 0
-
-        Behavior on spacing {
-            NumberAnimation { duration: 300 }
-        }
-
-        model: 2
-        delegate: View {
-            elevation: 3
-            width: height * windowManager.width/windowManager.height
-            height: listView.height
-            clipContent: false
-
-            CrossFadeImage {
-                id: wallpaper
-
-                anchors.fill: parent
-
-                fadeDuration: 500
-                fillMode: Image.Stretch
-
-                source: {
-                    var filename = wallpaperSetting.pictureUri
-
-                    if (filename.indexOf("xml") != -1) {
-                        // We don't support GNOME's time-based wallpapers. Default to our default wallpaper
-                        return Qt.resolvedUrl("../images/papyros_wallpaper.png")
-                    } else {
-                        return filename
-                    }
-                }
-            }
-
-            Workspace {
-                id: workspace
-                isCurrentWorkspace: ListView.currentItem == workspace
-
-                scale: parent.width/width
-                anchors.centerIn: parent
-            }
-
-            Label {
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    top: parent.bottom
-                    topMargin: Units.dp(16)
-                }
-
-                text: listView.count > 1 ? "Desktop " + (index + 1) : "Desktop"
-                color: Theme.dark.textColor
-                style: "subheading"
-
-                opacity: expanded ? 1 : 0
-
-                Behavior on opacity {
-                    NumberAnimation { duration: 300 }
-                }
-            }
-        }
+    WorkspacesView {
+        id: workspacesView
+        anchors.fill: parent
+        exposed: expanded
     }
 
     HotCorners {
-        anchors {
-            fill: parent
-        }
+        anchors.fill: parent
 
         onTopLeftTriggered: {
             if (desktop.expanded)
