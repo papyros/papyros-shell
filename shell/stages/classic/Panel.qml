@@ -59,6 +59,19 @@ View {
             }
         }
 
+        PanelItem {
+            selected: shell.state == "exposed"
+            tooltip: "Workspaces"
+
+            onClicked: shell.toggleState("exposed")
+            
+            Icon {
+                anchors.centerIn: parent
+                source: Qt.resolvedUrl("../../images/workspaces-expose.svg")
+                color: Theme.dark.iconColor
+            }
+        }
+
         ListView {
             Layout.fillWidth: true
             Layout.fillHeight: true

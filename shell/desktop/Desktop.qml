@@ -205,13 +205,27 @@ Item {
         id: desktopOverlayLayer
         z: 99
         objectName: "desktopOverlayLayer"
+
+        onCurrentOverlayChanged: {
+            if (currentOverlay)
+                shell.state = "default"
+        }
     }
 
-    function updateTooltip(indicator, containsMouse) {
+    Connections {
+        target: shell
+
+        onStateChanged: {
+            if (shell.state != "default" && desktopOverlayLayer.currentOverlay)
+                desktopOverlayLayer.currentOverlay.close()
+        }
+    }
+
+    function updateTooltip(item, containsMouse) {
         if (containsMouse) {
-            if (indicator.indicator.tooltip) {
-                tooltip.text = Qt.binding(function() { return indicator.indicator.tooltip })
-                tooltip.open(indicator, 0, Units.dp(16))
+            if (item.tooltip) {
+                tooltip.text = Qt.binding(function() { return item.tooltip })
+                tooltip.open(item, 0, Units.dp(16))
             }
         } else if (tooltip.showing) {
             tooltip.close()

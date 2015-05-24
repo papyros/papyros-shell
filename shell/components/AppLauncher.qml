@@ -24,16 +24,15 @@ import Papyros.Desktop 0.1
 import "../launcher"
 import "../desktop"
 
-View {
+PanelItem {
     id: appLauncher
+
+    tintColor: containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
+    highlightColor: "white"
+    selected: focused
 
     property var listView: ListView.view
     
-    tintColor: ink.containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
-
-    signal clicked()
-    signal rightClicked()
-
     property var windows: ListUtils.filter(windowManager.windows, function(modelData) {
         return modelData.window.appId == appId
     })
@@ -58,33 +57,17 @@ View {
         }
     }
 
-    Ink {
-        id: ink
-        anchors.fill: parent
-
-        hoverEnabled: true
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-        onClicked: {
-            print("Clicked!")
-            if (mouse.button == Qt.RightButton)
-                appLauncher.rightClicked()
-            else
-                appLauncher.clicked()
+    onContainsMouseChanged: {
+        if (containsMouse) {
+            previewTimer.delayShow(appLauncher, model, windows)
+        } else {
+            if (windowPreview.showing)
+                windowPreview.close()
+                
+            delayCloseTimer.restart()
+            previewTimer.stop()
         }
-
-        onContainsMouseChanged: {
-            if (containsMouse) {
-                previewTimer.delayShow(appLauncher, model, windows)
-            } else {
-                if (windowPreview.showing)
-                    windowPreview.close()
-                    
-                delayCloseTimer.restart()
-                previewTimer.stop()
-            }
-        }               
-    }
+    }  
 
     AppIcon {
         iconName: desktopFile.iconName
@@ -92,14 +75,6 @@ View {
         anchors.centerIn: parent
         width: parent.width * 0.55
         height: width
-    }
-
-    Rectangle {
-        width: parent.width
-        height: Units.dp(2)
-        anchors.bottom: parent.bottom
-        color: "white"
-        visible: focused
     }
 
     Popover {

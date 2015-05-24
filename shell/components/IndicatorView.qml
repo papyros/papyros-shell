@@ -22,12 +22,9 @@ import Material.Extras 0.1
 import "../indicators"
 import "."
 
-View {
+PanelItem {
     id: indicatorView
 
-    tintColor: ink.containsMouse || selected ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
-
-    height: parent.height
     width: smallMode ? indicator.text ? label.width + (height - label.height) : height
                      : indicator.text ? label.width + (Units.dp(30) - label.height) 
                                       : indicator.circleClipIcon ? Units.dp(30 * 1.2) 
@@ -37,6 +34,7 @@ View {
 
     property bool smallMode: height < Units.dp(40)
     property Indicator indicator
+    tooltip: indicator ? indicator.tooltip : ""
 
     property int iconSize: height > Units.dp(40) ? height * 0.36 : height * 0.45
 
@@ -44,23 +42,13 @@ View {
         return desktop.overlayLayer.currentOverlay == dropdown
     })
 
-    readonly property bool selected: indicator.selected
+    selected: indicator.selected
 
-    Ink {
-        id: ink
-
-        anchors.fill: parent
-        color: Qt.rgba(0,0,0,0.3)
-        z: 0
-
-        onClicked: {
-            if (selected)
-                dropdown.close()
-            else if (indicator.view)
-                dropdown.open(indicatorView, 0, Units.dp(16))
-        }
-
-        onContainsMouseChanged: desktop.updateTooltip(indicatorView, containsMouse)
+    onClicked: {
+        if (selected)
+            dropdown.close()
+        else if (indicator.view)
+            dropdown.open(indicatorView, 0, Units.dp(16))
     }
 
     Icon {
@@ -86,23 +74,6 @@ View {
         text: indicator.text
         color: Theme.dark.textColor
         font.pixelSize: Units.dp(14)
-    }
-
-    Rectangle {
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
-
-        height: Units.dp(2)
-        color: Theme.dark.accentColor
-
-        opacity: indicator.selected ? 1 : 0
-
-        Behavior on opacity {
-            NumberAnimation { duration: 200 }
-        }
     }
 
     Rectangle {
@@ -152,6 +123,7 @@ View {
             id: content
             sourceComponent: indicator.view
             //active: dropdown.showing
+            asynchronous: true
 
             anchors.fill: parent
         }
