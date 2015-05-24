@@ -24,105 +24,119 @@ import GreenIsland.Desktop 1.0
 import "../components"
 
 Item {
-	id: workspacesView
+    id: workspacesView
 
-	property int currentIndex
-	property int workspaceWidth: workspaceHeight * width/height
-	property int workspaceHeight: flickable.height
-	property bool exposed
+    property int currentIndex
+    property int workspaceWidth: workspaceHeight * width/height
+    property int workspaceHeight: flickable.height
+    property bool exposed
 
-	// TODO: Automatically remove empty workspaces
-	onCurrentIndexChanged: {
-		windowManager.currentWorkspace = windowManager.workspaces.get(currentIndex).workspace
+    // TODO: Automatically remove empty workspaces
+    onCurrentIndexChanged: {
+        windowManager.currentWorkspace = windowManager.workspaces.get(currentIndex).workspace
 
-	// 	for (var i = 0; i < windowManager.workspaces.count; i++) {
-	// 		var workspace = windowManager.workspaces.get(i).workspace
+        var i = 0, viewIndex = 0
+        while (i < windowManager.workspaces.count) {
+            var workspace = windowManager.workspaces.get(i).workspace
 
-	// 		if (workspace.isEmpty)
-	// 			removeWorkspace(i)
-	// 	}
-	}
+            if (workspace.windows.count == 0 && i != currentIndex && 
+                    windowManager.workspaces.count > 1) {
+                print("Removing workspace", i, viewIndex)
+                var workspace = workspacesRow.children[viewIndex]
+                windowManager.removeWorkspace(i)
+                workspace.destroy()
+            } else {
+                i++
+            }
 
-	Component.onCompleted: {
-		// Start off with one workspace
-		addWorkspace()
-	}
+            viewIndex++
+        }
 
-	function addWorkspace() {
-		workspaceView.createObject(workspacesRow)
-	}
+        currentIndex = Math.min(currentIndex, windowManager.workspaces.count - 1)
+    }
 
-	function removeWorkspace(index) {
-		var workspace = workspacesRow.children[index]
-		workspace.destroy()
-	}
+    Component.onCompleted: {
+        // Start off with one workspace
+        addWorkspace()
+    }
 
-	Row {
-		id: previewRow
+    function addWorkspace() {
+        workspaceView.createObject(workspacesRow)
+    }
 
-		anchors {
-			bottom: parent.bottom
-			horizontalCenter: parent.horizontalCenter
-			bottomMargin: Units.dp(16) + stage.item.bottomMargin
-		}
+    function removeWorkspace(index) {
+        print("Removing workspace", index)
+        var workspace = workspacesRow.children[index]
+        windowManager.removeWorkspace(index)
+        workspace.destroy()
+    }
 
-		spacing: Units.dp(32)
-	    height: Units.dp(75)
+    Row {
+        id: previewRow
 
-		Repeater {
-			model: windowManager.workspaces
-			delegate: WorkspacePreview {}
-		}
+        anchors {
+            bottom: parent.bottom
+            horizontalCenter: parent.horizontalCenter
+            bottomMargin: Units.dp(16) + stage.item.bottomMargin
+        }
 
-		WorkspacePreview {
-			visible: windowManager.workspaces.get(windowManager.workspaces.count - 1)
-					.workspace.windows.count > 0
+        spacing: Units.dp(32)
+        height: Units.dp(75)
 
-			// This variable must exist but be undefined
-			property var workspace
-		}
-	}
+        Repeater {
+            model: windowManager.workspaces
+            delegate: WorkspacePreview {}
+        }
 
-	Flickable {
-		id: flickable
-		anchors {
-			horizontalCenter: parent.horizontalCenter
-			top: parent.top
-			bottom: parent.bottom
+        WorkspacePreview {
+            visible: windowManager.workspaces.get(windowManager.workspaces.count - 1)
+                    .workspace.windows.count > 0
 
-			topMargin: exposed ? Units.dp(32) : 0
-			bottomMargin: exposed 
-					? Units.dp(32) + previewRow.height + previewRow.anchors.bottomMargin : 0
+            // This variable must exist but be undefined
+            property var workspace
+        }
+    }
 
-			Behavior on topMargin {
-			    NumberAnimation { duration: 300 }
-			}
+    Flickable {
+        id: flickable
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            bottom: parent.bottom
 
-			Behavior on bottomMargin {
-			    NumberAnimation { duration: 300 }
-			}
-		}		
+            topMargin: exposed ? Units.dp(32) : 0
+            bottomMargin: exposed 
+                    ? Units.dp(32) + previewRow.height + previewRow.anchors.bottomMargin : 0
 
-		width: workspaceWidth
+            Behavior on topMargin {
+                NumberAnimation { duration: 300 }
+            }
 
-		interactive: false
-		contentX: currentIndex * (workspaceWidth + workspacesRow.spacing)
-		contentWidth: workspacesRow.width
-		contentHeight: workspaceHeight
+            Behavior on bottomMargin {
+                NumberAnimation { duration: 300 }
+            }
+        }       
 
-		Row {
-			id: workspacesRow
+        width: workspaceWidth
 
-			spacing: Units.dp(64)
-		}
-	}
+        interactive: false
+        contentX: currentIndex * (workspaceWidth + workspacesRow.spacing)
+        contentWidth: workspacesRow.width
+        contentHeight: workspaceHeight
 
-	Component {
-		id: workspaceView
+        Row {
+            id: workspacesRow
 
-		WorkspaceView {
-			width: workspaceWidth
-			height: workspaceHeight
-		}
-	}
+            spacing: Units.dp(64)
+        }
+    }
+
+    Component {
+        id: workspaceView
+
+        WorkspaceView {
+            width: workspaceWidth
+            height: workspaceHeight
+        }
+    }
 }
