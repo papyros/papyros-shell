@@ -35,7 +35,16 @@ View {
 
     Ink {
         anchors.fill: parent
-        onClicked: workspacesView.currentIndex = index
+        onClicked: {
+            if (workspace) {
+                workspacesView.currentIndex = index
+                shell.state = "default"
+            } else {
+                addWorkspace()
+                workspacesView.currentIndex = windowManager.workspaces.count - 1
+                shell.state = "default"
+            }
+        }
     }
 
     Grid {
@@ -45,14 +54,14 @@ View {
             margins: Units.dp(8)
         }
 
-        columns: Math.ceil(Math.sqrt(workspace.windows.count))
+        columns: workspace ? Math.ceil(Math.sqrt(workspace.windows.count)) : 0
         rows: columns
 
         columnSpacing: Units.dp(8)
         rowSpacing: columnSpacing
 
         Repeater {
-            model: workspace.windows
+            model: workspace ? workspace.windows : []
             delegate: AppIcon {
                 iconName: window.iconName
                 name: window.appId
@@ -66,6 +75,6 @@ View {
         anchors.centerIn: parent
         name: "content/add"
         color: Theme.dark.iconColor
-        visible: workspace.windows.count == 0
+        visible: !workspace || workspace.windows.count == 0
     }
 }

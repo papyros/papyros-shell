@@ -72,29 +72,12 @@ Item {
 			delegate: WorkspacePreview {}
 		}
 
-		View {
-			backgroundColor: "#555"
-			elevation: 2
-			radius: Units.dp(2)
+		WorkspacePreview {
 			visible: windowManager.workspaces.get(windowManager.workspaces.count - 1)
 					.workspace.windows.count > 0
 
-			height: parent.height
-			width: height
-
-			Ink {
-				anchors.fill: parent
-				onClicked: {
-					addWorkspace()
-					currentIndex = windowManager.workspaces.count - 1
-				}
-			}
-
-			Icon {
-				anchors.centerIn: parent
-				name: "content/add"
-				color: Theme.dark.iconColor
-			}
+			// This variable must exist but be undefined
+			property var workspace
 		}
 	}
 
