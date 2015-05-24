@@ -47,6 +47,7 @@ View {
                 selectedUser = -1
             } else {
                 selectedUser = index
+                field.forceActiveFocus()
             }
         }
     }
@@ -172,6 +173,6 @@ View {
     Timer {
         id: timer
         interval: 500
-        onTriggered: sddm.login(name, field.text, sessionModel.lastIndex)
+        onTriggered: sddm.login(name, field.text, sessionList.currentIndex)
     }
 }

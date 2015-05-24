@@ -27,8 +27,8 @@ View {
         margins: Units.dp(20)
     }
 
-    width: row.width + Units.dp(24)
-    height: row.height + Units.dp(24)
+    width: row.width + Units.dp(32)
+    height: row.height + Units.dp(20)
 
     radius: Units.dp(2)
     elevation: 2

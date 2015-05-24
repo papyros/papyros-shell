@@ -18,12 +18,14 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
 import Material 0.1
+import Material.ListItems 0.1 as ListItem
 import Material.Extras 0.1
 import Papyros.Desktop 0.1
 
 MainView {
 	anchors.fill: parent
 
+	theme.primaryColor: Palette.colors["blue"]["500"]
 	theme.accentColor: Palette.colors["blue"]["500"]
 
 	Repeater {
@@ -40,10 +42,93 @@ MainView {
 	Item {
 		id: primaryScreen
 
+		anchors.fill: parent
+
 		property var geometry: screenModel.geometry(screenModel.primary)
 		x: geometry.x; y: geometry.y; width: geometry.width; height: geometry.height
 
-		IndicatorRow {}
+		IndicatorRow {
+			id: indicatorRow
+		}
+
+		Popover {
+			id: sessionPopover
+
+			height: sessionList.contentHeight
+       		width: Units.dp(250)
+
+			ListView {
+				id: sessionList
+				model: sessionModel
+				currentIndex: sessionModel.lastIndex
+				interactive: true
+	       		anchors.fill: parent
+
+		    	delegate: ListItem.Standard {
+		    		text: name
+		    		selected: sessionList.currentIndex == index
+		    		onClicked: {
+		    			sessionList.currentIndex = index
+		    			sessionPopover.close()
+		    		}
+
+		    		Icon {
+				    	anchors {
+				    		verticalCenter: parent.verticalCenter
+				    		right: parent.right
+				    		rightMargin: Units.dp(16)
+				    	}
+
+				    	name: "navigation/check"
+				    	visible: selected
+				    	color: Theme.primaryColor
+				    }
+		    	}
+			}
+		}
+
+		View {
+		    id: sessionView
+
+		    anchors {
+		        left: parent.left
+		        bottom: parent.bottom
+		        margins: Units.dp(20)
+		    }
+
+		    width: Units.dp(250)
+		    height: indicatorRow.height
+		    visible: sessionList.count > 0
+
+		    radius: Units.dp(2)
+		    elevation: 2
+
+		    Ink {
+		    	anchors.fill: parent
+		    	onClicked: sessionPopover.open(sessionView, 0, Units.dp(16))
+		    }
+
+		    Icon {
+		    	anchors {
+		    		verticalCenter: parent.verticalCenter
+		    		right: parent.right
+		    		rightMargin: Units.dp(12)
+		    	}
+
+		    	name: "navigation/expand_less"
+		    }
+
+		    Label {
+		    	anchors {
+		    		verticalCenter: parent.verticalCenter
+		    		left: parent.left
+		    		leftMargin: Units.dp(16)
+		    	}
+
+		    	text: sessionList.currentItem.text
+		    	style: "subheading"
+		    }
+		}
 
 		Row {
 			anchors.centerIn: parent
