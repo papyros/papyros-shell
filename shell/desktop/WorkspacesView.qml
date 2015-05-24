@@ -32,14 +32,16 @@ Item {
 	property bool exposed
 
 	// TODO: Automatically remove empty workspaces
-	// onCurrentIndexChanged: {
+	onCurrentIndexChanged: {
+		windowManager.currentWorkspace = windowManager.workspaces.get(currentIndex).workspace
+
 	// 	for (var i = 0; i < windowManager.workspaces.count; i++) {
 	// 		var workspace = windowManager.workspaces.get(i).workspace
 
 	// 		if (workspace.isEmpty)
 	// 			removeWorkspace(i)
 	// 	}
-	// }
+	}
 
 	Component.onCompleted: {
 		// Start off with one workspace

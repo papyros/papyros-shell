@@ -29,7 +29,7 @@ PanelItem {
 
     tintColor: containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
     highlightColor: "white"
-    selected: focused
+    selected: active
 
     property var listView: ListView.view
     
@@ -37,10 +37,23 @@ PanelItem {
         return modelData.window.appId == appId
     })
 
+    property bool active: focused && getMainWorkspace() == windowManager.currentWorkspace
+
+    function getMainWorkspace() {
+        var workspace
+
+        for (var i = 0; i < windows.length; i++) {
+            if (workspace != windowManager.currentWorkspace)
+                workspace = windows[i].item.workspace
+        }
+
+        return workspace
+    }
+
     onClicked: {
         if (!running) {
             appLauncher.listView.model.get(index).launch([])
-        } else if (focused) {
+        } else if (active) {
             // TODO: Spread windows
         } else {
             windowManager.focusApplication(appId)

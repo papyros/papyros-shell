@@ -56,8 +56,6 @@ Item {
         anchors.fill: parent
 
         onSelectWorkspace: {
-            print("Switching to index: ", workspace.index, listView.currentIndex)
-
             workspacesView.currentIndex = workspace.index
         }
 
