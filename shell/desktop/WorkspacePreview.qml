@@ -27,6 +27,7 @@ View {
     id: workspacePreview
 
     backgroundColor: "#555"
+    tintColor: ink.containsMouse ? Qt.rgba(1,1,1,0.1) : Qt.rgba(1,1,1,0)
     elevation: 2
     radius: Units.dp(2)
 
@@ -34,6 +35,7 @@ View {
     width: height
 
     Ink {
+        id: ink
         anchors.fill: parent
         onClicked: {
             if (workspace) {
