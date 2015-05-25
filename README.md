@@ -16,7 +16,7 @@ Brought to you by the [Papyros development team](https://github.com/papyros/papy
 The shell is built as a compositor for Wayland using the Green Island compositor framework and QtQuick. The goal is to develop a convergent shell that adapts to the form factor of the device it is running on, and to also support HIDPI screens.
 
 Green Island provides the C++ code necessary to interact with Wayland, and QML Desktop provides C++ plugins for QML for the desktop indicators, so the majority of the shell is implemented in QML and Javascript.
- 
+
 Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the QML backend plugins, including the hardware plugin and the original code for the app launcher model.
 
 ### Dependencies ###

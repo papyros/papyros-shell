@@ -40,7 +40,7 @@ class Sound : public QQuickItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(int master READ master WRITE setMaster NOTIFY masterChanged);
+    Q_PROPERTY(int master READ master WRITE setMaster NOTIFY masterChanged)
     Q_PROPERTY(bool muted READ muted WRITE setMuted NOTIFY mutedChanged)
 
 public:

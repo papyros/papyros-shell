@@ -19,30 +19,30 @@
 #include "notificationserver.h"
 #include "notificationadaptor.h"
 
-NotificationServer::NotificationServer(QQuickItem *parent) : QQuickItem(parent) 
+NotificationServer::NotificationServer(QQuickItem *parent) : QQuickItem(parent)
 {
     adaptor = new NotificationAdaptor(parent, this);
     QDBusConnection::sessionBus().registerObject("/org/freedesktop/Notifications", parent);
     QDBusConnection::sessionBus().registerService("org.freedesktop.Notifications");
 }
 
-void NotificationServer::closeNotification(int id) 
+void NotificationServer::closeNotification(uint id)
 {
     adaptor->closeNotification(id);
 }
 
-void NotificationServer::onNotificationUpdated(int id, Notification *notification) 
+void NotificationServer::onNotificationUpdated(uint id, Notification *notification)
 {
 	onNotificationRemoved(id);
 	notificationsList << notification;
 }
 
-void NotificationServer::onNotificationAdded(int id, Notification *notification) 
+void NotificationServer::onNotificationAdded(uint id, Notification *notification)
 {
 	notificationsList << notification;
 }
 
-void NotificationServer::onNotificationRemoved(int id) 
+void NotificationServer::onNotificationRemoved(uint id)
 {
 	for (Notification *notification : notificationsList) {
 		if (notification->m_id == id) {

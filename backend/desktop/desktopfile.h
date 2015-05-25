@@ -35,7 +35,7 @@ class DesktopFile : public QObject
     Q_PROPERTY(QString comment READ comment NOTIFY dataChanged)
     Q_PROPERTY(QString darkColor MEMBER m_darkColor NOTIFY dataChanged)
 
-    Q_PROPERTY(QString appId MEMBER m_appId WRITE setAppId NOTIFY appIdChanged);
+    Q_PROPERTY(QString appId MEMBER m_appId WRITE setAppId NOTIFY appIdChanged)
     Q_PROPERTY(QString path MEMBER m_path WRITE setPath NOTIFY pathChanged)
 
     Q_PROPERTY(bool isValid READ isValid NOTIFY dataChanged)

@@ -71,6 +71,9 @@ public:
     bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) Q_DECL_OVERRIDE;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) Q_DECL_OVERRIDE;
 
+    // We're intentionally overloading the sort method
+    using QAbstractListModel::sort;
+
     template <typename T, typename LessThan>
     void sort(T *t, LessThan lessThan) {
         Q_UNUSED(t);
