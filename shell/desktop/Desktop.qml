@@ -56,7 +56,7 @@ Item {
         anchors.fill: parent
 
         onSelectWorkspace: {
-            workspacesView.currentIndex = workspace.index
+            workspacesView.selectWorkspace(workspace.index)
         }
 
         topLevelWindowComponent: TopLevelWindow {

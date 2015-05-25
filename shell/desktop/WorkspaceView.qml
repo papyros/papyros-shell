@@ -31,8 +31,6 @@ View {
 
     elevation: 3
 
-    property alias isCurrentWorkspace: workspace.isCurrentWorkspace
-
     CrossFadeImage {
         id: wallpaper
 
@@ -62,5 +60,7 @@ View {
 
         scale: parent.width/width
         anchors.centerIn: parent
+
+        property alias view: workspaceView
     }
 }

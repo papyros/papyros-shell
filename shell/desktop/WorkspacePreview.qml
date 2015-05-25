@@ -37,11 +37,11 @@ View {
         anchors.fill: parent
         onClicked: {
             if (workspace) {
-                workspacesView.currentIndex = index
+                workspacesView.selectWorkspace(index)
                 shell.state = "default"
             } else {
                 addWorkspace()
-                workspacesView.currentIndex = windowManager.workspaces.count - 1
+                workspacesView.selectWorkspace(windowManager.workspaces.count - 1)
                 shell.state = "default"
             }
         }

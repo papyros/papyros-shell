@@ -31,33 +31,47 @@ Item {
     property int workspaceHeight: flickable.height
     property bool exposed
 
-    // TODO: Automatically remove empty workspaces
-    onCurrentIndexChanged: {
-        windowManager.currentWorkspace = windowManager.workspaces.get(currentIndex).workspace
+    property int windowCount: windowManager.windows.count
 
-        var i = 0, viewIndex = 0
+    onWindowCountChanged: {
+        var i = 0
         while (i < windowManager.workspaces.count) {
             var workspace = windowManager.workspaces.get(i).workspace
 
             if (workspace.windows.count == 0 && i != currentIndex && 
                     windowManager.workspaces.count > 1) {
-                print("Removing workspace", i, viewIndex)
-                var workspace = workspacesRow.children[viewIndex]
-                windowManager.removeWorkspace(i)
-                workspace.destroy()
+                removeWorkspace(i)
             } else {
                 i++
             }
-
-            viewIndex++
         }
 
         currentIndex = Math.min(currentIndex, windowManager.workspaces.count - 1)
+        windowManager.currentWorkspace = windowManager.workspaces.get(currentIndex).workspace
     }
 
     Component.onCompleted: {
         // Start off with one workspace
         addWorkspace()
+    }
+
+    function selectWorkspace(workspaceIndex) {
+        var i = 0
+        while (i < windowManager.workspaces.count) {
+            var workspace = windowManager.workspaces.get(i).workspace
+
+            if (workspace.windows.count == 0 && i != workspaceIndex && 
+                    windowManager.workspaces.count > 1) {
+                if (workspaceIndex > i)
+                    workspaceIndex--
+                removeWorkspace(i)
+            } else {
+                i++
+            }
+        }
+
+        currentIndex = Math.min(workspaceIndex, windowManager.workspaces.count - 1)
+        windowManager.currentWorkspace = windowManager.workspaces.get(currentIndex).workspace
     }
 
     function addWorkspace() {
@@ -66,9 +80,10 @@ Item {
 
     function removeWorkspace(index) {
         print("Removing workspace", index)
-        var workspace = workspacesRow.children[index]
+        var workspace = windowManager.workspaces.get(index).workspace
+        workspace.view.destroy()
+        workspace.view.visible = false
         windowManager.removeWorkspace(index)
-        workspace.destroy()
     }
 
     Row {
