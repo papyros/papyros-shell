@@ -33,6 +33,7 @@ View {
     property bool selected: indicator.selected
     property string tooltip
     property alias highlightColor: highlight.color
+    property alias highlightOpacity: highlight.opacity
     property alias containsMouse: ink.containsMouse
 
     signal clicked()

@@ -29,6 +29,7 @@ PanelItem {
 
     tintColor: containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
     highlightColor: "white"
+    highlightOpacity: active ? 1 : running ? 0.4 : 0
     selected: active
 
     property var listView: ListView.view

@@ -57,7 +57,9 @@ View {
 
         PanelItem {
             selected: shell.state == "exposed"
-            tooltip: "Workspaces"
+            tooltip: windowManager.workspaces.count > 1 
+                    ? qsTr("%1 workspaces").arg(windowManager.workspaces.count)
+                    : qsTr("1 workspace")
 
             onClicked: shell.toggleState("exposed")
             
