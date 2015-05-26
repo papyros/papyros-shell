@@ -18,6 +18,7 @@
 import QtQuick 2.4
 import Material 0.1
 import Material.Extras 0.1
+import Papyros.Desktop 0.1
 
 Item {
     id: lockscreen
@@ -154,7 +155,7 @@ Item {
         Label {
             id: label
 
-            text: "Michael Spencer"
+            text: currentUser.fullName !== "" ? currentUser.fullName : currentUser.loginName
             style: "title"
 
             anchors {
@@ -165,6 +166,7 @@ Item {
         }
 
         TextField {
+            id: textField
             anchors {
                 left: parent.left
                 right: parent.right
@@ -177,7 +179,31 @@ Item {
 
             echoMode: TextInput.Password
 
-            onAccepted: shell.state = "default"
+            onTextChanged: {
+                textField.helperText = ""
+                textField.hasError = false
+            }
+
+            onAccepted: SessionManager.authenticate(text)
+        }
+    }
+
+    Connections {
+        target: SessionManager
+
+        onAuthenticationSucceeded: {
+            textField.text = ""
+            shell.state = "default"
+        }
+        onAuthenticationFailed: {
+            textField.helperText = "Invalid password"
+            textField.hasError = true
+            print("FAILURE!")
+        }
+        onAuthenticationError: {
+            textField.helperText = "Error"
+            textField.hasError = true
+            print("ERROR!")
         }
     }
 }

@@ -27,6 +27,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines
 # Find pkg-config here so that it can be referenced soon
 find_package(PkgConfig)
 
+find_package(QT5XDG REQUIRED)
+find_package(PAM REQUIRED)
 find_package(GreenIsland 0.5.9 REQUIRED)
 
 # Find Qt5
@@ -42,8 +44,6 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 # Find KF5
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
              Solid Config)
-
-find_package(QT5XDG REQUIRED)
 
 greenisland_install_shell(io.papyros.shell shell)
 

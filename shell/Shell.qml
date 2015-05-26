@@ -80,6 +80,7 @@ View {
         },
 
         Action {
+            id: lockAction
             name: "Lock your " + Device.name
             keybinding: "Alt+L"
             onTriggered: lockScreen();
@@ -123,7 +124,7 @@ View {
         }
 
         NotificationsView {
-            
+
         }
 
         onXChanged: updateOutputGeometry()
@@ -298,7 +299,7 @@ View {
                 continue
             if (text != '' && event.text != text)
                 continue
-            
+
             print("Action triggered: " + action.name)
             event.accepted = true;
             action.triggered(shell)
@@ -377,7 +378,7 @@ View {
     UPower {
         id: upower
     }
-    
+
     MprisConnection {
         id: musicPlayer
     }

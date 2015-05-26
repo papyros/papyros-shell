@@ -20,12 +20,12 @@
 
 #include "processhelper/processhelper.h"
 
-#include "loginhelper/loginhelper.h"
-
 #include "hardware/hardwareengine.h"
 
 #include "launcher/application.h"
 #include "launcher/launchermodel.h"
+
+#include "session/sessionmanager.h"
 
 void DesktopPlugin::registerTypes(const char *uri)
 {
@@ -52,10 +52,8 @@ void DesktopPlugin::registerTypes(const char *uri)
     qmlRegisterType<LauncherModel>(uri, 0, 1, "LauncherModel");
     qmlRegisterUncreatableType<Application>(uri, 0, 1, "Application", "Applications are managed by the launcher model");
     qmlRegisterUncreatableType<QObjectListModel>(uri, 0, 1, "QObjectListModel", "For cool animations");
-    
-    qmlRegisterSingletonType<ProcessHelper>(uri, 0, 1, "ProcessHelper", ProcessHelper::process_helper);
 
-    qmlRegisterSingletonType<LoginHelper>(uri, 0, 1, "LoginHelper", LoginHelper::login_helper);
+    qmlRegisterSingletonType<ProcessHelper>(uri, 0, 1, "ProcessHelper", ProcessHelper::process_helper);
 
     // Hardware (battery and storage)
 
@@ -64,4 +62,9 @@ void DesktopPlugin::registerTypes(const char *uri)
             QStringLiteral("Cannot create Battery object"));
     qmlRegisterUncreatableType<StorageDevice>(uri, 0, 1, "StorageDevice",
             QStringLiteral("Cannot create StorageDevice object"));
+
+    // Session management
+
+    qmlRegisterSingletonType<SessionManager>(uri, 0, 1, "SessionManager",
+            SessionManager::qmlSingleton);
 }

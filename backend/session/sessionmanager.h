@@ -1,7 +1,8 @@
 /*
- * QML Desktop - Set of tools written in C++ for QML
+ * Papyros Shell - The desktop shell for Papyros following Material Design
  *
  * Copyright (C) 2015 Bogdan Cuza <bogdan.cuza@hotmail.com>
+ *               2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -17,29 +18,46 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOGINHELPER_H
-#define LOGINHELPER_H
+#ifndef SESSIONMANAGER_H
+#define SESSIONMANAGER_H
 
 #include <QObject>
+
 #include <QDBusInterface>
 #include <QQmlEngine>
 #include <QJSEngine>
 
-class LoginHelper : public QObject
+struct pam_message;
+struct pam_response;
+
+class SessionManager : public QObject
 {
     Q_OBJECT
 
 public:
-    LoginHelper(QObject *parent = 0);
+    SessionManager(QObject *parent = 0);
 
-    Q_INVOKABLE void powerOff();
-    Q_INVOKABLE void reboot();
+    static QObject *qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine);
 
-    static QObject *login_helper(QQmlEngine *engine, QJSEngine *scriptEngine);
+public slots:
+    void powerOff();
+    void reboot();
+    void logout();
+
+    void authenticate(const QString &password);
+
+signals:
+    void authenticationSucceeded();
+    void authenticationFailed();
+    void authenticationError();
 
 private:
-    QDBusInterface conn;
-	
+    QDBusInterface logind;
+    pam_response *m_response;
+
+    static int conversationHandler(int num, const pam_message **message,
+                                   pam_response **response, void *data);
+
 };
 
-#endif // LOGINHELPER_H 
+#endif // SESSIONMANAGER_H

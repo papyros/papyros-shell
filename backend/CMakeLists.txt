@@ -33,6 +33,7 @@ target_link_libraries(papyrosdesktop
                       KF5::Solid
                       KF5::ConfigCore
                       GreenIsland::GreenIsland
+                      ${PAM_LIBRARIES}
                       ${QTXDG_LIBRARIES})
 
 if(ALSA_FOUND)

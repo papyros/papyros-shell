@@ -17,16 +17,28 @@
  */
 import QtQuick 2.0
 import Material 0.1
+import Material.ListItems 0.1 as ListItem
 import ".."
 
 Indicator {
     id: indicator
 
-    iconSource: currentUser.faceIconUrl != "" 
-            ? currentUser.faceIconUrl : "icon://action/account_circle" 
+    iconSource: currentUser.faceIconUrl != ""
+            ? currentUser.faceIconUrl : "icon://action/account_circle"
 
     // TODO: Handle guest users here
     tooltip: currentUser.fullName !== "" ? currentUser.fullName : currentUser.loginName
 
     circleClipIcon: currentUser.faceIconUrl != ""
+
+    view: Column {
+        ListItem.Standard {
+            id: lockItem
+            
+            iconName: "action/lock"
+            text: "Lock"
+            valueText: lockAction.keybinding
+            onClicked: lockAction.triggered(lockItem)
+        }
+    }
 }
