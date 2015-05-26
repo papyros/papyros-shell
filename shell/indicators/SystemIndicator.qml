@@ -23,8 +23,9 @@ import ".."
 Indicator {
     id: indicator
 
-    iconSource: currentUser.faceIconUrl != ""
-            ? currentUser.faceIconUrl : "icon://action/account_circle"
+    iconSource: shell.state == "locked"
+            ? "icon://action/power_settings_new" : currentUser.faceIconUrl != ""
+                          ? currentUser.faceIconUrl : "icon://action/account_circle"
 
     // TODO: Handle guest users here
     tooltip: currentUser.fullName !== "" ? currentUser.fullName : currentUser.loginName
@@ -34,11 +35,24 @@ Indicator {
     view: Column {
         ListItem.Standard {
             id: lockItem
-            
+
             iconName: "action/lock"
             text: "Lock"
             valueText: lockAction.keybinding
+            visible: shell.state !== "locked"
             onClicked: lockAction.triggered(lockItem)
+        }
+
+        ListItem.Standard {
+            iconName: "action/power_settings_new"
+            text: "Power off"
+            onClicked: SessionManager.powerOff()
+        }
+
+        ListItem.Standard {
+            iconSource: Qt.resolvedUrl("../images/reload.svg")
+            text: "Reboot"
+            onClicked: SessionManager.reboot()
         }
     }
 }

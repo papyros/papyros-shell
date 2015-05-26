@@ -28,6 +28,7 @@ Indicator {
     tooltip: "Action Center"
 
     visible: hiddenIndicators.length > 0
+    userSensitive: true
 
     property Indicator selectedView: visible ? hiddenIndicators[0] : null
 

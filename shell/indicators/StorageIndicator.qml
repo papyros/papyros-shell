@@ -27,6 +27,7 @@ Indicator {
     iconSource: Qt.resolvedUrl("../images/harddisk.svg")
     tooltip: qsTr("%1 storage devices").arg(deviceCount)
     visible: deviceCount > 0
+    userSensitive: true
 
     property int deviceCount: ListUtils.filteredCount(hardware.storageDevices, function(device) {
         return !device.ignored
@@ -49,7 +50,7 @@ Indicator {
                         return Qt.resolvedUrl("../images/harddisk.svg")
                     }
                 }
-                
+
                 onClicked: {
                     Qt.openUrlExternally(modelData.filePath)
                 }

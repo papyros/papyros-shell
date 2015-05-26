@@ -36,7 +36,7 @@ Indicator {
             }
         }
 
-        return Theme.dark.iconColor
+        return "transparent"
     }
 
     view: Column {

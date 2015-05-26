@@ -19,6 +19,8 @@ import QtQuick 2.4
 import Material 0.1
 import Material.Extras 0.1
 import Papyros.Desktop 0.1
+import "../components"
+import "../indicators"
 
 Item {
     id: lockscreen
@@ -26,6 +28,7 @@ Item {
     anchors.fill: parent
 
     opacity: shell.state == "locked" ? 1 : 0
+    visible: opacity > 0
 
     Behavior on opacity {
         NumberAnimation {
@@ -80,7 +83,7 @@ Item {
         }
 
         width: row.width + Units.dp(24)
-        height: row.height + Units.dp(24)
+        height: Units.dp(48)
 
         radius: Units.dp(2)
         elevation: 2
@@ -89,34 +92,23 @@ Item {
             id: row
 
             anchors.centerIn: parent
+            height: parent.height
 
-            spacing: Units.dp(16)
-
-            Label {
-                text: Qt.formatTime(now)
-                font.pixelSize: Units.dp(16)
-                anchors.verticalCenter: parent.verticalCenter
+            IndicatorView {
+                indicator: DateTimeIndicator {}
+                defaultColor: Theme.light.iconColor
+                defaultTextColor: Theme.light.textColor
+                visible: !indicator.userSensitive
             }
 
-            Icon {
-                name: "device/signal_wifi_3_bar"
-                size: Units.dp(20)
-            }
-
-            Icon {
-                name: "av/volume_up"
-                size: Units.dp(20)
-            }
-
-            Icon {
-                name: upower.deviceIcon(upower.primaryDevice)
-                size: Units.dp(20)
-            }
-
-            Icon {
-                name: "awesome/power_off"
-                size: Units.dp(20)
-                color: "gray"
+            Repeater {
+                model: shell.indicators
+                delegate: IndicatorView {
+                    indicator: modelData
+                    defaultColor: Theme.light.iconColor
+                    defaultTextColor: Theme.light.textColor
+                    visible: !indicator.userSensitive
+                }
             }
         }
     }

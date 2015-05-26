@@ -121,7 +121,7 @@ Item {
         objectName: "desktopOverlayLayer"
 
         onCurrentOverlayChanged: {
-            if (currentOverlay)
+            if (currentOverlay && shell.state !== "default" && shell.state !== "locked")
                 shell.state = "default"
         }
     }

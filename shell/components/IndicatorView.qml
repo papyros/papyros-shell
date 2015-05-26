@@ -25,18 +25,24 @@ import "."
 PanelItem {
     id: indicatorView
 
+    tintColor: containsMouse || selected
+            ? defaultColor == Theme.dark.iconColor ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0.1)
+            : Qt.rgba(0,0,0,0)
+
     width: smallMode ? indicator.text ? label.width + (height - label.height) : height
-                     : indicator.text ? label.width + (Units.dp(30) - label.height) 
-                                      : indicator.circleClipIcon ? Units.dp(30 * 1.2) 
-                                                                 : Units.dp(30)
+                     : indicator.text ? label.width + (Units.dp(30) - label.height)
+                                      : circleImage.visible ? Units.dp(30 * 1.2)
+                                                            : Units.dp(30)
 
     visible: !indicator.hidden && indicator.visible
 
     property bool smallMode: height < Units.dp(40)
     property Indicator indicator
+    property color defaultColor: Theme.dark.iconColor
+    property color defaultTextColor: Theme.dark.textColor
     tooltip: indicator ? indicator.tooltip : ""
 
-    property int iconSize: height > Units.dp(40) ? height * 0.36 : height * 0.45
+    property int iconSize: height > Units.dp(40) ? Units.dp(56) * 0.36 : height * 0.45
 
     onIndicatorChanged: indicator.selected = Qt.binding(function() {
         return desktop.overlayLayer.currentOverlay == dropdown
@@ -55,8 +61,8 @@ PanelItem {
         anchors.centerIn: parent
         size: iconSize
         source: indicator.iconSource
-        color: indicator.color
-        visible: !indicator.circleClipIcon
+        color: indicator.color.a == 0 ? defaultColor : indicator.color
+        visible: !circleImage.visible
     }
 
     CircleImage {
@@ -65,14 +71,14 @@ PanelItem {
         width: iconSize * 1.2
         height: width
         source: visible ? indicator.iconSource : ""
-        visible: indicator.circleClipIcon
+        visible: indicator.circleClipIcon && String(indicator.iconSource).indexOf("icon://") == -1
     }
 
     Label {
         id: label
         anchors.centerIn: parent
         text: indicator.text
-        color: Theme.dark.textColor
+        color: indicator.color.a == 0 ? defaultTextColor : indicator.color
         font.pixelSize: Units.dp(14)
     }
 
@@ -90,7 +96,7 @@ PanelItem {
         width: Units.dp(10)//Math.min(parent.width/2, Math.max(badgeLabel.width,
                 //badgeLabel.height) + Units.dp(2))
         height: width
-        
+
         visible: indicator.badge !== ""
 
         // Label {

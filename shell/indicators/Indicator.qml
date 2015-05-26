@@ -28,7 +28,8 @@ Object {
     property string tooltip
     property bool hidden: false
     property bool visible: true
-    property color color: Theme.dark.iconColor
+    property bool userSensitive: false
+    property color color: "transparent"
     property bool circleClipIcon
 
     property Component view
