@@ -42,6 +42,8 @@ Once the necessary dependencies are installed, you can build and install the Pap
     cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DQML_INSTALL_DIR=lib/qt/qml
     make && sudo make install
 
+### Running the shell ###
+
 And run the compositor from an X11 desktop:
 
     greenisland --shell io.papyros.shell
@@ -49,6 +51,18 @@ And run the compositor from an X11 desktop:
 Or from a virtual terminal as a full Wayland compositor:
 
     greenisland --platform eglfs --shell io.papyros.shell
+
+### Using the SDDM theme ###
+
+The SDDM theme for Papyros is installed along with the shell. To set it as the
+current theme, edit the `/etc/sddm.conf` file and edit the `Current` key under the `[Theme]` group
+to match:
+
+    [Theme]
+    # Current theme name
+    Current=papyros
+
+Now restart your computer and enjoy the new theme!
 
 ### Licensing ###
 
