@@ -54,6 +54,18 @@ Indicator {
             showDivider: true
         }
 
+        ListItem.Subtitled {
+            text: "Battery Infomation"
+            valueText: upower.deviceSummary(upower.primaryDevice)
+            content: ProgressBar {
+                width: parent.width
+                value: upower.primaryDevice.percentage
+                color: Palette.colors.teal["500"]
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: Units.dp(7)
+            }
+        }
+
         Repeater {
             model: upower
             delegate: ListItem.Subtitled {
