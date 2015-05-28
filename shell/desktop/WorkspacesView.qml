@@ -38,7 +38,7 @@ Item {
         while (i < windowManager.workspaces.count) {
             var workspace = windowManager.workspaces.get(i).workspace
 
-            if (workspace.windows.count == 0 && i != currentIndex && 
+            if (workspace.windows.count == 0 && i != currentIndex &&
                     windowManager.workspaces.count > 1) {
                 removeWorkspace(i)
             } else {
@@ -60,7 +60,7 @@ Item {
         while (i < windowManager.workspaces.count) {
             var workspace = windowManager.workspaces.get(i).workspace
 
-            if (workspace.windows.count == 0 && i != workspaceIndex && 
+            if (workspace.windows.count == 0 && i != workspaceIndex &&
                     windowManager.workspaces.count > 1) {
                 if (workspaceIndex > i)
                     workspaceIndex--
@@ -120,7 +120,7 @@ Item {
             bottom: parent.bottom
 
             topMargin: exposed ? Units.dp(32) : 0
-            bottomMargin: exposed 
+            bottomMargin: exposed
                     ? Units.dp(32) + previewRow.height + previewRow.anchors.bottomMargin : 0
 
             Behavior on topMargin {
@@ -130,7 +130,7 @@ Item {
             Behavior on bottomMargin {
                 NumberAnimation { duration: 300 }
             }
-        }       
+        }
 
         width: workspaceWidth
 
