@@ -28,7 +28,10 @@ import "../../desktop"
 View {
     id: panel
 
-    backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 1)
+    property color darkColor: Qt.rgba(0.2, 0.2, 0.2, 1)
+    property bool maximized: windowManager.currentWorkspace.hasMaximizedWindow
+
+    backgroundColor: Qt.rgba(0.2, 0.2, 0.2, maximized ? 1 : 0)
     height: Units.dp(56)
 
     anchors {
@@ -47,26 +50,71 @@ View {
 
         spacing: 0
 
-        IndicatorView {
-            Layout.preferredWidth: height
-            iconSize: Units.dp(24)
-            indicator: AppDrawer {
-                id: appDrawer
+        Item {
+            height: parent.height
+            Layout.preferredWidth: 2 * height
+
+            View {
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    bottom: parent.bottom
+                    margins: Units.dp(8)
+                }
+
+                width: height
+
+                elevation: panel.maximized || shell.state == "exposed" ? 0 : 2
+                radius: Units.dp(2)
+                backgroundColor: panel.darkColor
             }
-        }
 
-        PanelItem {
-            selected: shell.state == "exposed"
-            tooltip: windowManager.workspaces.count > 1 
-                    ? qsTr("%1 workspaces").arg(windowManager.workspaces.count)
-                    : qsTr("1 workspace")
+            View {
+                anchors {
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                    margins: Units.dp(8)
+                }
 
-            onClicked: shell.toggleState("exposed")
-            
-            Icon {
-                anchors.centerIn: parent
-                source: Qt.resolvedUrl("../../images/workspaces-expose.svg")
-                color: Theme.dark.iconColor
+                width: height
+
+                elevation: panel.maximized || shell.state == "exposed" ? 0 : 2
+                radius: Units.dp(2)
+                backgroundColor: panel.darkColor
+            }
+
+            Row {
+                id: leftRow
+                anchors {
+                    fill: parent
+                    margins: panel.maximized ? 0 : Units.dp(8)
+                }
+
+                spacing: anchors.margins * 2
+
+                IndicatorView {
+                    width: height
+                    iconSize: Units.dp(24)
+                    indicator: AppDrawer {
+                        id: appDrawer
+                    }
+                }
+
+                PanelItem {
+                    selected: shell.state == "exposed"
+                    tooltip: windowManager.workspaces.count > 1
+                            ? qsTr("%1 workspaces").arg(windowManager.workspaces.count)
+                            : qsTr("1 workspace")
+
+                    onClicked: shell.toggleState("exposed")
+
+                    Icon {
+                        anchors.centerIn: parent
+                        source: Qt.resolvedUrl("../../images/workspaces-expose.svg")
+                        color: Theme.dark.iconColor
+                    }
+                }
             }
         }
 
@@ -121,24 +169,44 @@ View {
         }
     }
 
-    Row {
+    View {
         id: indicatorsRow
 
         anchors {
             right: parent.right
             top: parent.top
             bottom: parent.bottom
-            rightMargin: Units.dp(16)
+            margins: Units.dp(8)
         }
 
-        IndicatorView {
-            indicator: DateTimeIndicator {}
-        }
+        elevation: panel.maximized || shell.state == "exposed" ? 0 : 2
+        radius: Units.dp(2)
+        backgroundColor: panel.darkColor
 
-        Repeater {
-            model: shell.indicators
-            delegate: IndicatorView {
-                indicator: modelData
+        width: row.implicitWidth + Units.dp(16)
+        clipContent: false
+
+        Row {
+            id: row
+
+            anchors {
+                right: parent.right
+                top: parent.top
+                bottom: parent.bottom
+                leftMargin: Units.dp(8)
+                rightMargin: Units.dp(8)
+                margins: panel.maximized ? Units.dp(-8) : 0
+            }
+
+            IndicatorView {
+                indicator: DateTimeIndicator {}
+            }
+
+            Repeater {
+                model: shell.indicators
+                delegate: IndicatorView {
+                    indicator: modelData
+                }
             }
         }
     }

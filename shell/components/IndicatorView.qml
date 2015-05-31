@@ -42,13 +42,9 @@ PanelItem {
     property color defaultTextColor: Theme.dark.textColor
     tooltip: indicator ? indicator.tooltip : ""
 
-    property int iconSize: height > Units.dp(40) ? Units.dp(56) * 0.36 : height * 0.45
+    property int iconSize: height >= Units.dp(40) ? Units.dp(56) * 0.36 : height * 0.45
 
-    onIndicatorChanged: indicator.selected = Qt.binding(function() {
-        return desktop.overlayLayer.currentOverlay == dropdown
-    })
-
-    selected: indicator.selected
+    selected: desktop.overlayLayer.currentOverlay == dropdown
 
     onClicked: {
         if (selected)

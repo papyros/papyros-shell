@@ -33,6 +33,4 @@ Object {
     property bool circleClipIcon
 
     property Component view
-
-    property bool selected
 }
