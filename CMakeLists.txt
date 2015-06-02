@@ -28,6 +28,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines
 find_package(PkgConfig)
 
 find_package(QT5XDG REQUIRED)
+include(${QTXDG_USE_FILE})
 find_package(PAM REQUIRED)
 find_package(GreenIsland 0.5.9 REQUIRED)
 
