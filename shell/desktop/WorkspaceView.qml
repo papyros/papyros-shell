@@ -172,16 +172,7 @@ View {
         fadeDuration: 500
         fillMode: Image.Stretch
 
-        source: {
-            var filename = wallpaperSetting.pictureUri
-
-            if (filename.indexOf("xml") != -1) {
-                // We don't support GNOME's time-based wallpapers. Default to our default wallpaper
-                return Qt.resolvedUrl("../images/papyros-wallpaper.png")
-            } else {
-                return filename
-            }
-        }
+        source: desktopConfig.backgroundUrl
 
         Behavior on opacity {
             NumberAnimation { duration: 300 }

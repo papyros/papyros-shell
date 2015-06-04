@@ -28,8 +28,9 @@ Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the
  * A Green Island development version of QtCompositor, as described on the Green Island GitHub page.
  * [QML Extras](https://github.com/papyros/qml-extras) (the `develop` branch).
  * [QML Material](https://github.com/papyros/qml-material) (the `develop` branch).
- * [GSettings QML module](https://launchpad.net/gsettings-qt) (AUR package available for Arch Linux users).
+ users).
  * Several KDE Frameworks
+   * [KConfig](api.kde.org/frameworks-api/frameworks5-apidocs/kconfig/html/)
    * [KDeclarative](api.kde.org/frameworks-api/frameworks5-apidocs/kdeclarative/html/)
    * [Solid](api.kde.org/frameworks-api/frameworks5-apidocs/solid/html/)
  * ALSA or PulseAudio for the sound indicator

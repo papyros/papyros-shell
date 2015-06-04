@@ -43,7 +43,7 @@ Indicator {
                 height: dropdown.height
                 radius: Units.dp(2)
 
-                color: Palette.colors[config.accentColor]['700']
+                color: Palette.colors[desktopConfig.accentColor]['700']
             }
 
             Label {
@@ -60,7 +60,7 @@ Indicator {
 
             width: parent.width
             height: column.height + Units.dp(32)
-            color: Palette.colors[config.accentColor]['500']
+            color: Palette.colors[desktopConfig.accentColor]['500']
 
             Column {
                 id: column

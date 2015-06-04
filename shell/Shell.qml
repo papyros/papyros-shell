@@ -19,7 +19,6 @@ import QtQuick 2.2
 import QtQuick.Window 2.0
 import Material 0.1
 import Papyros.Desktop 0.1
-import GSettings 1.0
 import QtCompositor 1.0
 import GreenIsland 1.0
 import org.kde.kcoreaddons 1.0 as KCoreAddons
@@ -86,8 +85,6 @@ View {
             onTriggered: lockScreen();
         }
     ]
-
-    property alias config: __config
 
     property alias screenInfo: __screenInfo
 
@@ -350,14 +347,6 @@ View {
 
     // ===== Configuration and Settings =====
 
-    DesktopConfig {
-        id: __config
-
-        onAccentColorChanged: {
-            Theme.accentColor = Palette.colors[config.accentColor]['500']
-        }
-    }
-
     QtObject {
         id: __screenInfo
 
@@ -366,9 +355,22 @@ View {
         readonly property bool primary: _greenisland_output.primary
     }
 
-    GSettings {
-        id: wallpaperSetting
-        schema.id: "org.gnome.desktop.background"
+    KQuickConfig {
+        id: desktopConfig
+
+        file: "papyros-shell"
+        group: "desktop"
+        defaults: {
+            "silentMode": false,
+            "accentColor": "teal",
+            "backgroundUrl": Qt.resolvedUrl("images/papyros-wallpaper.png")
+        }
+
+        onValueChanged: {
+            if (key == "accentColor") {
+                Theme.accentColor = Palette.colors[desktopConfig.accentColor]['500']
+            }
+        }
     }
 
     KCoreAddons.KUser {

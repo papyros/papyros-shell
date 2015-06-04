@@ -1,5 +1,7 @@
 #include "plugin.h"
 
+#include "config/kquickconfig.h"
+
 #include "mpris/mprisconnection.h"
 #include "mpris/mpris2player.h"
 
@@ -31,6 +33,8 @@ void DesktopPlugin::registerTypes(const char *uri)
 {
     // @uri Papyros.Desktop
     Q_ASSERT(uri == QStringLiteral("Papyros.Desktop"));
+
+    qmlRegisterType<KQuickConfig>(uri, 0, 1, "KQuickConfig");
 
     qmlRegisterType<MprisConnection>(uri, 0, 1, "MprisConnection");
     qmlRegisterUncreatableType<Mpris2Player>(uri, 0, 1, "Mpris2Player", "Player class");
