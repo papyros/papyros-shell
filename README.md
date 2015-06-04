@@ -29,6 +29,8 @@ Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the
  * [QML Extras](https://github.com/papyros/qml-extras) (the `develop` branch).
  * [QML Material](https://github.com/papyros/qml-material) (the `develop` branch).
  users).
+ * [QT5XDG](https://github.com/lxde/libqtxdg) for desktop file parsing
+ * PAM for authentication
  * Several KDE Frameworks
    * [KConfig](api.kde.org/frameworks-api/frameworks5-apidocs/kconfig/html/)
    * [KDeclarative](api.kde.org/frameworks-api/frameworks5-apidocs/kdeclarative/html/)

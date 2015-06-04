@@ -43,7 +43,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 
 # Find KF5
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
-             Solid Config)
+             Solid Config Declarative)
 
 greenisland_install_shell(io.papyros.shell shell)
 
