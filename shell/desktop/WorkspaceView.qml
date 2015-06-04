@@ -172,7 +172,7 @@ View {
         fadeDuration: 500
         fillMode: Image.Stretch
 
-        source: desktopConfig.backgroundUrl
+        source: settings.desktop.backgroundUrl
 
         Behavior on opacity {
             NumberAnimation { duration: 300 }

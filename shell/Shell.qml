@@ -86,6 +86,7 @@ View {
         }
     ]
 
+    property alias settings: __settings
     property alias screenInfo: __screenInfo
 
     signal superPressed()
@@ -355,32 +356,8 @@ View {
         readonly property bool primary: _greenisland_output.primary
     }
 
-    KQuickConfig {
-        id: appShelfConfig
-
-        file: "papyros-shell"
-        group: "appshelf"
-        defaults: {
-            "transparentShelf": true
-        }
-    }
-
-    KQuickConfig {
-        id: desktopConfig
-
-        file: "papyros-shell"
-        group: "desktop"
-        defaults: {
-            "silentMode": false,
-            "accentColor": "teal",
-            "backgroundUrl": Qt.resolvedUrl("images/papyros-wallpaper.png")
-        }
-
-        onValueChanged: {
-            if (key == "accentColor") {
-                Theme.accentColor = Palette.colors[desktopConfig.accentColor]['500']
-            }
-        }
+    Settings {
+        id: __settings
     }
 
     KCoreAddons.KUser {
