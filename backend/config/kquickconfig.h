@@ -22,13 +22,12 @@
 #include <QObject>
 #include <QVariantMap>
 #include <QtQml>
-#include <QQmlParserStatus>
 #include <QFileSystemWatcher>
 
 #include <KConfigCore/KConfig>
 #include <KConfigCore/KSharedConfig>
 
-class KQuickConfig: public QQmlPropertyMap, public QQmlParserStatus
+class KQuickConfig: public QQmlPropertyMap
 {
     Q_OBJECT
 
@@ -45,9 +44,6 @@ public:
     QVariantMap defaults() const { return m_defaults; }
 
     bool isEditable(const QString &key);
-
-    void classBegin();
-    void componentComplete();
 
 public slots:
     void setFile(QString file);
@@ -73,7 +69,7 @@ private:
     QVariantMap m_defaults;
 
     KSharedConfigPtr m_config;
-    QFileSystemWatcher *dirWatcher;
+    QFileSystemWatcher *dirWatcher = nullptr;
 };
 
 #endif // KQUICKCONFIG_H

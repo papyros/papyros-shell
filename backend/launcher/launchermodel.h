@@ -32,6 +32,7 @@
 #include <QtCore/QAbstractListModel>
 #include <QtQml/QQmlComponent>
 #include <KConfigCore/KConfig>
+#include <KConfigCore/KSharedConfig>
 
 class Application;
 
@@ -69,7 +70,7 @@ public:
 
 private:
     QList<Application *> m_list;
-    KConfig *m_config;
+    KSharedConfigPtr m_config;
 
     QStringList defaultPinnedApps();
 

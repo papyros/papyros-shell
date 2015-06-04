@@ -356,6 +356,16 @@ View {
     }
 
     KQuickConfig {
+        id: appShelfConfig
+
+        file: "papyros-shell"
+        group: "appshelf"
+        defaults: {
+            "transparentShelf": true
+        }
+    }
+
+    KQuickConfig {
         id: desktopConfig
 
         file: "papyros-shell"

@@ -42,7 +42,7 @@ LauncherModel::LauncherModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     // Settings
-    m_config = new KConfig("papyros-shell");
+    m_config = KSharedConfig::openConfig("papyros-shell", KConfig::NoGlobals);
 
     // Application manager instance
     ApplicationManager *appMan = ApplicationManager::instance();
@@ -135,11 +135,10 @@ LauncherModel::~LauncherModel()
     // Delete the items
     while (!m_list.isEmpty())
         m_list.takeFirst()->deleteLater();
-    delete m_config;
 }
 
 QStringList LauncherModel::defaultPinnedApps() {
-    QStringList defaultApps; 
+    QStringList defaultApps;
     defaultApps << "org.gnome.Dictionary";
 
     return defaultApps;
@@ -292,7 +291,7 @@ void LauncherModel::pinLauncher(const QString &appId, bool pinned)
     // Currently pinned launchers
     QStringList pinnedLaunchers = m_config->group("appshelf")
             .readEntry("pinned_apps", defaultPinnedApps());
-    
+
     // Add or remove from the pinned launchers
     if (pinned)
          pinnedLaunchers.append(appId);

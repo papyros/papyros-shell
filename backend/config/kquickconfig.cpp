@@ -60,10 +60,6 @@ void KQuickConfig::setDefaults(QVariantMap defaults)
     }
 }
 
-void KQuickConfig::classBegin() {}
-
-void KQuickConfig::componentComplete() {}
-
 QVariant KQuickConfig::getConfigEntry(const QString &key)
 {
     return m_config->group(group()).readEntry(key, defaults().value(key));
