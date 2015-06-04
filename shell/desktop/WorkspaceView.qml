@@ -177,7 +177,7 @@ View {
 
             if (filename.indexOf("xml") != -1) {
                 // We don't support GNOME's time-based wallpapers. Default to our default wallpaper
-                return Qt.resolvedUrl("../images/papyros_wallpaper.png")
+                return Qt.resolvedUrl("../images/papyros-wallpaper.png")
             } else {
                 return filename
             }
