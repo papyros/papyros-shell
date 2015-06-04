@@ -120,7 +120,7 @@ LauncherModel::LauncherModel(QObject *parent)
 
     // Add pinned launchers
     const QStringList pinnedLaunchers = m_config->group("appshelf")
-            .readEntry("pinned_apps", defaultPinnedApps());
+            .readEntry("pinnedApps", defaultPinnedApps());
     beginInsertRows(QModelIndex(), 0, m_list.size());
 
     for (QString appId : pinnedLaunchers) {
@@ -290,7 +290,7 @@ void LauncherModel::pinLauncher(const QString &appId, bool pinned)
 
     // Currently pinned launchers
     QStringList pinnedLaunchers = m_config->group("appshelf")
-            .readEntry("pinned_apps", defaultPinnedApps());
+            .readEntry("pinnedApps", defaultPinnedApps());
 
     // Add or remove from the pinned launchers
     if (pinned)
@@ -298,7 +298,7 @@ void LauncherModel::pinLauncher(const QString &appId, bool pinned)
     else
          pinnedLaunchers.removeOne(appId);
 
-    group.writeEntry("pinned_apps", pinnedLaunchers);
+    group.writeEntry("pinnedApps", pinnedLaunchers);
     group.sync();
 }
 
