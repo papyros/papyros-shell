@@ -94,7 +94,7 @@ Indicator {
         Column {
             anchors.centerIn: listView
             visible: listView.visible && listView.contentHeight == 0
-        
+
             spacing: Units.dp(8)
 
             Icon {
@@ -137,7 +137,7 @@ Indicator {
                 }
 
                 text: edit.name
-                visible: textField.text === "" || 
+                visible: textField.text === "" ||
                         text.toLowerCase().indexOf(textField.text.toLowerCase()) !== -1
                 height: visible ? implicitHeight : 0
 
@@ -182,12 +182,12 @@ Indicator {
                 property int pageIndex: index
 
                 Repeater {
-                    model: pageIndex == gridView.count - 1 
-                            ? gridView.model % gridView.pageCount : gridView.pageCount
+                    model: pageIndex == gridView.count - 1
+                            ? desktopScrobbler.desktopFiles.rowCount() % gridView.pageCount : gridView.pageCount
                     delegate: Item {
                         id: appIcon
 
-                        property var edit: desktopScrobbler.desktopFiles.get(index + page.pageIndex * 16)
+                        property var edit: desktopScrobbler.desktopFiles.get(index + page.pageIndex * gridView.pageCount)
 
                         width: gridView.width/4
                         height: gridView.height/4
@@ -246,7 +246,7 @@ Indicator {
             Repeater {
                 model: gridView.model
                 delegate: Rectangle {
-                    color: index == gridView.currentIndex 
+                    color: index == gridView.currentIndex
                             ? Theme.dark.accentColor : "#ddd"
                     width: height
                     height: Units.dp(8)
