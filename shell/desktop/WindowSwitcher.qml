@@ -24,32 +24,31 @@ import GreenIsland.Desktop 1.0
 import Papyros.Desktop 0.1
 import "../components"
 
-View {
+Item {
     id: windowSwitcher
 
-    anchors.centerIn: parent
-    elevation: 2
-    radius: Units.dp(2)
-
-    height: column.height + Units.dp(16)
-    width: column.width + Units.dp(16)
-
-    backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 0.9)
+    anchors {
+        fill: parent
+        leftMargin: stage.item.leftMargin
+        rightMargin: stage.item.rightMargin
+        topMargin: stage.item.topMargin
+        bottomMargin: stage.item.bottomMargin
+    }
 
     opacity: showing ? 1 : 0
     visible: opacity > 0
 
-    Behavior on opacity {
-        NumberAnimation { duration: 200 }
-    }
-
     property bool showing: shell.state == "switcher"
     property int index
     property bool enabled: count > 0
-    property int count: windowManager.orderedWindows.count
+    property int count: repeater.count
+
+    onIndexChanged: print("INDEX", index)
 
     onCountChanged: {
         index = Math.min(index, count - 1)
+        if (count == 0)
+            dismiss()
     }
 
     onEnabled: {
@@ -57,90 +56,217 @@ View {
             dismiss()
     }
 
+    Behavior on opacity {
+        NumberAnimation { duration: 200 }
+    }
+
     function show() {
         index = 0
+        windowView.index = 0
         shell.state = "switcher"
     }
 
-    function dismiss() {
-        windowManager.moveFront(windowManager.orderedWindows.get(index).item)
+    function dismiss(appId, item) {
+        if (appId != undefined) {
+            windowManager.focusApplication(appId)
+        } else if (item != undefined) {
+            windowManager.moveFront(item)
+        } else {
+            var item = windowView.windows[windowView.index].item
+            windowManager.moveFront(item)
+        }
+
         shell.state = "default"
     }
 
     function next() {
         print("Next!")
         index = (index + 1) % count
+        windowView.index = 0
+        windowView.visible = false
     }
 
     function prev() {
         print("Previ!")
         index = (index - 1) % count
+        windowView.index = 0
+        windowView.visible = false
     }
 
-    Column {
-        id: column
-        anchors.centerIn: parent
+    function nextWindow() {
+        print("Next!")
+        windowView.visible = true
 
-        spacing: Units.dp(8)
-    
-        Row {
+        var selectedAppId = AppSwitcherModel.get(windowSwitcher.index).appId
+        var windows = ListUtils.filter(windowManager.orderedWindows, function(modelData) {
+            return modelData.window.appId == selectedAppId
+        })
+
+        windowView.index = (windowView.index + 1) % windows.length
+    }
+
+    function prevWindow() {
+        print("Previ!")
+        windowView.visible = true
+
+        var selectedAppId = AppSwitcherModel.get(windowSwitcher.index).appId
+        var windows = ListUtils.filter(windowManager.orderedWindows, function(modelData) {
+            return modelData.window.appId == selectedAppId
+        })
+
+        windowView.index = (windowView.index - 1) % windows.length
+    }
+
+    function showWindowsView() {
+        windowView.visible = true
+    }
+
+    View {
+        id: switcher
+
+        anchors.centerIn: parent
+        elevation: 2
+        radius: Units.dp(2)
+
+        height: column.height + Units.dp(16)
+        width: column.width + Units.dp(16)
+
+        backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 0.9)
+
+        Column {
+            id: column
+            anchors.centerIn: parent
+
             spacing: Units.dp(8)
 
-            Repeater {
-                model: windowManager.orderedWindows
-                delegate: Rectangle {
-                    height: Units.dp(100)
-                    width: config.showWindowSwitcherPreviews ? preview.implicitWidth : height
+            Row {
+                id: appRow
+                spacing: Units.dp(8)
 
+                Repeater {
+                    id: repeater
+                    model: AppSwitcherModel
+                    delegate: Rectangle {
+                        height: Units.dp(100)
+                        width: height
+
+                        color: "transparent"
+
+                        border.color: index == windowSwitcher.index ? "white" : "transparent"
+                        border.width: Units.dp(2)
+                        radius: Units.dp(2)
+
+                        AppIcon {
+                            anchors {
+                                fill: parent
+                                margins: Units.dp(8)
+                            }
+
+                            iconName: desktopFile.iconName
+                            name: desktopFile.name !== "" ? desktopFile.name : appId
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            acceptedButtons: Qt.AllButtons
+                            onClicked: dismiss(appId)
+                        }
+                    }
+                }
+            }
+
+            Label {
+                width: parent.width
+
+                horizontalAlignment: Qt.AlignHCenter
+
+                elide: Text.ElideRight
+
+                text: count == 0 ? "" : AppSwitcherModel.get(windowSwitcher.index).desktopFile.name
+                style: "subheading"
+                color: Theme.dark.textColor
+            }
+        }
+    }
+
+    View {
+        id: windowView
+        anchors {
+            top: switcher.bottom
+            bottom: parent.bottom
+            margins: Units.dp(16)
+        }
+
+        visible: false
+
+        x: {
+            var appX = windowSwitcher.index * (appRow.height + appRow.spacing) + appRow.height/2
+            var x = (switcher.x + Units.dp(8) + appX) - windowView.width/2
+
+            return Math.max(x, Units.dp(16))
+        }
+
+        width: windowsRow.width + Units.dp(32)
+
+        elevation: 2
+        radius: Units.dp(2)
+
+        backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 0.9)
+
+        property int index
+        property int count: windows.length
+
+        property string selectedAppId: windowSwitcher.count > 0 && windowSwitcher.visible
+                ? AppSwitcherModel.get(windowSwitcher.index).appId : ""
+
+        property var windows: ListUtils.filter(windowManager.orderedWindows, function(modelData) {
+            return modelData.window.appId == selectedAppId
+        })
+
+        Row {
+            id: windowsRow
+
+            anchors.centerIn: parent
+
+            height: parent.height - Units.dp(32)
+
+            visible: windowView.windows.length > 0
+            spacing: Units.dp(16)
+
+            Repeater {
+                model: windowView.windows
+
+                delegate: Rectangle {
                     color: "transparent"
 
-                    border.color: index == windowSwitcher.index ? "white" : "transparent"
+                    border.color: index == windowView.index ? "white" : "transparent"
                     border.width: Units.dp(2)
                     radius: Units.dp(2)
 
-                    AppIcon {
-                        anchors {
-                            fill: parent
-                            margins: Units.dp(8) 
-                        }
-
-                        iconName: window.iconName
-                        name: desktopFile.name !== "" ? desktopFile.name : window.appId
-                    }
-
-                    DesktopFile {
-                        id: desktopFile
-                        appId: window.appId
-                    }
+                    height: parent.height
+                    width: preview.width + Units.dp(16)
 
                     WindowPreview {
                         id: preview
-                        visible: config.showWindowSwitcherPreviews
-                        anchors {
-                            fill: parent
-                            margins: Units.dp(8) 
-                        }
+
+                        anchors.centerIn: parent
+
+                        height: parent.height - Units.dp(16)
+                        width: item.width * height/item.height
+
+                        property var item: modelData.item
+                        property var window: modelData.window
                     }
 
                     MouseArea {
                         anchors.fill: parent
                         acceptedButtons: Qt.AllButtons
-                        onClicked: preview.activate()
+                        onClicked: {
+                            dismiss(selectedAppId, item)
+                        }
                     }
                 }
             }
-        }
-
-        Label {
-            width: parent.width
-
-            horizontalAlignment: Qt.AlignHCenter
-
-            elide: Text.ElideRight
-
-            text: windowManager.orderedWindows.get(windowSwitcher.index).window.title
-            style: "subheading"
-            color: Theme.dark.textColor
         }
     }
 }

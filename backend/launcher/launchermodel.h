@@ -53,8 +53,12 @@ public:
         PinnedRole
     };
 
-    LauncherModel(QObject *parent = 0);
+    LauncherModel(bool includePinnedApps, QObject *parent = 0);
     ~LauncherModel();
+
+    static QObject *launcherSingleton(QQmlEngine *engine, QJSEngine *scriptEngine);
+
+    static QObject *switcherSingleton(QQmlEngine *engine, QJSEngine *scriptEngine);
 
     QHash<int, QByteArray> roleNames() const;
 
@@ -71,6 +75,7 @@ public:
 private:
     QList<Application *> m_list;
     KSharedConfigPtr m_config;
+    bool m_includePinnedApps;
 
     QStringList defaultPinnedApps();
 

@@ -20,8 +20,6 @@
 #include "desktop/desktopfile.h"
 #include "desktop/desktopscrobbler.h"
 
-#include "processhelper/processhelper.h"
-
 #include "hardware/hardwareengine.h"
 
 #include "launcher/application.h"
@@ -53,11 +51,14 @@ void DesktopPlugin::registerTypes(const char *uri)
 
     qmlRegisterType<DesktopFile>(uri, 0, 1, "DesktopFile");
     qmlRegisterType<DesktopScrobbler>(uri, 0, 1, "DesktopScrobbler");
-    qmlRegisterType<LauncherModel>(uri, 0, 1, "LauncherModel");
     qmlRegisterUncreatableType<Application>(uri, 0, 1, "Application", "Applications are managed by the launcher model");
     qmlRegisterUncreatableType<QObjectListModel>(uri, 0, 1, "QObjectListModel", "For cool animations");
 
-    qmlRegisterSingletonType<ProcessHelper>(uri, 0, 1, "ProcessHelper", ProcessHelper::process_helper);
+    qmlRegisterSingletonType<LauncherModel>(uri, 0, 1, "AppLauncherModel",
+            LauncherModel::launcherSingleton);
+
+    qmlRegisterSingletonType<LauncherModel>(uri, 0, 1, "AppSwitcherModel",
+            LauncherModel::switcherSingleton);
 
     // Hardware (battery and storage)
 

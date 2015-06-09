@@ -21,6 +21,7 @@ import Material 0.1
 import Material.Extras 0.1
 import GreenIsland 1.0
 import GreenIsland.Desktop 1.0
+import Papyros.Desktop 0.1
 import "../components"
 
 /*
@@ -41,13 +42,30 @@ Item {
     property alias overlayLayer: desktopOverlayLayer
 
     function switchNext() {
-        windowManager.moveFront(windowManager.orderedWindows.get(1).item)
+        var appId = AppSwitcherModel.get(1).appId
+        windowManager.focusApplication(appId)
     }
 
-    function switchPrevious() {
-        var index = windowManager.orderedWindows.count - 1
+    function switchPrev() {
+        var appId = AppSwitcherModel.get(AppSwitcherModel.count - 1).appId
+        windowManager.focusApplication(appId)
+    }
 
-        windowManager.moveFront(windowManager.orderedWindows.get(index).item)
+    function switchNextWindow() {
+        var appId = AppSwitcherModel.get(0).appId
+        var windows = ListUtils.filter(windowManager.orderedWindows, function(modelData) {
+            return modelData.window.appId == appId
+        })
+        windowManager.moveFront(windows[1].item)
+    }
+
+    function switchPrevWindow() {
+        var appId = AppSwitcherModel.get(0).appId
+        var windows = ListUtils.filter(windowManager.orderedWindows, function(modelData) {
+            return modelData.window.appId == appId
+        })
+        var index = windows.count - 1
+        windowManager.moveFront(windows[index].item)
     }
 
     WindowManager {

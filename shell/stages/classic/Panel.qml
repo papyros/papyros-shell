@@ -127,7 +127,7 @@ View {
 
             interactive: contentWidth > width
 
-            model: LauncherModel {}
+            model: AppLauncherModel
             delegate: AppLauncher {
                 width: parent.height
                 height: width

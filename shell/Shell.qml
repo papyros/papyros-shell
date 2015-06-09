@@ -239,26 +239,56 @@ View {
                     event.accepted = true;
                     return
                 } else if (event.key === Qt.Key_Backtab) {
-                    desktop.windowSwitcher.previous()
+                    desktop.windowSwitcher.prev()
+                    event.accepted = true;
+                    return
+                } else if (event.key === Qt.Key_QuoteLeft) {
+                    desktop.windowSwitcher.nextWindow()
+                    event.accepted = true;
+                    return
+                } else if (event.key === Qt.Key_AsciiTilde) {
+                    desktop.windowSwitcher.prevWindow()
                     event.accepted = true;
                     return
                 }
             } else if (event.key === Qt.Key_Tab) {
                 if (desktop.windowSwitcher.enabled) {
-                    if (windowNextTimer.running) {
+                    if (appNextTimer.running) {
                         desktop.windowSwitcher.show()
                         desktop.windowSwitcher.next()
                     } else {
-                        windowNextTimer.start()
+                        appNextTimer.start()
                     }
                     event.accepted = true;
                     return;
                 }
             } else if (event.key === Qt.Key_Backtab) {
                 if (desktop.windowSwitcher.enabled) {
+                    if (appPreviousTimer.running) {
+                        desktop.windowSwitcher.show()
+                        desktop.windowSwitcher.prev()
+                    } else {
+                        appPreviousTimer.start()
+                    }
+                    event.accepted = true;
+                    return;
+                }
+            } else if (event.key === Qt.Key_QuoteLeft) {
+                if (desktop.windowSwitcher.enabled) {
+                    if (windowNextTimer.running) {
+                        desktop.windowSwitcher.show()
+                        desktop.windowSwitcher.nextWindow()
+                    } else {
+                        windowNextTimer.start()
+                    }
+                    event.accepted = true;
+                    return;
+                }
+            } else if (event.key === Qt.Key_AsciiTilde) {
+                if (desktop.windowSwitcher.enabled) {
                     if (windowPreviousTimer.running) {
                         desktop.windowSwitcher.show()
-                        desktop.windowSwitcher.previous()
+                        desktop.windowSwitcher.prevWindow()
                     } else {
                         windowPreviousTimer.start()
                     }
@@ -266,6 +296,13 @@ View {
                     return;
                 }
             }
+        }
+
+        if (event.key == Qt.Key_Down && state == "switcher") {
+            desktop.windowSwitcher.showWindowsView()
+
+            event.accepted = true;
+            return;
         }
 
         for (var i = 0; i < keybindings.length; i++) {
@@ -318,18 +355,24 @@ View {
             print("Releasing control!", event.key)
             if (state == "switcher") {
                 desktop.windowSwitcher.dismiss()
+            } else if (appNextTimer.running) {
+                appNextTimer.stop()
+                desktop.switchNext()
+            } else if (appPreviousTimer.running) {
+                appPreviousTimer.stop()
+                desktop.switchPrev()
             } else if (windowNextTimer.running) {
                 windowNextTimer.stop()
-                desktop.switchNext()
+                desktop.switchNextWindow()
             } else if (windowPreviousTimer.running) {
                 windowPreviousTimer.stop()
-                desktop.switchPrevious()
+                desktop.switchPrevWindow()
             }
         }
     }
 
     Timer {
-        id: windowNextTimer
+        id: appNextTimer
         interval: 100
         onTriggered: {
             desktop.windowSwitcher.show()
@@ -338,11 +381,29 @@ View {
     }
 
     Timer {
+        id: appPreviousTimer
+        interval: 100
+        onTriggered: {
+            desktop.windowSwitcher.show()
+            desktop.windowSwitcher.prev()
+        }
+    }
+
+    Timer {
+        id: windowNextTimer
+        interval: 100
+        onTriggered: {
+            desktop.windowSwitcher.show()
+            desktop.windowSwitcher.nextWindow()
+        }
+    }
+
+    Timer {
         id: windowPreviousTimer
         interval: 100
         onTriggered: {
             desktop.windowSwitcher.show()
-            desktop.windowSwitcher.previous()
+            desktop.windowSwitcher.prevWindow()
         }
     }
 

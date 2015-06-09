@@ -38,8 +38,8 @@
 
 using namespace GreenIsland;
 
-LauncherModel::LauncherModel(QObject *parent)
-    : QAbstractListModel(parent)
+LauncherModel::LauncherModel(bool includePinnedApps, QObject *parent)
+    : QAbstractListModel(parent), m_includePinnedApps(includePinnedApps)
 {
     // Settings
     m_config = KSharedConfig::openConfig("papyros-shell", KConfig::NoGlobals);
@@ -78,7 +78,7 @@ LauncherModel::LauncherModel(QObject *parent)
                 if (app->m_pids.count() > 0)
                     return;
 
-                if (app->isPinned()) {
+                if (app->isPinned() && m_includePinnedApps) {
                     // If it's pinned we just unset the flags if all pids are gone
                     app->setState(Application::NotRunning);
                     app->setFocused(false);
@@ -102,6 +102,11 @@ LauncherModel::LauncherModel(QObject *parent)
                 app->setFocused(true);
                 QModelIndex modelIndex = index(i);
                 emit dataChanged(modelIndex, modelIndex);
+
+                if (!m_includePinnedApps) {
+                    moveRows(i, 1, 0);
+                }
+
                 break;
             }
         }
@@ -118,16 +123,18 @@ LauncherModel::LauncherModel(QObject *parent)
         }
     });
 
-    // Add pinned launchers
-    const QStringList pinnedLaunchers = m_config->group("appshelf")
-            .readEntry("pinnedApps", defaultPinnedApps());
-    beginInsertRows(QModelIndex(), 0, m_list.size());
+    if (m_includePinnedApps) {
+        // Add pinned launchers
+        const QStringList pinnedLaunchers = m_config->group("appshelf")
+                .readEntry("pinnedApps", defaultPinnedApps());
+        beginInsertRows(QModelIndex(), 0, m_list.size());
 
-    for (QString appId : pinnedLaunchers) {
-        m_list.append(new Application(appId, true, this));
+        for (QString appId : pinnedLaunchers) {
+            m_list.append(new Application(appId, true, this));
+        }
+
+        endInsertRows();
     }
-
-    endInsertRows();
 }
 
 LauncherModel::~LauncherModel()
@@ -212,6 +219,9 @@ int LauncherModel::indexFromAppId(const QString &appId) const
 
 void LauncherModel::pin(const QString &appId)
 {
+    if (!m_includePinnedApps)
+        return;
+
     qDebug() << "Pinning in C++!";
     Application *found = Q_NULLPTR;
 
@@ -252,6 +262,9 @@ void LauncherModel::pin(const QString &appId)
 
 void LauncherModel::unpin(const QString &appId)
 {
+    if (!m_includePinnedApps)
+        return;
+
     Application *found = Q_NULLPTR;
 
     Q_FOREACH (Application *item, m_list) {
@@ -336,4 +349,22 @@ bool LauncherModel::moveRows(const QModelIndex & sourceParent, int sourceRow, in
         endMoveRows();
     }
     return true;
+}
+
+QObject* LauncherModel::launcherSingleton(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    LauncherModel *launcherModel = new LauncherModel(true);
+    return launcherModel;
+}
+
+QObject* LauncherModel::switcherSingleton(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    LauncherModel *launcherModel = new LauncherModel(false);
+    return launcherModel;
 }
