@@ -17,6 +17,7 @@
  */
 import QtQuick 2.0
 import Material 0.1
+import Material.Extras 0.1
 import Material.ListItems 0.1 as ListItem
 import ".."
 
@@ -33,6 +34,63 @@ Indicator {
     circleClipIcon: currentUser.faceIconUrl != ""
 
     view: Column {
+        Rectangle {
+            radius: Units.dp(2)
+            color: Theme.accentColor
+
+            width: parent.width
+            height: currentUser.fullName !== "" ? width * 2/3 : width * 3/5
+
+            Rectangle {
+                height: parent.height/2
+                color: parent.color
+
+                anchors {
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+            }
+
+            Column {
+                anchors.centerIn: parent
+
+                CircleImage {
+                    source: currentUser.faceIconUrl
+                    visible: source != ""
+                    width: Units.dp(64)
+                    height: width
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: width/2
+                        color: "transparent"
+                        border.color: "white"
+                    }
+                }
+
+                Item {
+                    width: parent.width
+                    height: Units.dp(16)
+                }
+
+                Label {
+                    text: indicator.tooltip
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    style: "title"
+                    color: Theme.dark.textColor
+                }
+
+                Label {
+                    text: currentUser.loginName
+                    visible: currentUser.fullName !== ""
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    style: "subheading"
+                    color: Theme.dark.subTextColor
+                }
+            }
+        }
         ListItem.Standard {
             id: lockItem
 
