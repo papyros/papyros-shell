@@ -1,4 +1,7 @@
 file(GLOB_RECURSE SOURCES *.cpp *.h)
+file(GLOB_RECURSE QML_FILES *.qml)
+
+configure_file(config/ShellSettings.qml.in ShellSettings.qml)
 
 if(ENABLE_ALSA)
     find_package(ALSA)
@@ -48,7 +51,7 @@ if(PulseAudio_FOUND)
     target_link_libraries(papyrosdesktop ${PulseAudio_LIBRARIES} ${PulseAudioGLib_LIBRARIES})
 endif()
 
-install(FILES qmldir
+install(FILES qmldir ${QML_FILES} ${CMAKE_CURRENT_BINARY_DIR}/ShellSettings.qml
     DESTINATION ${QML_INSTALL_DIR}/Papyros/Desktop)
 install(TARGETS papyrosdesktop
     DESTINATION ${QML_INSTALL_DIR}/Papyros/Desktop)

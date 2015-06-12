@@ -86,7 +86,6 @@ View {
         }
     ]
 
-    property alias settings: __settings
     property alias screenInfo: __screenInfo
 
     signal superPressed()
@@ -409,16 +408,26 @@ View {
 
     // ===== Configuration and Settings =====
 
+    Connections {
+        target: ShellSettings.desktop
+
+        Component.onCompleted: {
+            Theme.accentColor = Palette.colors[ShellSettings.desktop.accentColor]['500']
+        }
+
+        onValueChanged: {
+            if (key == "accentColor") {
+                Theme.accentColor = Palette.colors[ShellSettings.desktop.accentColor]['500']
+            }
+        }
+    }
+
     QtObject {
         id: __screenInfo
 
         readonly property string name: _greenisland_output.name
         readonly property int number: _greenisland_output.number
         readonly property bool primary: _greenisland_output.primary
-    }
-
-    Settings {
-        id: __settings
     }
 
     KCoreAddons.KUser {

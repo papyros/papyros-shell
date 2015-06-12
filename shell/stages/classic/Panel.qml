@@ -30,7 +30,7 @@ View {
 
     property color darkColor: Qt.rgba(0.2, 0.2, 0.2, 1)
     property bool maximized: windowManager.currentWorkspace.hasMaximizedWindow ||
-            !settings.appShelf.transparentShelf
+            !ShellSettings.appShelf.transparentShelf
 
     backgroundColor: Qt.rgba(0.2, 0.2, 0.2, maximized ? 1 : 0)
     height: Units.dp(56)

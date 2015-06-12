@@ -20,6 +20,8 @@ import Material 0.1
 import Material.Extras 0.1
 import Papyros.Desktop 0.1
 
+pragma Singleton
+
 Object {
     id: settings
 
@@ -44,17 +46,7 @@ Object {
         defaults: {
             "silentMode": false,
             "accentColor": "teal",
-            "backgroundUrl": Qt.resolvedUrl("../images/papyros-wallpaper.png")
-        }
-
-        Component.onCompleted: {
-            Theme.accentColor = Palette.colors[accentColor]['500']
-        }
-
-        onValueChanged: {
-            if (key == "accentColor") {
-                Theme.accentColor = Palette.colors[accentColor]['500']
-            }
+            "backgroundUrl": "file://@SHELL_PATH@/images/papyros-wallpaper.png"
         }
     }
 }

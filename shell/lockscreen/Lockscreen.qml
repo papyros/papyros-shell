@@ -49,7 +49,7 @@ Item {
 
         fillMode: Image.Stretch
 
-        source: settings.desktop.backgroundUrl
+        source: ShellSettings.desktop.backgroundUrl
     }
 
     MouseArea {

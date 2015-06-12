@@ -45,6 +45,8 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
              Solid Config Declarative)
 
+set(SHELL_PATH ${CMAKE_INSTALL_PREFIX}/${DATA_INSTALL_DIR}/greenisland/shells/io.papyros.shell)
+
 greenisland_install_shell(io.papyros.shell shell)
 
 install(DIRECTORY sddm/

@@ -18,6 +18,7 @@
 import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
+import Papyros.Desktop 0.1
 import "../components"
 
 Indicator {
@@ -43,7 +44,7 @@ Indicator {
                 height: dropdown.height
                 radius: Units.dp(2)
 
-                color: Palette.colors[settings.desktop.accentColor]['700']
+                color: Palette.colors[ShellSettings.desktop.accentColor]['700']
             }
 
             Label {
@@ -60,7 +61,7 @@ Indicator {
 
             width: parent.width
             height: column.height + Units.dp(32)
-            color: Palette.colors[settings.desktop.accentColor]['500']
+            color: Palette.colors[ShellSettings.desktop.accentColor]['500']
 
             Column {
                 id: column
