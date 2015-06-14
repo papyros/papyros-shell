@@ -66,6 +66,7 @@ View {
     property string stageName: "classic"
     property list<Indicator> indicators: [
         StorageIndicator {},
+        NetworkIndicator {},
         SoundIndicator {},
         BatteryIndicator {},
         ActionCenterIndicator {},

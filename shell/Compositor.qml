@@ -21,7 +21,10 @@ import Material 0.1
 MainView {
     id: root
 
+    anchors.fill: parent
+
     theme {
+        primaryColor: Palette.colors['blue']['500']
         accentColor: "#009688"
     }
 

@@ -36,6 +36,7 @@ Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the
    * [KDeclarative](api.kde.org/frameworks-api/frameworks5-apidocs/kdeclarative/html/)
    * [Solid](api.kde.org/frameworks-api/frameworks5-apidocs/solid/html/)
  * ALSA or PulseAudio for the sound indicator
+ * Plasma NetworkManager for the network manager
 
 ### Installation ###
 
@@ -96,4 +97,4 @@ Now restart your computer and enjoy the new theme!
 
 ### Licensing ###
 
-Papyros Shell is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version. 
+Papyros Shell is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
