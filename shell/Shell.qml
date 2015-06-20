@@ -76,7 +76,7 @@ View {
         Action {
             name: "Kill session"
             keybinding: "Ctrl+Alt+Backspace"
-            onTriggered: compositor.abortSession();
+            onTriggered: Compositor.abortSession();
         },
 
         Action {
@@ -154,55 +154,6 @@ View {
 
     Lockscreen {
         id: lockscreen
-    }
-
-    // ===== Compositor connections =====
-
-    Timer {
-        id: idleTimer
-        //interval: compositor.idleInterval
-        onIntervalChanged: {
-            if (running)
-                restart();
-        }
-    }
-
-    // Code taken from Hawii desktop shell
-    Connections {
-        target: compositor
-        onIdleInhibitResetRequested: compositor.idleInhibit = 0
-        onIdleTimerStartRequested: idleTimer.running = true
-        onIdleTimerStopRequested: idleTimer.running = false
-        // onLockedChanged: {
-        //     if (compositor.locked)
-        //         lockScreen()
-        //     else
-        //         shell.state = "default";
-        // }
-
-        // TODO: Handle session stuff.
-        // onIdle: {
-        //     // Set idle hint
-        //     session.idle = true;
-        // }
-        // onWake: {
-        //     // Unset idle hint
-        //     session.idle = false;
-        // }
-
-        // TODO: What does this do, and why?
-        // onFadeIn: {
-        //     // Bring user layer up
-        //     compositorRoot.state = "session";
-        // }
-        // onFadeOut: {
-        //     // Fade the desktop out
-        //     compositorRoot.state = "splash";
-        // }
-        onReady: {
-            // Start idle timer
-            idleTimer.running = true
-        }
     }
 
     // ===== Keyboard Shortcuts =====

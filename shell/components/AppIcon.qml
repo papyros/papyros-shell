@@ -51,10 +51,16 @@ Item {
             // Use the last character for uniqueness
             var index = name.toLowerCase().charCodeAt(name.length - 1) - "a".charCodeAt(0)
 
-            var colorNames = ListUtils.objectKeys(Palette.colors)
+            var colorNames = [
+                'red', 'blue', 'teal', 'green', 'orange', 'purple', 'deepPurple', 'indigo',
+                'deepOrange', 'grey', 'blueGrey'
+            ]
             var colorIndex = index % colorNames.length
+            var colorName = colorNames[colorIndex]
 
-            return Palette.colors[colorNames[colorIndex]]["400"]
+            var color = Palette.colors[colorName]
+
+            return color ? color["400"] : Palette.colors["blue"]["400"]
         }
 
         Label {

@@ -94,13 +94,9 @@ void KQuickConfig::update()
         }
     }
 
-    qDebug() << files;
-
     dirWatcher = new QFileSystemWatcher(files, this);
 
     connect(dirWatcher, &QFileSystemWatcher::fileChanged, this, [this](const QString& path) {
-        qDebug() << "Settings at" << path << "changed";
-
         QFileInfo checkFile(path);
         while(!checkFile.exists()) {
             QThread::msleep(10);
@@ -118,7 +114,6 @@ void KQuickConfig::settingsChanged()
     Q_FOREACH(QString key, defaults().keys()) {
         QVariant value = getConfigEntry(key);
         if (!contains(key) || this->value(key) != value) {
-            qDebug() << "Updating setting" << key << "to" << value;
             this->insert(key, value);
             emit valueChanged(key, value);
         }

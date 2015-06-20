@@ -146,6 +146,9 @@ PanelItem {
                     checked: pinned
 
                     onCheckedChanged: {
+                        if (!appLauncher.listView)
+                            return
+
                         if (pinned) {
                             appLauncher.listView.model.unpin(model.appId);
                         } else {

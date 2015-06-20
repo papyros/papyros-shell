@@ -123,8 +123,6 @@ void DesktopFile::launch(const QStringList& urls) const
         QProcess::startDetached(cmd, args);
     }
 
-    qDebug() << "Launched!";
-
     // TODO: Set DESKTOP_FILE env variable
     // TODO: Set Qt and Gtk env variables to force the use of Wayland
 }

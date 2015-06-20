@@ -185,7 +185,6 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
     case AppIdRole:
         return item->appId();
     case DesktopFileRole:
-        qDebug() << "Desktop file in C++" << item->desktopFile();
         return QVariant::fromValue(item->desktopFile());
     case PinnedRole:
         return item->isPinned();
@@ -222,7 +221,6 @@ void LauncherModel::pin(const QString &appId)
     if (!m_includePinnedApps)
         return;
 
-    qDebug() << "Pinning in C++!";
     Application *found = Q_NULLPTR;
 
     int pinAtIndex = 0;
@@ -238,7 +236,6 @@ void LauncherModel::pin(const QString &appId)
         break;
     }
 
-    qDebug() << found;
     if (!found)
         return;
 
@@ -249,10 +246,8 @@ void LauncherModel::pin(const QString &appId)
     int foundIndex = m_list.indexOf(found);
 
     if (foundIndex != pinAtIndex) {
-        qDebug() << "Moving rows!";
         moveRows(foundIndex, 1, pinAtIndex);
     } else {
-        qDebug() << "Same row, updating";
         QModelIndex modelIndex = index(foundIndex);
         Q_EMIT dataChanged(modelIndex, modelIndex);
     }

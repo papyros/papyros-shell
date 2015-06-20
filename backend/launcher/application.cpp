@@ -32,7 +32,6 @@ Application::Application(const QString &appId, bool pinned, QObject *parent)
 		  m_state(Application::NotRunning)
 {
 	m_desktopFile = new DesktopFile(appId, this);
-	qDebug() << "Desktop file in C++" << m_desktopFile->m_appId;
 }
 
 Application::Application(const QString &appId, QObject *parent)
@@ -55,7 +54,7 @@ void Application::setState(State state)
 		return;
 
 	m_state = state;
-	emit stateChanged();	
+	emit stateChanged();
 }
 
 void Application::setFocused(bool focused)
@@ -85,6 +84,6 @@ bool Application::quit()
         return false;
 
     GreenIsland::ApplicationManager::instance()->quit(appId());
-    
+
     return true;
 }
