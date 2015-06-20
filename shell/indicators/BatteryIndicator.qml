@@ -76,6 +76,10 @@ Indicator {
             return battery.product
         } else if (battery.type == Battery.PrimaryBattery) {
             return "Laptop battery"
+        } else if (battery.type == Battery.MonitorBattery) {
+            return "External monitor"
+        } else if (battery.type == Battery.KeyboardBattery) {
+            return "Keyboard"
         } else {
             return battery.product
         }
@@ -89,8 +93,14 @@ Indicator {
             return "icon://hardware/mouse"
         } else if (battery.type == Battery.PrimaryBattery) {
             return "icon://hardware/laptop"
+        } else if (battery.type == Battery.MonitorBattery) {
+            return "icon://hardware/desktop_windows"
+        } else if (battery.type == Battery.KeyboardBattery) {
+            return "icon://hardware/keyboard"
+        } else if (battery.type == Battery.PhoneBattery) {
+            return "icon://hardware/smartphone"
         } else {
-            return "icon://hardware/computer"
+            return "icon://device/battery_std"
         }
     }
 
