@@ -33,4 +33,8 @@ Object {
     property bool circleClipIcon
 
     property Component view
+
+    function close() {
+        desktop.overlayLayer.currentOverlay.close()
+    }
 }

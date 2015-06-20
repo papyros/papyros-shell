@@ -23,9 +23,13 @@ View {
     id: indicatorRows
 
     property list<Indicator> indicators: [
+        DateTimeIndicator {},
+        KeyboardIndicator {},
+        SessionIndicator {},
         NetworkIndicator {},
         SoundIndicator {},
-        BatteryIndicator {}
+        BatteryIndicator {},
+        PowerIndicator {}
     ]
 
     anchors {
@@ -46,20 +50,13 @@ View {
         anchors.centerIn: parent
         height: parent.height
 
-        IndicatorView {
-            indicator: DateTimeIndicator {}
-            defaultColor: Theme.light.iconColor
-            defaultTextColor: Theme.light.textColor
-            visible: !indicator.userSensitive
-        }
-
         Repeater {
             model: indicators
             delegate: IndicatorView {
                 indicator: modelData
                 defaultColor: Theme.light.iconColor
                 defaultTextColor: Theme.light.textColor
-                visible: !indicator.userSensitive
+                visible: !indicator.userSensitive && indicator.visible
             }
         }
     }

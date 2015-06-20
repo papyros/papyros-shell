@@ -21,6 +21,7 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import Material.Extras 0.1
 import Papyros.Desktop 0.1
+import SddmComponents 2.0
 import org.kde.kcoreaddons 1.0 as KCoreAddons
 
 MainView {
@@ -32,107 +33,32 @@ MainView {
 	Repeater {
 		model: screenModel
 
-		Image {
+		Background {
+			z: -1
 			x: geometry.x; y: geometry.y; width: geometry.width; height:geometry.height
-			source: "wallpaper.png"
+			source: config.background
+			fillMode: Image.PreserveAspectCrop
+			onStatusChanged: {
+				if (status === Image.Error && source !== config.defaultBackground) {
+	    			source = config.defaultBackground
+				}
+			}
 		}
 	}
 
-	property int selectedUser: -1
+	property int selectedUser: users.lastIndex
+	property int selectedSession: sessionModel.lastIndex
 
 	Item {
 		id: primaryScreen
 
-		anchors.fill: parent
-
 		property var geometry: screenModel.geometry(screenModel.primary)
 		x: geometry.x; y: geometry.y; width: geometry.width; height: geometry.height
 
-		IndicatorRow {
-			id: indicatorRow
-		}
-
-		Popover {
-			id: sessionPopover
-
-			height: sessionList.contentHeight
-       		width: Units.dp(250)
-
-			ListView {
-				id: sessionList
-				model: sessionModel
-				currentIndex: sessionModel.lastIndex
-				interactive: true
-	       		anchors.fill: parent
-
-		    	delegate: ListItem.Standard {
-		    		text: name
-		    		selected: sessionList.currentIndex == index
-		    		onClicked: {
-		    			sessionList.currentIndex = index
-		    			sessionPopover.close()
-		    		}
-
-		    		Icon {
-				    	anchors {
-				    		verticalCenter: parent.verticalCenter
-				    		right: parent.right
-				    		rightMargin: Units.dp(16)
-				    	}
-
-				    	name: "navigation/check"
-				    	visible: selected
-				    	color: Theme.primaryColor
-				    }
-		    	}
-			}
-		}
-
-		View {
-		    id: sessionView
-
-		    anchors {
-		        left: parent.left
-		        bottom: parent.bottom
-		        margins: Units.dp(16)
-		    }
-
-		    width: Units.dp(250)
-		    height: indicatorRow.height
-		    visible: sessionList.count > 0
-
-		    radius: Units.dp(2)
-		    elevation: 2
-
-		    Ink {
-		    	anchors.fill: parent
-		    	onClicked: sessionPopover.open(sessionView, 0, Units.dp(16))
-		    }
-
-		    Icon {
-		    	anchors {
-		    		verticalCenter: parent.verticalCenter
-		    		right: parent.right
-		    		rightMargin: Units.dp(12)
-		    	}
-
-		    	name: "navigation/expand_less"
-		    }
-
-		    Label {
-		    	anchors {
-		    		verticalCenter: parent.verticalCenter
-		    		left: parent.left
-		    		leftMargin: Units.dp(16)
-		    	}
-
-		    	text: sessionList.currentItem.text
-		    	style: "subheading"
-		    }
-		}
-
 		Item {
 			id: desktop
+
+			anchors.fill: parent
 
 		    property alias overlayLayer: desktopOverlayLayer
 
@@ -164,6 +90,10 @@ MainView {
 		        z: 99
 		        objectName: "desktopOverlayLayer"
 		    }
+		}
+
+		IndicatorRow {
+			id: indicatorRow
 		}
 
 		Row {
@@ -230,5 +160,11 @@ MainView {
 		repeat: true
 		running: true
 		onTriggered: now = new Date()
+	}
+
+	Connections {
+		target: sddm
+
+		onLoginFailed: background.close(primaryScreen.width/2, primaryScreen.height/2)
 	}
 }

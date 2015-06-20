@@ -26,8 +26,15 @@ View {
 
     anchors.verticalCenter: parent.verticalCenter
 
-    width: selectedUser == index ? Units.dp(230) : Units.dp(180)
-    height: selectedUser == index ? Units.dp(240) : Units.dp(190)
+    width: selected ? Units.dp(230) : Units.dp(180)
+    height: selected ? Units.dp(240) : Units.dp(190)
+
+    property bool selected: selectedUser == index
+
+    onSelectedChanged: {
+        if (selected)
+            field.forceActiveFocus()
+    }
 
     Behavior on width {
         NumberAnimation { duration: 250 }
@@ -43,11 +50,10 @@ View {
         z: 0
 
         onClicked: {
-            if (selectedUser == index) {
+            if (selected) {
                 selectedUser = -1
             } else {
                 selectedUser = index
-                field.forceActiveFocus()
             }
         }
     }
@@ -71,7 +77,7 @@ View {
 
             visible: status == Image.Ready && String(source).indexOf("sddm/faces/default.face.icon") == -1
             width: Units.dp(80)
-            height: width/sourceSize.width * sourceSize.height
+            height: width
             source: icon
 
             Rectangle {
@@ -82,20 +88,16 @@ View {
             }
         }
 
-        Rectangle {
+        Item {
             anchors.horizontalCenter: parent.horizontalCenter
-            visible: !image.visible
             width: image.width
             height: width
-            border.color: Qt.darker(color, 1.2)
-            color: Qt.rgba(0.8,0.8,0.8, 1)
-            radius: width/2
+            visible: !image.visible
 
             Icon {
                 anchors.centerIn: parent
-                size: parent.width * 2/3
-                color: "white"
-                name: "social/person"
+                name: "action/account_circle"
+                size: Units.dp(95)
             }
         }
 
@@ -109,7 +111,6 @@ View {
             text: realName
             height: visible ? implicitHeight + Units.dp(8) : Units.dp(32)
             verticalAlignment: Text.AlignVCenter
-            //visible: index != selectedUser
             anchors.horizontalCenter: parent.horizontalCenter
 
             font.pixelSize: Units.dp(18)
@@ -126,7 +127,7 @@ View {
             height: visible ? field.height : 0
 
             visible: opacity > 0
-            opacity: index == selectedUser ? 1 : 0
+            opacity: selected ? 1 : 0
 
             spacing: Units.dp(8)
 
@@ -173,6 +174,6 @@ View {
     Timer {
         id: timer
         interval: 500
-        onTriggered: sddm.login(name, field.text, sessionList.currentIndex)
+        onTriggered: sddm.login(name, field.text, selectedSession)
     }
 }

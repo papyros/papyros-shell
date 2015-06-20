@@ -104,13 +104,19 @@ Indicator {
         ListItem.Standard {
             iconName: "action/power_settings_new"
             text: "Power off"
-            onClicked: SessionManager.powerOff()
+            onClicked: {
+                SessionManager.powerOff()
+                indicator.close()
+            }
         }
 
         ListItem.Standard {
             iconSource: Qt.resolvedUrl("images/reload.svg")
             text: "Reboot"
-            onClicked: SessionManager.reboot()
+            onClicked: {
+                SessionManager.reboot()
+                indicator.close()
+            }
         }
     }
 }

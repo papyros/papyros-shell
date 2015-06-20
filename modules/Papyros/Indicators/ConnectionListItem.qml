@@ -48,6 +48,8 @@ ListItem.Standard {
     ]
 
     onClicked: {
+        indicator.close()
+
         if (Uuid || !predictableWirelessPassword) {
             if (ConnectionState == PlasmaNM.Enums.Deactivated) {
                 if (!predictableWirelessPassword && !Uuid) {

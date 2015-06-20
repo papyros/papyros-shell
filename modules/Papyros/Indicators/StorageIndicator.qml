@@ -53,6 +53,7 @@ Indicator {
 
                 onClicked: {
                     Qt.openUrlExternally(modelData.filePath)
+                    indicator.close()
                 }
             }
         }

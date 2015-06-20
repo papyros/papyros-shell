@@ -97,7 +97,7 @@ Item {
                     indicator: modelData
                     defaultColor: Theme.light.iconColor
                     defaultTextColor: Theme.light.textColor
-                    visible: !indicator.userSensitive
+                    visible: !indicator.userSensitive && indicator.visible
                 }
             }
         }
