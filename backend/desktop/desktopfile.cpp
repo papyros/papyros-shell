@@ -137,8 +137,8 @@ QString DesktopFile::iconName() const {
     return m_desktopFile ? m_desktopFile->iconName() : "";
 }
 
-QIcon DesktopFile::icon() const {
-    return m_desktopFile ? m_desktopFile->icon() : QIcon();
+bool DesktopFile::hasIcon() const {
+    return !QIcon::fromTheme(iconName()).isNull();
 }
 
 QString DesktopFile::comment() const {

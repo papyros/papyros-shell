@@ -36,7 +36,7 @@ Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the
    * [KDeclarative](api.kde.org/frameworks-api/frameworks5-apidocs/kdeclarative/html/)
    * [Solid](api.kde.org/frameworks-api/frameworks5-apidocs/solid/html/)
  * ALSA or PulseAudio for the sound indicator
- * Plasma NetworkManager for the network manager
+ * [Plasma NetworkManager](https://projects.kde.org/projects/kde/workspace/plasma-nm) for the network manager
 
 ### Installation ###
 

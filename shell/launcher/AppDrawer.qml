@@ -128,11 +128,12 @@ Indicator {
             topMargin: Units.dp(8)
             bottomMargin: Units.dp(8)
 
-            model: desktopScrobbler.desktopFiles
+            model: DesktopFiles.desktopFiles
             delegate: ListItem.Standard {
                 action: AppIcon {
                     iconName: edit.iconName
                     name: edit.name
+                    hasIcon: edit.hasIcon
                     anchors.fill: parent
                 }
 
@@ -175,7 +176,7 @@ Indicator {
             highlightMoveDuration: 500
             currentIndex: 0
 
-            model: Math.ceil(desktopScrobbler.desktopFiles.rowCount()/pageCount)
+            model: Math.ceil(DesktopFiles.desktopFiles.rowCount()/pageCount)
             delegate: Grid {
                 id: page
 
@@ -183,11 +184,11 @@ Indicator {
 
                 Repeater {
                     model: pageIndex == gridView.count - 1
-                            ? desktopScrobbler.desktopFiles.rowCount() % gridView.pageCount : gridView.pageCount
+                            ? DesktopFiles.desktopFiles.rowCount() % gridView.pageCount : gridView.pageCount
                     delegate: Item {
                         id: appIcon
 
-                        property var edit: desktopScrobbler.desktopFiles.get(index + page.pageIndex * gridView.pageCount)
+                        property var edit: DesktopFiles.desktopFiles.get(index + page.pageIndex * gridView.pageCount)
 
                         width: gridView.width/4
                         height: gridView.height/4
@@ -211,13 +212,14 @@ Indicator {
                                 width: Units.dp(40)
                                 iconName: appIcon.edit.iconName
                                 name: appIcon.edit.name
+                                hasIcon: appIcon.edit.hasIcon
                             }
 
                             Label {
                                 text: appIcon.edit.name
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 width: parent.width
-                                height: implicitHeight * maximumLineCount/lineCount
+                                height: Units.dp(30)
                                 horizontalAlignment: Text.AlignHCenter
                                 elide: Text.ElideRight
                                 wrapMode: Text.Wrap
@@ -261,9 +263,5 @@ Indicator {
 
         onSuperPressed: selected ? selectedIndicator = null
                                  : selectedIndicator = appDrawer
-    }
-
-    DesktopScrobbler {
-        id: desktopScrobbler
     }
 }

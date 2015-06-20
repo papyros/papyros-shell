@@ -46,7 +46,8 @@ Object {
         defaults: {
             "silentMode": false,
             "accentColor": "teal",
-            "backgroundUrl": "file://@SHELL_PATH@/images/papyros-wallpaper.png"
+            "backgroundUrl": "file://@SHELL_PATH@/images/papyros-wallpaper.png",
+            "iconTheme": "Paper"
         }
     }
 }

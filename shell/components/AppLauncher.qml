@@ -33,7 +33,7 @@ PanelItem {
     selected: active
 
     property var listView: ListView.view
-    
+
     property var windows: ListUtils.filter(windowManager.windows, function(modelData) {
         return modelData.window.appId == appId
     })
@@ -77,14 +77,15 @@ PanelItem {
         } else {
             if (windowPreview.showing)
                 windowPreview.close()
-                
+
             delayCloseTimer.restart()
             previewTimer.stop()
         }
-    }  
+    }
 
     AppIcon {
         iconName: desktopFile.iconName
+        hasIcon: desktopFile.hasIcon
         name: desktopFile && desktopFile.name !== "" ? desktopFile.name : appId
         anchors.centerIn: parent
         width: parent.width * 0.55
@@ -136,7 +137,7 @@ PanelItem {
 
             ListItem.Standard {
                 text: "Pin to dock"
-                
+
                 onClicked: checkbox.checked = !checkbox.checked
 
                 Switch {

@@ -23,14 +23,17 @@ import Material.Extras 0.1
 Item {
     property string iconName
     property string name
+    property bool hasIcon
 
     Image {
         id: icon
         anchors.fill: parent
-        source: "image://desktoptheme/" + iconName
+        source: hasIcon ? "image://desktoptheme/" + iconName : ""
+        visible: source != ""
+
         sourceSize {
-            width: icon.width * Screen.devicePixelRatio
-            height: icon.height * Screen.devicePixelRatio
+            width: Math.max(16, icon.width * Screen.devicePixelRatio)
+            height: Math.max(16, icon.height * Screen.devicePixelRatio)
         }
     }
 
@@ -39,7 +42,7 @@ Item {
         width: parent.width * 0.8
         height: width
         radius: width/2
-        visible: icon.status != Image.Ready
+        visible: icon.source == ""
         color: {
             if (name === "") {
                 return Palette.colors["blue"]["400"]
@@ -47,7 +50,7 @@ Item {
 
             // Use the last character for uniqueness
             var index = name.toLowerCase().charCodeAt(name.length - 1) - "a".charCodeAt(0)
-            
+
             var colorNames = ListUtils.objectKeys(Palette.colors)
             var colorIndex = index % colorNames.length
 

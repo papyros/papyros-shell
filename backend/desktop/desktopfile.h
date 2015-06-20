@@ -31,7 +31,7 @@ class DesktopFile : public QObject
 
     Q_PROPERTY(QString name READ name NOTIFY dataChanged)
     Q_PROPERTY(QString iconName READ iconName NOTIFY dataChanged)
-    Q_PROPERTY(QIcon icon READ icon NOTIFY dataChanged)
+    Q_PROPERTY(bool hasIcon READ hasIcon NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment NOTIFY dataChanged)
     Q_PROPERTY(QString darkColor MEMBER m_darkColor NOTIFY dataChanged)
 
@@ -54,7 +54,7 @@ public:
 
     QString name() const;
     QString iconName() const;
-    QIcon icon() const;
+    bool hasIcon() const;
     QString comment() const;
     bool isValid() const;
     bool isShown(const QString &environment = QString()) const;

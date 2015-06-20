@@ -414,11 +414,14 @@ View {
 
         Component.onCompleted: {
             Theme.accentColor = Palette.colors[ShellSettings.desktop.accentColor]['500']
+            DesktopFiles.iconTheme = ShellSettings.desktop.iconTheme
         }
 
         onValueChanged: {
             if (key == "accentColor") {
                 Theme.accentColor = Palette.colors[ShellSettings.desktop.accentColor]['500']
+            } else if (key == "iconTheme") {
+                DesktopFiles.iconTheme = ShellSettings.desktop.iconTheme
             }
         }
     }

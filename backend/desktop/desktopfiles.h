@@ -18,41 +18,47 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DESKTOPSCROBBLER
-#define DESKTOPSCROBBLER
+#ifndef DESKTOP_FILES_H
+#define DESKTOP_FILES_H
 
-#include <QQuickItem>
+#include <QObject>
 #include <QFileSystemWatcher>
-#include <QDir>
-#include <QQmlParserStatus>
-#include <cmath>
 
 #include "../qquicklist/qquicklist.h"
 #include "desktopfile.h"
 
-class DesktopScrobbler : public QQuickItem
+class DesktopFiles : public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(QObjectListModel *desktopFiles READ desktopFiles NOTIFY desktopFilesChanged)
-    Q_INTERFACES(QQmlParserStatus)
+    Q_PROPERTY(QString iconTheme READ iconTheme WRITE setIconTheme NOTIFY iconThemeChanged)
 
 public:
-    DesktopScrobbler(QQuickItem *parent = 0);
+    DesktopFiles(QObject *parent = 0);
 
     QObjectListModel *desktopFiles()
     {
         return desktopList.getModel();
     }
 
+    QString iconTheme() const { return QIcon::themeName(); }
+
     static bool compare(const DesktopFile *a, const DesktopFile *b);
 
     Q_INVOKABLE int indexOfName(QString name);
 
-    virtual void componentComplete();
+    static QObject *qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine);
+
+public slots:
+    void setIconTheme(const QString &name) {
+        QIcon::setThemeName(name);
+        iconThemeChanged(name);
+    }
 
 signals:
     void desktopFilesChanged(QObjectListModel *);
+    void iconThemeChanged(const QString &name);
 
 private slots:
     void onFileChanged(const QString &path);
@@ -66,4 +72,4 @@ private:
     QStringList filesInPaths(QStringList paths, QStringList filters);
 };
 
-#endif // DESKTOPSCROBBLER
+#endif // DESKTOP_FILES_H

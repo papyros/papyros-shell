@@ -18,28 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "desktopscrobbler.h"
+#include "desktopfiles.h"
 
-DesktopScrobbler::DesktopScrobbler(QQuickItem *parent)
-        : QQuickItem(parent) {}
+#include <QDir>
 
-QStringList DesktopScrobbler::filesInPaths(QStringList paths, QStringList filters)
-{
-    QStringList allFiles;
-
-    for (QString path : paths) {
-        QStringList fileNames = QDir(path).entryList(filters);
-
-        for (QString fileName : fileNames) {
-            allFiles << path + "/" + fileName;
-        }
-    }
-
-    return allFiles;
-}
-
-void DesktopScrobbler::componentComplete()
-{
+DesktopFiles::DesktopFiles(QObject *parent)
+        : QObject(parent) {
     QStringList paths; paths << "~/.local/share/applications"
                              << "/usr/local/share/applications"
                              << "/usr/share/applications";
@@ -54,18 +38,33 @@ void DesktopScrobbler::componentComplete()
             desktopList << desktopFile;
     }
 
-    desktopList.sort(DesktopScrobbler::compare);
+    desktopList.sort(DesktopFiles::compare);
 
     fileWatcher = new QFileSystemWatcher(files, this);
     dirWatcher = new QFileSystemWatcher(paths, this);
 
     connect(fileWatcher, &QFileSystemWatcher::fileChanged,
-            this, &DesktopScrobbler::onFileChanged);
+            this, &DesktopFiles::onFileChanged);
     connect(dirWatcher, &QFileSystemWatcher::directoryChanged,
-            this, &DesktopScrobbler::onDirectoryChanged);
+            this, &DesktopFiles::onDirectoryChanged);
 }
 
-void DesktopScrobbler::onFileChanged(const QString &path)
+QStringList DesktopFiles::filesInPaths(QStringList paths, QStringList filters)
+{
+    QStringList allFiles;
+
+    for (QString path : paths) {
+        QStringList fileNames = QDir(path).entryList(filters);
+
+        for (QString fileName : fileNames) {
+            allFiles << path + "/" + fileName;
+        }
+    }
+
+    return allFiles;
+}
+
+void DesktopFiles::onFileChanged(const QString &path)
 {
     if (QFile::exists(path)) {
         for (DesktopFile *desktopFile : desktopList) {
@@ -86,12 +85,12 @@ void DesktopScrobbler::onFileChanged(const QString &path)
         }
     }
 
-    desktopList.sort(DesktopScrobbler::compare);
+    desktopList.sort(DesktopFiles::compare);
 
     emit desktopFilesChanged(desktopFiles());
 }
 
-DesktopFile *DesktopScrobbler::desktopFileForPath(const QString &path)
+DesktopFile *DesktopFiles::desktopFileForPath(const QString &path)
 {
     for (DesktopFile *desktopFile : desktopList) {
         if (desktopFile->m_path == path)
@@ -101,7 +100,7 @@ DesktopFile *DesktopScrobbler::desktopFileForPath(const QString &path)
     return nullptr;
 }
 
-void DesktopScrobbler::onDirectoryChanged(const QString &directory)
+void DesktopFiles::onDirectoryChanged(const QString &directory)
 {
     QStringList files = QDir(directory).entryList(QStringList() << "*.desktop");
 
@@ -110,7 +109,7 @@ void DesktopScrobbler::onDirectoryChanged(const QString &directory)
 
         if (desktopFileForPath(path) == nullptr) {
             desktopList << new DesktopFile(path, this);
-            desktopList.sort(DesktopScrobbler::compare);
+            desktopList.sort(DesktopFiles::compare);
 
             emit desktopFilesChanged(desktopFiles());
 
@@ -119,12 +118,12 @@ void DesktopScrobbler::onDirectoryChanged(const QString &directory)
     }
 }
 
-bool DesktopScrobbler::compare(const DesktopFile *a, const DesktopFile *b)
+bool DesktopFiles::compare(const DesktopFile *a, const DesktopFile *b)
 {
     return a->name().toLower() < b->name().toLower();
 }
 
-int DesktopScrobbler::indexOfName(QString name)
+int DesktopFiles::indexOfName(QString name)
 {
     for (int i = 0; i < desktopList.length(); i++) {
         DesktopFile *desktopFile = desktopList.at(i);
@@ -133,4 +132,12 @@ int DesktopScrobbler::indexOfName(QString name)
             return i;
     }
     return -1;
+}
+
+QObject* DesktopFiles::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    return new DesktopFiles();
 }
