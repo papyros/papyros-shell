@@ -2,9 +2,11 @@
 * This file is part of Hawaii.
  *
  * Copyright (C) 2015 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ *               2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * Author(s):
  *    Pier Luigi Fiorini
+ *    Michael Spencer
  *
  * $BEGIN_LICENSE:LGPL2.1+$
  *
@@ -91,6 +93,16 @@ HardwareEngine::~HardwareEngine()
 {
     qDeleteAll(m_storageDevices);
     m_storageDevices.clear();
+}
+
+Battery *HardwareEngine::primaryBattery() const
+{
+    Q_FOREACH(Battery *battery, m_batteries) {
+        if (battery->type() == Battery::PrimaryBattery)
+            return battery;
+    }
+
+    return nullptr;
 }
 
 QQmlListProperty<Battery> HardwareEngine::batteries()

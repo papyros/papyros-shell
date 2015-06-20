@@ -23,7 +23,6 @@ import QtCompositor 1.0
 import GreenIsland 1.0
 import org.kde.kcoreaddons 1.0 as KCoreAddons
 
-import "backend"
 import "components"
 import "dashboard"
 import "desktop"
@@ -387,10 +386,6 @@ View {
 
     KCoreAddons.KUser {
         id: currentUser
-    }
-
-    UPower {
-        id: upower
     }
 
     MprisConnection {

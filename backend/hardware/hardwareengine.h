@@ -2,9 +2,11 @@
 * This file is part of Hawaii.
  *
  * Copyright (C) 2015 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ *               2015 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * Author(s):
  *    Pier Luigi Fiorini
+ *    Michael Spencer
  *
  * $BEGIN_LICENSE:LGPL2.1+$
  *
@@ -39,12 +41,14 @@ Q_DECLARE_LOGGING_CATEGORY(HARDWARE)
 class HardwareEngine : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(Battery *primaryBattery READ primaryBattery NOTIFY batteriesChanged)
     Q_PROPERTY(QQmlListProperty<Battery> batteries READ batteries NOTIFY batteriesChanged)
     Q_PROPERTY(QQmlListProperty<StorageDevice> storageDevices READ storageDevices NOTIFY storageDevicesChanged)
 public:
     HardwareEngine(QObject *parent = 0);
     ~HardwareEngine();
 
+    Battery *primaryBattery() const;
     QQmlListProperty<Battery> batteries();
     QQmlListProperty<StorageDevice> storageDevices();
 

@@ -8,11 +8,6 @@
 #include "notifications/notification.h"
 #include "notifications/notificationserver.h"
 
-#include "upower/upowerconnection.h"
-#include "upower/upowerdevicetype.h"
-#include "upower/upowerdevicestate.h"
-#include "upower/upowerdevice.h"
-
 #include "mixer/sound.h"
 
 #include "keyeventfilter/keyeventfilter.h"
@@ -39,11 +34,6 @@ void DesktopPlugin::registerTypes(const char *uri)
 
     qmlRegisterType<NotificationServer>(uri, 0, 1, "NotificationServer");
     qmlRegisterUncreatableType<Notification>(uri, 0, 1, "Notification", "A notification from NotificationServer");
-
-    qmlRegisterType<UPowerConnection>(uri, 0, 1, "UPowerConnection");
-    qmlRegisterUncreatableType<UPowerDevice>(uri, 0, 1, "UPowerDevice", "A device reported by UPower");
-    qmlRegisterUncreatableType<UPowerDeviceType>(uri, 0, 1, "UPowerDeviceType", "Enum class for UPower device type");
-    qmlRegisterUncreatableType<UPowerDeviceState>(uri, 0, 1, "UPowerDeviceState", "Enum class for UPower device state");
 
     qmlRegisterType<Sound>(uri, 0, 1, "Sound");
 
