@@ -1,0 +1,14 @@
+module Papyros.Indicators
+ActionCenterIndicator 0.1 ActionCenterIndicator.qml
+BatteryIndicator 0.1 BatteryIndicator.qml
+ConnectionListItem 0.1 ConnectionListItem.qml
+DateTimeIndicator 0.1 DateTimeIndicator.qml
+Indicator 0.1 Indicator.qml
+IndicatorView 0.1 IndicatorView.qml
+MusicPlayerListItem 0.1 MusicPlayerListItem.qml
+NetworkIndicator 0.1 NetworkIndicator.qml
+NotificationsIndicator 0.1 NotificationsIndicator.qml
+OperationsIndicator 0.1 OperationsIndicator.qml
+SoundIndicator 0.1 SoundIndicator.qml
+StorageIndicator 0.1 StorageIndicator.qml
+SystemIndicator 0.1 SystemIndicator.qml

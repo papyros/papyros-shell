@@ -18,7 +18,6 @@
 import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
-import "../components"
 
 Indicator {
     id: indicator
@@ -38,7 +37,7 @@ Indicator {
 
                 minimumValue: 0
                 maximumValue: 100
-                
+
                 value: sound.master
 
                 onValueChanged: {

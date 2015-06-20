@@ -1,7 +1,7 @@
 file(GLOB_RECURSE SOURCES *.cpp *.h)
 file(GLOB_RECURSE QML_FILES *.qml)
 
-configure_file(config/ShellSettings.qml.in ShellSettings.qml)
+configure_file(qml/ShellSettings.qml.in ShellSettings.qml)
 
 if(ENABLE_ALSA)
     find_package(ALSA)

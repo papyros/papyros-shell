@@ -21,6 +21,7 @@ import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import Material.Extras 0.1
 import Papyros.Desktop 0.1
+import org.kde.kcoreaddons 1.0 as KCoreAddons
 
 MainView {
 	anchors.fill: parent
@@ -41,6 +42,8 @@ MainView {
 
 	Item {
 		id: primaryScreen
+
+		anchors.fill: parent
 
 		property var geometry: screenModel.geometry(screenModel.primary)
 		x: geometry.x; y: geometry.y; width: geometry.width; height: geometry.height
@@ -91,7 +94,7 @@ MainView {
 		    anchors {
 		        left: parent.left
 		        bottom: parent.bottom
-		        margins: Units.dp(20)
+		        margins: Units.dp(16)
 		    }
 
 		    width: Units.dp(250)
@@ -125,6 +128,41 @@ MainView {
 
 		    	text: sessionList.currentItem.text
 		    	style: "subheading"
+		    }
+		}
+
+		Item {
+			id: desktop
+
+		    property alias overlayLayer: desktopOverlayLayer
+
+			function updateTooltip(item, containsMouse) {
+		        if (containsMouse) {
+		            if (item.tooltip) {
+		                tooltip.text = Qt.binding(function() { return item.tooltip })
+		                tooltip.open(item, 0, Units.dp(16))
+		            }
+		        } else if (tooltip.showing) {
+		            tooltip.close()
+		        }
+		    }
+
+		    Tooltip {
+		        id: tooltip
+		        overlayLayer: "desktopTooltipOverlayLayer"
+		    }
+
+			OverlayLayer {
+		        id: tooltipOverlayLayer
+		        objectName: "desktopTooltipOverlayLayer"
+		        z: 100
+		        enabled: desktopOverlayLayer.currentOverlay == null
+		    }
+
+		    OverlayLayer {
+		        id: desktopOverlayLayer
+		        z: 99
+		        objectName: "desktopOverlayLayer"
 		    }
 		}
 
@@ -164,17 +202,25 @@ MainView {
 		}
 	}
 
-	UPower {
-		id: upower
-	}
+	KCoreAddons.KUser {
+        id: currentUser
+    }
 
-	Sound {
-		id: sound
+    MprisConnection {
+        id: musicPlayer
+    }
 
-		property string iconName: sound.muted ? "av/volume_off"
-		: sound.master <= 33 ? "av/volume_mute"
-		: sound.master >= 67 ? "av/volume_up"
-		: "av/volume_down"
+    Sound {
+        id: sound
+
+        property string iconName: sound.muted ? "av/volume_off"
+                                  : sound.master <= 33 ? "av/volume_mute"
+                                  : sound.master >= 67 ? "av/volume_up"
+                                  : "av/volume_down"
+    }
+
+	HardwareEngine {
+		id: hardware
 	}
 
 	property var now: new Date()

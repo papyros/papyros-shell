@@ -19,8 +19,7 @@ import QtQuick 2.4
 import Material 0.1
 import Material.Extras 0.1
 import Papyros.Desktop 0.1
-import "../components"
-import "../indicators"
+import Papyros.Indicators 0.1
 
 Item {
     id: lockscreen
@@ -70,7 +69,7 @@ Item {
         anchors {
             right: parent.right
             bottom: parent.bottom
-            margins: Units.dp(20)
+            margins: Units.dp(16)
         }
 
         width: row.width + Units.dp(24)

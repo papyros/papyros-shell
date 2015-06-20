@@ -18,7 +18,6 @@
 import QtQuick 2.2
 import Material 0.1
 import ".."
-import "../../panel"
 
 /**
 * The default desktop stage.

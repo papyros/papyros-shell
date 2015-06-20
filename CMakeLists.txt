@@ -53,7 +53,7 @@ install(DIRECTORY sddm/
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/sddm/themes/papyros
         PATTERN dummydata EXCLUDE)
 
-add_subdirectory(backend)
+add_subdirectory(modules)
 
 # Display featute summary
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

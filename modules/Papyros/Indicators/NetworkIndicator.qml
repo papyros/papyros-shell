@@ -21,7 +21,6 @@ import Material 0.1
 import Papyros.Desktop 0.1
 import Material.ListItems 0.1 as ListItem
 import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
-import "../components"
 
 Indicator {
     id: indicator

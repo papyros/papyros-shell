@@ -18,7 +18,7 @@
 import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
-import "../components"
+import Papyros.Components 0.1
 
 Indicator {
     id: indicator

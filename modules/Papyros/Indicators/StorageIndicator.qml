@@ -24,7 +24,7 @@ import Papyros.Desktop 0.1
 Indicator {
     id: indicator
 
-    iconSource: Qt.resolvedUrl("../images/harddisk.svg")
+    iconSource: Qt.resolvedUrl("images/harddisk.svg")
     tooltip: qsTr("%1 storage devices").arg(deviceCount)
     visible: deviceCount > 0
     userSensitive: true
@@ -43,11 +43,11 @@ Indicator {
 
                 iconSource: {
                     if (modelData.iconName.indexOf("harddisk") !== -1) {
-                        return Qt.resolvedUrl("../images/harddisk.svg")
+                        return Qt.resolvedUrl("images/harddisk.svg")
                     } else if (modelData.iconName.indexOf("usb") !== -1) {
                         return "icon://device/usb"
                     } else {
-                        return Qt.resolvedUrl("../images/harddisk.svg")
+                        return Qt.resolvedUrl("images/harddisk.svg")
                     }
                 }
 

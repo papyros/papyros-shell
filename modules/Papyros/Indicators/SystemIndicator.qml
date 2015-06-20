@@ -20,7 +20,6 @@ import Material 0.1
 import Material.Extras 0.1
 import Material.ListItems 0.1 as ListItem
 import Papyros.Desktop 0.1
-import ".."
 
 Indicator {
     id: indicator
@@ -109,7 +108,7 @@ Indicator {
         }
 
         ListItem.Standard {
-            iconSource: Qt.resolvedUrl("../images/reload.svg")
+            iconSource: Qt.resolvedUrl("images/reload.svg")
             text: "Reboot"
             onClicked: SessionManager.reboot()
         }

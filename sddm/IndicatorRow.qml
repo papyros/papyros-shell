@@ -17,18 +17,25 @@
 */
 import QtQuick 2.0
 import Material 0.1
+import Papyros.Indicators 0.1
 
 View {
-    id: indicators
+    id: indicatorRows
+
+    property list<Indicator> indicators: [
+        NetworkIndicator {},
+        SoundIndicator {},
+        BatteryIndicator {}
+    ]
 
     anchors {
         right: parent.right
         bottom: parent.bottom
-        margins: Units.dp(20)
+        margins: Units.dp(16)
     }
 
-    width: row.width + Units.dp(32)
-    height: row.height + Units.dp(20)
+    width: row.width + Units.dp(24)
+    height: Units.dp(48)
 
     radius: Units.dp(2)
     elevation: 2
@@ -37,29 +44,23 @@ View {
         id: row
 
         anchors.centerIn: parent
+        height: parent.height
 
-        spacing: Units.dp(16)
-
-        Label {
-            text: Qt.formatTime(now)
-            font.pixelSize: Units.dp(16)
-            anchors.verticalCenter: parent.verticalCenter
+        IndicatorView {
+            indicator: DateTimeIndicator {}
+            defaultColor: Theme.light.iconColor
+            defaultTextColor: Theme.light.textColor
+            visible: !indicator.userSensitive
         }
 
-        Icon {
-            name: sound.iconName
-            size: Units.dp(20)
-        }
-
-        Icon {
-            name: upower.deviceIcon(upower.primaryDevice)
-            size: Units.dp(20)
-        }
-
-        Icon {
-            name: "awesome/power_off"
-            size: Units.dp(20)
-            color: "gray"
+        Repeater {
+            model: indicators
+            delegate: IndicatorView {
+                indicator: modelData
+                defaultColor: Theme.light.iconColor
+                defaultTextColor: Theme.light.textColor
+                visible: !indicator.userSensitive
+            }
         }
     }
 }

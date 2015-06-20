@@ -19,10 +19,11 @@ import QtQuick 2.3
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 import Material.Extras 0.1
+import Papyros.Components 0.1
 import Papyros.Desktop 0.1
 
-import "../launcher"
-import "../desktop"
+import "../../launcher"
+import "../../desktop"
 
 PanelItem {
     id: appLauncher

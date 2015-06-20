@@ -22,7 +22,7 @@ import Material.Extras 0.1
 import GreenIsland 1.0
 import GreenIsland.Desktop 1.0
 import Papyros.Desktop 0.1
-import "../components"
+import Papyros.Components 0.1
 
 /*!
    The workspace view holds the workspace wallpaper as well as the workspace itself.
