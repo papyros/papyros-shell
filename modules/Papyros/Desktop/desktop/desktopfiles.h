@@ -27,6 +27,9 @@
 #include "../qquicklist/qquicklist.h"
 #include "desktopfile.h"
 
+typedef QMap<QString, QProcess *> ApplicationMap;
+typedef QMutableMapIterator<QString, QProcess *> ApplicationMapIterator;
+
 class DesktopFiles : public QObject
 {
     Q_OBJECT
@@ -48,6 +51,7 @@ public:
 
     Q_INVOKABLE int indexOfName(QString name);
 
+    static DesktopFiles *sharedInstance();
     static QObject *qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine);
 
 public slots:
@@ -56,6 +60,10 @@ public slots:
         iconThemeChanged(name);
     }
 
+    bool launchApplication(XdgDesktopFile *entry, const QStringList& urls);
+    bool closeApplication(const QString &fileName);
+    void closeApplications();
+
 signals:
     void desktopFilesChanged(QObjectListModel *);
     void iconThemeChanged(const QString &name);
@@ -63,8 +71,10 @@ signals:
 private slots:
     void onFileChanged(const QString &path);
     void onDirectoryChanged(const QString &directory);
+    void processFinished(int exitCode);
 
 private:
+    ApplicationMap m_apps;
     QFileSystemWatcher *fileWatcher;
     QFileSystemWatcher *dirWatcher;
     QQuickList<DesktopFile> desktopList;

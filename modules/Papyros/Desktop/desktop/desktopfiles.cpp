@@ -22,6 +22,8 @@
 
 #include <QDir>
 
+Q_GLOBAL_STATIC(DesktopFiles, s_desktopFiles)
+
 DesktopFiles::DesktopFiles(QObject *parent)
         : QObject(parent) {
     QStringList paths; paths << "~/.local/share/applications"
@@ -134,10 +136,106 @@ int DesktopFiles::indexOfName(QString name)
     return -1;
 }
 
+void DesktopFiles::closeApplications()
+{
+    // Terminate all process launched by us
+    ApplicationMapIterator i(m_apps);
+    while (i.hasNext()) {
+        i.next();
+
+        QString fileName = i.key();
+        QProcess *process = i.value();
+
+        i.remove();
+
+        qDebug() << "Terminating application from" << fileName << "with pid" << process->pid();
+
+        process->terminate();
+        if (!process->waitForFinished())
+            process->kill();
+        process->deleteLater();
+    }
+}
+
+bool DesktopFiles::launchApplication(XdgDesktopFile *entry, const QStringList& urls)
+{
+    QStringList args = entry->expandExecString(urls);
+
+    if (args.isEmpty())
+        return false;
+
+    if (entry->value("Terminal").toBool())
+    {
+        QString term = getenv("TERM");
+        if (term.isEmpty())
+            term = "xterm";
+
+        args.prepend("-e");
+        args.prepend(term);
+    }
+
+    QString command = args.takeAt(0);
+
+    qDebug() << "Launching" << args.join(" ") << "from" << entry->fileName();
+
+    QProcess *process = new QProcess(this);
+    process->setProgram(command);
+    process->setArguments(args);
+    process->setProcessChannelMode(QProcess::ForwardedChannels);
+    m_apps[entry->fileName()] = process;
+    connect(process, SIGNAL(finished(int)), this, SLOT(processFinished(int)));
+    process->start();
+    if (!process->waitForStarted()) {
+        qWarning("Failed to launch \"%s\" (%s)",
+                  qPrintable(entry->fileName()),
+                  qPrintable(entry->name()));
+        return false;
+    }
+
+    qDebug("Launched \"%s\" (%s) with pid %lld",
+            qPrintable(entry->fileName()),
+            qPrintable(entry->name()),
+            process->pid());
+
+    return true;
+}
+
+bool DesktopFiles::closeApplication(const QString &fileName)
+{
+    if (!m_apps.contains(fileName))
+        return false;
+
+    QProcess *process = m_apps[fileName];
+    process->terminate();
+    if (!process->waitForFinished())
+        process->kill();
+    return true;
+}
+
+void DesktopFiles::processFinished(int exitCode)
+{
+    QProcess *process = qobject_cast<QProcess *>(sender());
+    if (!process)
+        return;
+
+    QString fileName = m_apps.key(process);
+    XdgDesktopFile *entry = XdgDesktopFileCache::getFile(fileName);
+    if (entry) {
+        qDebug() << "Application for" << fileName << "finished with exit code" << exitCode;
+        m_apps.remove(fileName);
+        process->deleteLater();
+    }
+}
+
+DesktopFiles *DesktopFiles::sharedInstance()
+{
+    return s_desktopFiles();
+}
+
 QObject* DesktopFiles::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
 
-    return new DesktopFiles();
+    return s_desktopFiles();
 }

@@ -21,6 +21,8 @@
 
 #include "sessionmanager.h"
 
+#include "desktop/desktopfiles.h"
+
 #include <security/pam_appl.h>
 #include <unistd.h>
 #include <pwd.h>
@@ -43,9 +45,17 @@ void SessionManager::powerOff()
     logind.call("PowerOff", true);
 }
 
-void SessionManager::logout()
+void SessionManager::logOut()
 {
-    // TODO: Actually log out!
+    // Close all applications we launched
+    DesktopFiles::sharedInstance()->closeApplications();
+
+    // TODO: Once we have VT support
+    // Make sure the vt handler is destroyed
+    // m_vtHandler->deleteLater();
+
+    // Exit
+    QCoreApplication::quit();
 }
 
 // Based on code from Hawaii desktop

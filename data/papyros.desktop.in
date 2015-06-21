@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Papyros
 Comment=QtQuick and Wayland based desktop environment
-Exec=/usr/bin/papyros-session
+Exec=@CMAKE_INSTALL_FULL_BINDIR@/papyros-session
 Icon=start-here
 Type=Application

@@ -26,6 +26,7 @@
 #include <QDBusInterface>
 #include <QQmlEngine>
 #include <QJSEngine>
+#include <QProcess>
 
 struct pam_message;
 struct pam_response;
@@ -42,7 +43,7 @@ public:
 public slots:
     void powerOff();
     void reboot();
-    void logout();
+    void logOut();
 
     void authenticate(const QString &password);
 

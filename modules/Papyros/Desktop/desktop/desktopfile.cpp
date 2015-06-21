@@ -20,6 +20,8 @@
 
 #include "desktopfile.h"
 
+#include "desktopfiles.h"
+
 #include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
@@ -103,24 +105,7 @@ void DesktopFile::load() {
 void DesktopFile::launch(const QStringList& urls) const
 {
     if (isValid()) {
-        QStringList args = m_desktopFile->expandExecString(urls);
-
-        if (args.isEmpty())
-            return;
-
-        if (m_desktopFile->value("Terminal").toBool())
-        {
-            QString term = getenv("TERM");
-            if (term.isEmpty())
-                term = "xterm";
-
-            args.prepend("-e");
-            args.prepend(term);
-        }
-
-        QString cmd = args.takeFirst();
-
-        QProcess::startDetached(cmd, args);
+        DesktopFiles::sharedInstance()->launchApplication(m_desktopFile, urls);
     }
 
     // TODO: Set DESKTOP_FILE env variable

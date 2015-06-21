@@ -91,6 +91,7 @@ Indicator {
                 }
             }
         }
+
         ListItem.Standard {
             id: lockItem
 
@@ -98,7 +99,18 @@ Indicator {
             text: "Lock"
             valueText: lockAction.keybinding
             visible: shell.state !== "locked"
-            onClicked: lockAction.triggered(lockItem)
+            onClicked: {
+                lockAction.triggered(lockItem)
+                indicator.close()
+            }
+        }
+        ListItem.Standard {
+            iconSource: Qt.resolvedUrl("images/logout.svg")
+            text: "Log out"
+            onClicked: {
+                SessionManager.logOut()
+                indicator.close()
+            }
         }
 
         ListItem.Standard {
