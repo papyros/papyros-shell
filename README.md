@@ -32,9 +32,9 @@ Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the
  * [QT5XDG](https://github.com/lxde/libqtxdg) for desktop file parsing
  * PAM for authentication
  * Several KDE Frameworks
-   * [KConfig](api.kde.org/frameworks-api/frameworks5-apidocs/kconfig/html/)
-   * [KDeclarative](api.kde.org/frameworks-api/frameworks5-apidocs/kdeclarative/html/)
-   * [Solid](api.kde.org/frameworks-api/frameworks5-apidocs/solid/html/)
+   * [KConfig](http://api.kde.org/frameworks-api/frameworks5-apidocs/kconfig/html/)
+   * [KDeclarative](http://api.kde.org/frameworks-api/frameworks5-apidocs/kdeclarative/html/)
+   * [Solid](http://api.kde.org/frameworks-api/frameworks5-apidocs/solid/html/)
    * [NetworkManagerQt](http://api.kde.org/frameworks-api/frameworks5-apidocs/networkmanager-qt/html/)
    * [ModemManagerQt](http://api.kde.org/frameworks-api/frameworks5-apidocs/modemmanager-qt/html/) (optional)
  * ALSA or PulseAudio for the sound indicator
