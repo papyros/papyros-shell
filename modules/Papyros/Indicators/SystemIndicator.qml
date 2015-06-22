@@ -107,6 +107,7 @@ Indicator {
         ListItem.Standard {
             iconSource: Qt.resolvedUrl("images/logout.svg")
             text: "Log out"
+            visible: shell.state !== "locked"
             onClicked: {
                 SessionManager.logOut()
                 indicator.close()
@@ -114,8 +115,29 @@ Indicator {
         }
 
         ListItem.Standard {
+            iconSource: Qt.resolvedUrl("images/sleep.svg")
+            text: "Sleep"
+            visible: SessionManager.canSuspend
+            onClicked: {
+                SessionManager.suspend()
+                indicator.close()
+            }
+        }
+
+        ListItem.Standard {
+            iconName: "file/file_download"
+            text: "Suspend to disk"
+            visible: SessionManager.canHibernate
+            onClicked: {
+                SessionManager.hibernate()
+                indicator.close()
+            }
+        }
+
+        ListItem.Standard {
             iconName: "action/power_settings_new"
             text: "Power off"
+            visible: SessionManager.canPowerOff
             onClicked: {
                 SessionManager.powerOff()
                 indicator.close()
@@ -124,9 +146,10 @@ Indicator {
 
         ListItem.Standard {
             iconSource: Qt.resolvedUrl("images/reload.svg")
-            text: "Reboot"
+            text: "Restart"
+            visible: SessionManager.canRestart
             onClicked: {
-                SessionManager.reboot()
+                SessionManager.restart()
                 indicator.close()
             }
         }

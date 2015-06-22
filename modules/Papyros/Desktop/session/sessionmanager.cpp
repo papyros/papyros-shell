@@ -23,39 +23,52 @@
 
 #include "desktop/desktopfiles.h"
 
+#include <QDBusReply>
 #include <security/pam_appl.h>
 #include <unistd.h>
 #include <pwd.h>
 
 SessionManager::SessionManager(QObject *parent)
         : QObject(parent),
-          logind("org.freedesktop.login1", "/org/freedesktop/login1", "org.freedesktop.login1.Manager", QDBusConnection::systemBus()),
+          m_interface("io.papyros.Session", "/PapyrosSession", "io.papyros.Session", QDBusConnection::sessionBus()),
           m_response(nullptr)
 {
     // Nothing needed here
+    m_canLogOut = canDoAction("LogOut");
+    m_canPowerOff = canDoAction("PowerOff");
+    m_canRestart = canDoAction("Restart");
+    m_canSuspend = canDoAction("Suspend");
+    m_canHibernate = canDoAction("Hibernate");
 }
 
-void SessionManager::reboot()
+bool SessionManager::canDoAction(const QString &action)
 {
-    logind.call("Reboot", true);
+    return m_interface.call(QStringLiteral("can%1").arg(action)).arguments().at(0).toBool();
+}
+
+void SessionManager::restart()
+{
+    m_interface.call("restart");
 }
 
 void SessionManager::powerOff()
 {
-    logind.call("PowerOff", true);
+    m_interface.call("powerOff");
+}
+
+void SessionManager::suspend()
+{
+    m_interface.call("suspend");
+}
+
+void SessionManager::hibernate()
+{
+    m_interface.call("hibernate");
 }
 
 void SessionManager::logOut()
 {
-    // Close all applications we launched
-    DesktopFiles::sharedInstance()->closeApplications();
-
-    // TODO: Once we have VT support
-    // Make sure the vt handler is destroyed
-    // m_vtHandler->deleteLater();
-
-    // Exit
-    QCoreApplication::quit();
+    m_interface.call("logOut");
 }
 
 // Based on code from Hawaii desktop

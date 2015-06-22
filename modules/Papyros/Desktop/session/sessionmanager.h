@@ -34,6 +34,11 @@ struct pam_response;
 class SessionManager : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool canPowerOff MEMBER m_canPowerOff CONSTANT)
+    Q_PROPERTY(bool canRestart MEMBER m_canRestart CONSTANT)
+    Q_PROPERTY(bool canSuspend MEMBER m_canSuspend CONSTANT)
+    Q_PROPERTY(bool canHibernate MEMBER m_canHibernate CONSTANT)
+    Q_PROPERTY(bool canLogOut MEMBER m_canLogOut CONSTANT)
 
 public:
     SessionManager(QObject *parent = 0);
@@ -41,8 +46,16 @@ public:
     static QObject *qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine);
 
 public slots:
+    bool canPowerOff() const { return m_canPowerOff; }
+    bool canRestart() const { return m_canRestart; }
+    bool canSuspend() const { return m_canSuspend; }
+    bool canHibernate() const { return m_canHibernate; }
+    bool canLogOut() const { return m_canLogOut; }
+
     void powerOff();
-    void reboot();
+    void restart();
+    void suspend();
+    void hibernate();
     void logOut();
 
     void authenticate(const QString &password);
@@ -53,8 +66,15 @@ signals:
     void authenticationError();
 
 private:
-    QDBusInterface logind;
+    QDBusInterface m_interface;
     pam_response *m_response;
+    bool m_canPowerOff;
+    bool m_canRestart;
+    bool m_canSuspend;
+    bool m_canHibernate;
+    bool m_canLogOut;
+
+    bool canDoAction(const QString &action);
 
     static int conversationHandler(int num, const pam_message **message,
                                    pam_response **response, void *data);
