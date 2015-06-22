@@ -20,13 +20,23 @@
 #include "loginmanager.h"
 
 #include <QDBusReply>
+#include <QDebug>
+#include <unistd.h>
 
 LoginManager::LoginManager(QObject *parent)
         : QObject(parent)
         , logind("org.freedesktop.login1", "/org/freedesktop/login1",
           "org.freedesktop.login1.Manager", QDBusConnection::systemBus())
 {
-    // Nothing needed here
+    // The shell handles the power buttons, so tell logind to not handle them
+    LoginManager::InhibitLocks keyLocks = LoginManager::InhibitPowerKey |
+            LoginManager::InhibitSuspendKey | LoginManager::InhibitHibernateKey;
+    m_inhibitKeysDescriptor = inhibit(keyLocks, "Papyros Shell", "Papyros handling keypresses",
+            LoginManager::InhibitBlock);
+}
+
+LoginManager::~LoginManager() {
+    ::close(m_inhibitKeysDescriptor.fileDescriptor());
 }
 
 bool LoginManager::canDoAction(const QString &action)
@@ -78,4 +88,44 @@ void LoginManager::suspend()
 void LoginManager::hibernate()
 {
     logind.call("PowerOff", true);
+}
+
+QDBusUnixFileDescriptor LoginManager::inhibit(InhibitLocks locks, const QString &owner, const QString &reason,
+        InhibitMode mode)
+{
+    QStringList locksList;
+    if (locks & LoginManager::InhibitShutdown) {
+        locksList << "shutdown";
+    }
+    if (locks & LoginManager::InhibitSleep) {
+        locksList << "sleep";
+    }
+    if (locks & LoginManager::InhibitIdle) {
+        locksList << "idle";
+    }
+    if (locks & LoginManager::InhibitPowerKey) {
+        locksList << "handle-power-key";
+    }
+    if (locks & LoginManager::InhibitSuspendKey) {
+        locksList << "handle-suspend-key";
+    }
+    if (locks & LoginManager::InhibitHibernateKey) {
+        locksList << "handle-hibernate-key";
+    }
+    if (locks & LoginManager::InhibitLidSwitch) {
+        locksList << "handle-lid-switch";
+    }
+
+    QString modeString = mode == LoginManager::InhibitBlock ? "block" : "delay";
+
+    QDBusReply<QDBusUnixFileDescriptor> reply;
+
+    reply = logind.call("Inhibit", locksList.join(':'), owner, reason, modeString);
+
+    if (!reply.isValid()) {
+        qWarning() << "Unable to request inhibitor locks:" << locksList;
+        qWarning() << "Error:" << reply.error().message();
+    }
+
+    return reply.value();
 }

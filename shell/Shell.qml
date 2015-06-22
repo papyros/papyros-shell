@@ -92,6 +92,10 @@ View {
     signal keyPressed(var event)
     signal keyReleased(var event)
 
+    onStateChanged: {
+        powerDialog.close()
+    }
+
     function toggleState(state) {
         if (shell.state == state)
         shell.state = "default"
@@ -101,6 +105,14 @@ View {
 
     function lockScreen() {
         shell.state = "locked"
+    }
+
+    function showPowerDialog() {
+        print("Showing power dialog!")
+        if (SessionManager.canSuspend || SessionManager.canHibernate ||
+                SessionManager.canPowerOff) {
+            powerDialog.open()
+        }
     }
 
     Desktop {
@@ -154,6 +166,10 @@ View {
         id: lockscreen
     }
 
+    PowerDialog {
+        id: powerDialog
+    }
+
     // ===== Keyboard Shortcuts =====
 
     KeyEventFilter {
@@ -179,6 +195,12 @@ View {
         }
 
         superOnly = false
+
+        if (event.key == Qt.Key_PowerOff || event.key == Qt.Key_PowerDown ||
+                event.key == Qt.Key_Suspend || event.key == Qt.Key_Hibernate) {
+            showPowerDialog()
+            return
+        }
 
         // Window switcher
         if (event.modifiers === Qt.ControlModifier) {

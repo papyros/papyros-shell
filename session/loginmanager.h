@@ -20,13 +20,33 @@
  #define LOGINMANAGER_H
 
 #include <QDBusInterface>
+#include <QDBusUnixFileDescriptor>
 
 class LoginManager : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(InhibitMode)
 
 public:
     LoginManager(QObject *parent = 0);
+    ~LoginManager();
+
+    enum InhibitLock {
+        InhibitShutdown = 1<<0,
+        InhibitSleep = 1<<1,
+        InhibitIdle = 1<<2,
+        InhibitPowerKey = 1<<3,
+        InhibitSuspendKey = 1<<4,
+        InhibitHibernateKey = 1<<5,
+        InhibitLidSwitch = 1<<6
+    };
+
+    enum InhibitMode {
+        InhibitBlock = 0,
+        InhibitDelay
+    };
+
+    Q_DECLARE_FLAGS(InhibitLocks, InhibitLock)
 
 public slots:
     bool canPowerOff();
@@ -39,10 +59,16 @@ public slots:
     Q_NOREPLY void suspend();
     Q_NOREPLY void hibernate();
 
+    QDBusUnixFileDescriptor inhibit(InhibitLocks locks, const QString &owner, const QString &reason,
+            InhibitMode mode);
+
 private:
     QDBusInterface logind;
+    QDBusUnixFileDescriptor m_inhibitKeysDescriptor;
 
     bool canDoAction(const QString &action);
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(LoginManager::InhibitLocks)
 
 #endif // LOGINMANAGER_H
