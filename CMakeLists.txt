@@ -53,6 +53,7 @@ install(DIRECTORY sddm/
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/sddm/themes/papyros
         PATTERN dummydata EXCLUDE)
 
+add_subdirectory(3rdparty)
 add_subdirectory(data)
 add_subdirectory(headers)
 add_subdirectory(modules)

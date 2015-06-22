@@ -103,7 +103,7 @@ void CompositorLauncher::stop()
     if (!m_process)
         return;
 
-    qDebug() << "Stopping the compsotior";
+    qDebug() << "Stopping the compositor";
 
     m_process->terminate();
     if (!m_process->waitForFinished())

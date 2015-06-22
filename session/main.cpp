@@ -57,7 +57,10 @@
 #include <QtCore/QCommandLineParser>
 #include <QDebug>
 #include "compositorlauncher.h"
+#include "sessionmanager.h"
 #include "config.h"
+
+#include "sigwatch/sigwatch.h"
 
 #include <unistd.h>
 
@@ -110,6 +113,22 @@ int main(int argc, char *argv[])
     }
 
     CompositorLauncher *launcher = CompositorLauncher::instance();
+
+    // Session manager
+    SessionManager *sessionManager = SessionManager::instance();
+    if (!sessionManager->initialize())
+        return 1;
+
+    // Unix signals watcher
+    UnixSignalWatcher sigwatch;
+    sigwatch.watchForSignal(SIGINT);
+    sigwatch.watchForSignal(SIGTERM);
+
+    // Log out the session for SIGINT and SIGTERM
+    QObject::connect(&sigwatch, &UnixSignalWatcher::unixSignal, [sessionManager](int signum) {
+        qDebug() << "Log out caused by signal" << signum;
+        sessionManager->logOut();
+    });
 
     // Start the compositor
     launcher->start();
