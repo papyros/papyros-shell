@@ -198,12 +198,12 @@ bool SessionManager::registerDBus()
     // Start the D-Bus service
     (void)new SessionAdaptor(this);
     if (!bus.registerObject(objectPath, this)) {
-        qWarning() << "Couldn't register /HawaiiSession D-Bus object:"
+        qWarning() << "Couldn't register /PapyrosSession D-Bus object:"
                                    << qPrintable(bus.lastError().message());
         return false;
     }
     if (!bus.registerService(interfaceName)) {
-        qWarning() << "Couldn't register org.hawaii.session D-Bus service:"
+        qWarning() << "Couldn't register io.papyros.Session D-Bus service:"
                                    << qPrintable(bus.lastError().message());
         return false;
     }
@@ -223,7 +223,7 @@ bool SessionManager::registerDBus()
 void SessionManager::autostart()
 {
     Q_FOREACH (const XdgDesktopFile &entry, XdgAutoStart::desktopFileList()) {
-        if (!entry.isSuitable(true, QStringLiteral("X-Hawaii")))
+        if (!entry.isSuitable(true, QStringLiteral("X-Papyros")))
             continue;
 
         qDebug() << "Autostart:" << entry.name() << "from" << entry.fileName();
