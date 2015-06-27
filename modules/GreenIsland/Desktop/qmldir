@@ -3,6 +3,7 @@ PopupWindow 1.0 PopupWindow.qml
 TopLevelWindow 1.0 TopLevelWindow.qml
 TransientWindow 1.0 TransientWindow.qml
 WindowAnimation 1.0 WindowAnimation.qml
+WindowDecoration 1.0 WindowDecoration.qml
 WindowListModel 1.0 WindowListModel.qml
 WindowManager 1.0 WindowManager.qml
 WindowPreview 1.0 WindowPreview.qml

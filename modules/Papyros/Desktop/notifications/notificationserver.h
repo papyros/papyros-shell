@@ -35,7 +35,7 @@ class NotificationServer : public QQuickItem
     Q_OBJECT
     Q_DISABLE_COPY(NotificationServer)
 
-    Q_PROPERTY(QObjectListModel *notifications READ notifications)
+    Q_PROPERTY(QObjectListModel *notifications READ notifications CONSTANT)
 
 public:
     explicit NotificationServer(QQuickItem *parent = new QQuickItem());

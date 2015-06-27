@@ -33,7 +33,7 @@ import GreenIsland 1.0
 Item {
     id: window
     objectName: "clientWindow"
-      
+
     visible: false
 
     rotation: {
@@ -68,11 +68,22 @@ Item {
     property var child
     property bool unresponsive: false
     property var animation: null
+    property Component decoration
 
     Component.onCompleted: {
-        child.parent = window;
-        child.anchors.fill = Qt.binding(function() { return window });
+        if (decoration) {
+            var decorationItem = decoration.createObject(window, { clientWindow: clientWindow })
+            decorationItem.parent = window
+            decorationItem.anchors.fill = Qt.binding(function() { return window });
+
+            child.parent = decorationItem.container
+        } else {
+            child.parent = window
+        }
+
+        child.anchors.fill = Qt.binding(function() { return child.parent });
         child.touchEventsEnabled = true;
+        child.resizeSurfaceToItem = true
 
         // Set transient children so that the parent can be desaturated
         if (clientWindow.type === ClientWindow.Transient)
@@ -187,7 +198,7 @@ Item {
     Loader {
         id: unresponsiveEffectLoader
         anchors.fill: parent
-        
+
         active: opacity > 0
         sourceComponent: unresponsiveEffectComponent
 
