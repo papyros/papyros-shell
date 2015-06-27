@@ -2,6 +2,8 @@ project(PapyrosShell)
 
 cmake_minimum_required(VERSION 2.8.12)
 
+option(ENABLE_MODEMMANAGER_SUPPORT "Enables ModemManager support" OFF)
+
 # Set version
 set(PROJECT_VERSION "0.1.0")
 set(PROJECT_VERSION_MAJOR 0)
@@ -24,6 +26,13 @@ include(KDECMakeSettings)
 # Build flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden -Werror -Wall -Wextra -Wno-unused-parameter -pedantic -std=c++11")
 
+add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
+remove_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_STRICT_ITERATORS -DQT_NO_CAST_FROM_BYTEARRAY)
+
+# Minimum version requirements
+set(QT_MIN_VERSION "5.4.0")
+set(KF5_MIN_VERSION "5.8.0")
+
 # Find pkg-config here so that it can be referenced soon
 find_package(PkgConfig)
 
@@ -43,7 +52,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
 
 # Find KF5
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
-             Solid Config Declarative)
+             Solid Config Declarative NetworkManagerQt)
 
 set(SHELL_PATH ${CMAKE_INSTALL_PREFIX}/${DATA_INSTALL_DIR}/greenisland/shells/io.papyros.shell)
 

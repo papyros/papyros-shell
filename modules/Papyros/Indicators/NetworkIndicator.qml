@@ -19,8 +19,8 @@
 import QtQuick 2.0
 import Material 0.1
 import Papyros.Desktop 0.1
+import Papyros.Network 0.1
 import Material.ListItems 0.1 as ListItem
-import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
 
 Indicator {
     id: indicator
@@ -71,52 +71,52 @@ Indicator {
         }
     }
 
-    PlasmaNM.ConnectionIcon {
+    ConnectionIcon {
         id: connectionIconProvider;
     }
 
-    PlasmaNM.NetworkStatus {
+    NetworkStatus {
         id: networkStatus
     }
 
-    PlasmaNM.EnabledConnections {
+    EnabledConnections {
         id: enabledConnections;
     }
 
-    PlasmaNM.NetworkModel {
+    NetworkModel {
         id: connectionModel;
     }
 
-    PlasmaNM.AppletProxyModel {
+    AppletProxyModel {
         id: appletProxyModel;
         sourceModel: connectionModel;
     }
 
-    PlasmaNM.Handler {
+    Handler {
         id: handler;
     }
 
     function statusIcon(type, signal) {
         var strength = parseInt(signal*4/100)
         switch (type) {
-            case PlasmaNM.Enums.UnknownConnectionType:
-            case PlasmaNM.Enums.Adsl:
-            case PlasmaNM.Enums.Bluetooth:
-            case PlasmaNM.Enums.Bond:
-            case PlasmaNM.Enums.Bridge:
-            case PlasmaNM.Enums.Cdma:
-            case PlasmaNM.Enums.Gsm:
+            case Enums.UnknownConnectionType:
+            case Enums.Adsl:
+            case Enums.Bluetooth:
+            case Enums.Bond:
+            case Enums.Bridge:
+            case Enums.Cdma:
+            case Enums.Gsm:
                 return "device/signal_cellular_" + strength + "_bar"
-            case PlasmaNM.Enums.Infiniband:
-            case PlasmaNM.Enums.OLPCMesh:
-            case PlasmaNM.Enums.Pppoe:
-            case PlasmaNM.Enums.Vlan:
-            case PlasmaNM.Enums.Vpn:
+            case Enums.Infiniband:
+            case Enums.OLPCMesh:
+            case Enums.Pppoe:
+            case Enums.Vlan:
+            case Enums.Vpn:
                 return "action/lock"
-            case PlasmaNM.Enums.Wimax:
-            case PlasmaNM.Enums.Wired:
+            case Enums.Wimax:
+            case Enums.Wired:
                 return "action/settings_ethernet"
-            case PlasmaNM.Enums.Wireless:
+            case Enums.Wireless:
                 // This is the only way i found to check if the item is a theadering device
                 if (signal)
                     return "device/signal_wifi_" + strength + "_bar"

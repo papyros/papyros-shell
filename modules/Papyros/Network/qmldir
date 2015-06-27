@@ -1,0 +1,4 @@
+module Papyros.Network
+plugin nmplugin
+classname NetworkManagerPlugin
+typeinfo plugins.qmltypes

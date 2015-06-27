@@ -22,8 +22,7 @@
 import QtQuick 2.2
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
+import Papyros.Network 0.1
 
 ListItem.Standard {
     id: connectionItem;
@@ -34,9 +33,9 @@ ListItem.Standard {
     iconName: statusIcon(Type, Signal)
     selected: ConnectionState == 2
 
-    property bool predictableWirelessPassword: !Uuid && Type == PlasmaNM.Enums.Wireless &&
-                                               (SecurityType == PlasmaNM.Enums.StaticWep || SecurityType == PlasmaNM.Enums.WpaPsk ||
-                                                SecurityType == PlasmaNM.Enums.Wpa2Psk);
+    property bool predictableWirelessPassword: !Uuid && Type == Enums.Wireless &&
+                                               (SecurityType == Enums.StaticWep || SecurityType == Enums.WpaPsk ||
+                                                SecurityType == Enums.Wpa2Psk);
     property bool visiblePasswordDialog: false;
 
     property var connState: [
@@ -51,7 +50,7 @@ ListItem.Standard {
         indicator.close()
 
         if (Uuid || !predictableWirelessPassword) {
-            if (ConnectionState == PlasmaNM.Enums.Deactivated) {
+            if (ConnectionState == Enums.Deactivated) {
                 if (!predictableWirelessPassword && !Uuid) {
                     handler.addAndActivateConnection(DevicePath, SpecificPath);
                 } else {

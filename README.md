@@ -35,8 +35,9 @@ Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the
    * [KConfig](api.kde.org/frameworks-api/frameworks5-apidocs/kconfig/html/)
    * [KDeclarative](api.kde.org/frameworks-api/frameworks5-apidocs/kdeclarative/html/)
    * [Solid](api.kde.org/frameworks-api/frameworks5-apidocs/solid/html/)
+   * [NetworkManagerQt](http://api.kde.org/frameworks-api/frameworks5-apidocs/networkmanager-qt/html/)
+   * [ModemManagerQt](http://api.kde.org/frameworks-api/frameworks5-apidocs/modemmanager-qt/html/) (optional)
  * ALSA or PulseAudio for the sound indicator
- * [Plasma NetworkManager](https://projects.kde.org/projects/kde/workspace/plasma-nm) for the network manager
 
 ### Installation ###
 
