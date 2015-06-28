@@ -28,7 +28,7 @@ class SessionAdaptor : public QDBusAbstractAdaptor
 {
 
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "io.papyros.Session")
+    Q_CLASSINFO("D-Bus Interface", "io.papyros.session")
     Q_PROPERTY(bool locked READ isLocked NOTIFY lockedChanged)
 
 public:

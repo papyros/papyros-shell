@@ -25,7 +25,9 @@
 Q_GLOBAL_STATIC(DesktopFiles, s_desktopFiles)
 
 DesktopFiles::DesktopFiles(QObject *parent)
-        : QObject(parent) {
+        : QObject(parent),
+          m_interface("io.papyros.session", "/PapyrosSession", "io.papyros.launcher", QDBusConnection::sessionBus())
+{
     QStringList paths; paths << "~/.local/share/applications"
                              << "/usr/local/share/applications"
                              << "/usr/share/applications";
@@ -136,95 +138,28 @@ int DesktopFiles::indexOfName(QString name)
     return -1;
 }
 
-void DesktopFiles::closeApplications()
+bool DesktopFiles::launchApplication(const QString &appId, const QStringList &urls)
 {
-    // Terminate all process launched by us
-    ApplicationMapIterator i(m_apps);
-    while (i.hasNext()) {
-        i.next();
-
-        QString fileName = i.key();
-        QProcess *process = i.value();
-
-        i.remove();
-
-        qDebug() << "Terminating application from" << fileName << "with pid" << process->pid();
-
-        process->terminate();
-        if (!process->waitForFinished())
-            process->kill();
-        process->deleteLater();
-    }
+    return m_interface.call(QStringLiteral("launchApplication"), appId, urls)
+            .arguments().at(0).toBool();
 }
 
-bool DesktopFiles::launchApplication(XdgDesktopFile *entry, const QStringList& urls)
+bool DesktopFiles::launchDesktopFile(const QString &fileName, const QStringList &urls)
 {
-    QStringList args = entry->expandExecString(urls);
-
-    if (args.isEmpty())
-        return false;
-
-    if (entry->value("Terminal").toBool())
-    {
-        QString term = getenv("TERM");
-        if (term.isEmpty())
-            term = "xterm";
-
-        args.prepend("-e");
-        args.prepend(term);
-    }
-
-    QString command = args.takeAt(0);
-
-    qDebug() << "Launching" << args.join(" ") << "from" << entry->fileName();
-
-    QProcess *process = new QProcess(this);
-    process->setProgram(command);
-    process->setArguments(args);
-    process->setProcessChannelMode(QProcess::ForwardedChannels);
-    m_apps[entry->fileName()] = process;
-    connect(process, SIGNAL(finished(int)), this, SLOT(processFinished(int)));
-    process->start();
-    if (!process->waitForStarted()) {
-        qWarning("Failed to launch \"%s\" (%s)",
-                  qPrintable(entry->fileName()),
-                  qPrintable(entry->name()));
-        return false;
-    }
-
-    qDebug("Launched \"%s\" (%s) with pid %lld",
-            qPrintable(entry->fileName()),
-            qPrintable(entry->name()),
-            process->pid());
-
-    return true;
+    return m_interface.call(QStringLiteral("launchDesktopFile"), fileName, urls)
+            .arguments().at(0).toBool();
 }
 
-bool DesktopFiles::closeApplication(const QString &fileName)
+bool DesktopFiles::closeApplication(const QString &appId)
 {
-    if (!m_apps.contains(fileName))
-        return false;
-
-    QProcess *process = m_apps[fileName];
-    process->terminate();
-    if (!process->waitForFinished())
-        process->kill();
-    return true;
+    return m_interface.call(QStringLiteral("closeApplication"), appId)
+            .arguments().at(0).toBool();
 }
 
-void DesktopFiles::processFinished(int exitCode)
+bool DesktopFiles::closeDesktopFile(const QString &fileName)
 {
-    QProcess *process = qobject_cast<QProcess *>(sender());
-    if (!process)
-        return;
-
-    QString fileName = m_apps.key(process);
-    XdgDesktopFile *entry = XdgDesktopFileCache::getFile(fileName);
-    if (entry) {
-        qDebug() << "Application for" << fileName << "finished with exit code" << exitCode;
-        m_apps.remove(fileName);
-        process->deleteLater();
-    }
+    return m_interface.call(QStringLiteral("closeDesktopFile"), fileName)
+            .arguments().at(0).toBool();
 }
 
 DesktopFiles *DesktopFiles::sharedInstance()

@@ -102,14 +102,9 @@ void DesktopFile::load() {
     emit dataChanged();
 }
 
-void DesktopFile::launch(const QStringList& urls) const
+bool DesktopFile::launch(const QStringList& urls) const
 {
-    if (isValid()) {
-        DesktopFiles::sharedInstance()->launchApplication(m_desktopFile, urls);
-    }
-
-    // TODO: Set DESKTOP_FILE env variable
-    // TODO: Set Qt and Gtk env variables to force the use of Wayland
+    return DesktopFiles::sharedInstance()->launchApplication(m_appId, urls);
 }
 
 QString DesktopFile::name() const {

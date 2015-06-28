@@ -10,6 +10,8 @@ set(SOURCES
     compositorlauncher.cpp
     loginmanager.h
     loginmanager.cpp
+    processlauncher.h
+    processlauncher.cpp
     sessionadaptor.h
     sessionadaptor.cpp
     sessionmanager.h

@@ -30,7 +30,7 @@
 
 SessionManager::SessionManager(QObject *parent)
         : QObject(parent),
-          m_interface("io.papyros.Session", "/PapyrosSession", "io.papyros.Session", QDBusConnection::sessionBus()),
+          m_interface("io.papyros.session", "/PapyrosSession", "io.papyros.session", QDBusConnection::sessionBus()),
           m_response(nullptr)
 {
     // Nothing needed here

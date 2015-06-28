@@ -23,12 +23,10 @@
 
 #include <QObject>
 #include <QFileSystemWatcher>
+#include <QDBusInterface>
 
 #include "../qquicklist/qquicklist.h"
 #include "desktopfile.h"
-
-typedef QMap<QString, QProcess *> ApplicationMap;
-typedef QMutableMapIterator<QString, QProcess *> ApplicationMapIterator;
 
 class DesktopFiles : public QObject
 {
@@ -60,9 +58,11 @@ public slots:
         iconThemeChanged(name);
     }
 
-    bool launchApplication(XdgDesktopFile *entry, const QStringList& urls);
-    bool closeApplication(const QString &fileName);
-    void closeApplications();
+    bool launchApplication(const QString &appId, const QStringList &urls);
+    bool launchDesktopFile(const QString &fileName, const QStringList &urls);
+
+    bool closeApplication(const QString &appId);
+    bool closeDesktopFile(const QString &fileName);
 
 signals:
     void desktopFilesChanged(QObjectListModel *);
@@ -71,10 +71,9 @@ signals:
 private slots:
     void onFileChanged(const QString &path);
     void onDirectoryChanged(const QString &directory);
-    void processFinished(int exitCode);
 
 private:
-    ApplicationMap m_apps;
+    QDBusInterface m_interface;
     QFileSystemWatcher *fileWatcher;
     QFileSystemWatcher *dirWatcher;
     QQuickList<DesktopFile> desktopList;

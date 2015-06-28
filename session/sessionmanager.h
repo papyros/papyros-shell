@@ -52,12 +52,14 @@
  *
  * $END_LICENSE$
  ***************************************************************************/
- 
+
 #ifndef SESSIONMANAGER_H
 #define SESSIONMANAGER_H
 
 #include <QtCore/QObject>
 #include <QtCore/QLoggingCategory>
+
+class ProcessLauncher;
 
 class SessionManager : public QObject
 {
@@ -74,7 +76,7 @@ public:
     bool isLocked() const;
     void setLocked(bool value);
 
-    static constexpr const char *interfaceName = "io.papyros.Session";
+    static constexpr const char *interfaceName = "io.papyros.session";
     static constexpr const char *objectPath = "/PapyrosSession";
 
 Q_SIGNALS:
@@ -86,6 +88,7 @@ public Q_SLOTS:
     void logOut();
 
 private:
+    ProcessLauncher *m_launcher;
     bool m_idle;
     bool m_locked;
 

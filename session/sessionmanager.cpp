@@ -65,7 +65,7 @@
 
 #include "cmakedirs.h"
 #include "compositorlauncher.h"
-// #include "processlauncher.h"
+#include "processlauncher.h"
 // #include "screensaver.h"
 #include "sessionadaptor.h"
 #include "sessionmanager.h"
@@ -77,7 +77,7 @@ Q_GLOBAL_STATIC(SessionManager, s_sessionManager)
 
 SessionManager::SessionManager(QObject *parent)
     : QObject(parent)
-    // , m_launcher(new ProcessLauncher(this))
+    , m_launcher(new ProcessLauncher(this))
     , m_idle(false)
     , m_locked(false)
 {
@@ -186,6 +186,7 @@ void SessionManager::setupEnvironment()
     qputenv("QT_PLATFORM_PLUGIN", QByteArray("Material"));
     qputenv("QT_QPA_PLATFORMTHEME", QByteArray("Material"));
     qputenv("QT_QUICK_CONTROLS_STYLE", QByteArray("Material"));
+    qputenv("QT_WAYLAND_DISABLE_WINDOWDECORATION", QByteArray("1"));
     qputenv("XDG_CURRENT_DESKTOP", QByteArray("Papyros"));
     qputenv("XCURSOR_THEME", QByteArray("Adwaita"));
     qputenv("XCURSOR_SIZE", QByteArray("16"));
@@ -203,15 +204,15 @@ bool SessionManager::registerDBus()
         return false;
     }
     if (!bus.registerService(interfaceName)) {
-        qWarning() << "Couldn't register io.papyros.Session D-Bus service:"
+        qWarning() << "Couldn't register io.papyros.session D-Bus service:"
                                    << qPrintable(bus.lastError().message());
         return false;
     }
     qDebug() << "Registered" << interfaceName << "D-Bus interface";
 
-    // // Register process launcher service
-    // if (!m_launcher->registerInterface())
-    //     return false;
+    // Register process launcher service
+    if (!m_launcher->registerInterface())
+        return false;
     //
     // // Register screen saver interface
     // if (!m_screenSaver->registerInterface())
@@ -227,14 +228,14 @@ void SessionManager::autostart()
             continue;
 
         qDebug() << "Autostart:" << entry.name() << "from" << entry.fileName();
-        // m_launcher->launchEntry(const_cast<XdgDesktopFile *>(&entry));
+        m_launcher->launchEntry(const_cast<XdgDesktopFile *>(&entry), QStringList());
     }
 }
 
 void SessionManager::logOut()
 {
     // Close all applications we launched
-    // m_launcher->closeApplications();
+    m_launcher->closeApplications();
 
     // Stop the compositor
     CompositorLauncher::instance()->stop();

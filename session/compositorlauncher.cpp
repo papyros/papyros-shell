@@ -312,6 +312,6 @@ void CompositorLauncher::setupEnvironment()
         qputenv("QT_QPA_PLATFORM", QByteArray("wayland"));
     }
     qputenv("GDK_BACKEND", QByteArray("wayland"));
-
+    
     qunsetenv("WAYLAND_DISPLAY");
 }
