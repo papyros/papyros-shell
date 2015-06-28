@@ -22,6 +22,8 @@
 
 #include "session/sessionmanager.h"
 
+#include "decorations/windowdecorations.h"
+
 void DesktopPlugin::registerTypes(const char *uri)
 {
     // @uri Papyros.Desktop
@@ -63,4 +65,6 @@ void DesktopPlugin::registerTypes(const char *uri)
 
     qmlRegisterSingletonType<SessionManager>(uri, 0, 1, "SessionManager",
             SessionManager::qmlSingleton);
+
+    qmlRegisterType<WindowDecorations>(uri, 0, 1, "WindowDecorations");
 }

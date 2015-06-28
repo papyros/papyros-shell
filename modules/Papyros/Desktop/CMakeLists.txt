@@ -33,11 +33,17 @@ target_link_libraries(papyrosdesktop
                       Qt5::Qml
                       Qt5::DBus
                       Qt5::Quick
+                      Qt5::WaylandClient
                       KF5::Solid
                       KF5::ConfigCore
                       GreenIsland::GreenIsland
                       ${PAM_LIBRARIES}
                       ${QTXDG_LIBRARIES})
+
+include_directories(
+    ${Qt5WaylandClient_INCLUDE_DIRS}
+    ${Qt5WaylandClient_PRIVATE_INCLUDE_DIRS}
+)
 
 if(ALSA_FOUND)
     include_directories(${ALSA_INCLUDE_DIRS})
