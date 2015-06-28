@@ -25,7 +25,7 @@
 using namespace QtWaylandClient;
 
 WindowDecorations::WindowDecorations(QObject *parent)
-        : QObject(parent), mColor("#1976D2"), mWindow(nullptr)
+        : QObject(parent), mColor("#E0E0E0"), mWindow(nullptr)
 {
 }
 
@@ -60,7 +60,8 @@ void WindowDecorations::update()
 
     if (materialDecorations == nullptr) {
         qDebug() << "Not using Material decorations, no customization possible!";
+        return;
     }
 
-    qDebug() << "Material decorations found, cool stuff possible!";
+    materialDecorations->setBackgroundColor(mColor);
 }

@@ -61,6 +61,13 @@ class Q_WAYLAND_CLIENT_EXPORT QWaylandMaterialDecoration : public QWaylandAbstra
 {
 public:
     QWaylandMaterialDecoration();
+
+public slots:
+    void setBackgroundColor(QColor color) {
+        m_backgroundColor = color;
+        update();
+    }
+
 protected:
     QMargins margins() const Q_DECL_OVERRIDE;
     void paint(QPaintDevice *device) Q_DECL_OVERRIDE;

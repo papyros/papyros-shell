@@ -111,7 +111,7 @@ QWaylandMaterialDecoration::QWaylandMaterialDecoration()
     , m_clicking(None)
 {
     m_foregroundColor = QColor(255,255,255);
-    m_backgroundColor =QColor("#1976D2");
+    m_backgroundColor = QColor("#E0E0E0");
 
     QTextOption option(Qt::AlignHCenter | Qt::AlignVCenter);
     option.setWrapMode(QTextOption::NoWrap);
