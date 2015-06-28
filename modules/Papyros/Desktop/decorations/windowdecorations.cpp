@@ -50,5 +50,17 @@ void WindowDecorations::update()
 
     QWaylandAbstractDecoration *decoration = waylandWindow->decoration();
 
-    qDebug() << "We have decorations now!" << decoration;
+    if (decoration == nullptr) {
+        qDebug() << "No window decorations yet, trying later";
+        QTimer::singleShot(10, this, &WindowDecorations::update);
+        return;
+    }
+
+    QWaylandMaterialDecoration *materialDecorations = dynamic_cast<QWaylandMaterialDecoration *>(decoration);
+
+    if (materialDecorations == nullptr) {
+        qDebug() << "Not using Material decorations, no customization possible!";
+    }
+
+    qDebug() << "Material decorations found, cool stuff possible!";
 }

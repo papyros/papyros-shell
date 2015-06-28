@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include <QWindow>
+#include "materialdecoration.h"
 
 class WindowDecorations : public QObject
 {

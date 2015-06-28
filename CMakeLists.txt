@@ -66,6 +66,7 @@ install(DIRECTORY sddm/
 
 add_subdirectory(3rdparty)
 add_subdirectory(data)
+add_subdirectory(decorations)
 add_subdirectory(headers)
 add_subdirectory(modules)
 add_subdirectory(session)
