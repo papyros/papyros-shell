@@ -78,6 +78,28 @@ Item {
         topLevelWindowComponent: TopLevelWindow {
             id: window
 
+            Component.onCompleted: {
+                // TODO: Uncomment once greenisland/greenisland#97 gets fixed
+                //dropShadow.visible = window.clientWindow.surface.windowProperties["drawServerShadow"] == "true"
+            }
+
+            Connections {
+                target: window.clientWindow.surface
+                onWindowPropertyChanged: {
+                    // TODO: Uncomment once greenisland/greenisland#97 gets fixed
+                    //dropShadow.visible = window.clientWindow.surface.windowProperties["drawServerShadow"] == "true"
+                }
+            }
+
+            View {
+                id: dropShadow
+                anchors.fill: parent
+                elevation: window.clientWindow.active ? 5 : 2
+                visible: true
+                backgroundColor: "transparent"
+                radius: Units.dp(2)
+            }
+
             animation: WindowAnimation {
                 mapAnimation: NumberAnimation {
                     target: window

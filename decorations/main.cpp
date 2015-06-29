@@ -45,7 +45,7 @@ namespace QtWaylandClient {
 
 static const char * const qt_close_xpm[] = {
 "10 10 2 1",
-"# c #000000",
+"# c #ffffff",
 ". c None",
 "..........",
 ".##....##.",
@@ -60,7 +60,7 @@ static const char * const qt_close_xpm[] = {
 
 static const char * const qt_maximize_xpm[]={
 "10 10 2 1",
-"# c #000000",
+"# c #ffffff",
 ". c None",
 "#########.",
 "#########.",
@@ -75,7 +75,7 @@ static const char * const qt_maximize_xpm[]={
 
 static const char * const qt_minimize_xpm[] = {
 "10 10 2 1",
-"# c #000000",
+"# c #ffffff",
 ". c None",
 "..........",
 "..........",
@@ -118,6 +118,13 @@ QWaylandMaterialDecoration::QWaylandMaterialDecoration()
     m_windowTitle.setTextOption(option);
 }
 
+
+void QWaylandMaterialDecoration::setWaylandWindow(QWaylandWindow *window)
+{
+    window->sendProperty("drawServerShadow", "true");
+    QWaylandAbstractDecoration::setWaylandWindow(window);
+}
+
 QRectF QWaylandMaterialDecoration::closeButtonRect() const
 {
     return QRectF(window()->frameGeometry().width() - BUTTON_WIDTH - BUTTON_SPACING * 2,
@@ -138,34 +145,24 @@ QRectF QWaylandMaterialDecoration::minimizeButtonRect() const
 
 QMargins QWaylandMaterialDecoration::margins() const
 {
-    return QMargins(3, 30, 3, 3);
+    // Material Design says the window decoration is 32 dp
+    return QMargins(0, dp(32), 0, 0);
 }
 
 void QWaylandMaterialDecoration::paint(QPaintDevice *device)
 {
     QRect surfaceRect(QPoint(), window()->frameGeometry().size());
-    QRect clips[] =
-    {
-        QRect(0, 0, surfaceRect.width(), margins().top()),
-        QRect(0, surfaceRect.height() - margins().bottom(), surfaceRect.width(), margins().bottom()),
-        QRect(0, margins().top(), margins().left(), surfaceRect.height() - margins().top() - margins().bottom()),
-        QRect(surfaceRect.width() - margins().right(), margins().top(), margins().left(), surfaceRect.height() - margins().top() - margins().bottom())
-    };
-
-    QRect top = clips[0];
+    QRect top(QPoint(), QSize(window()->frameGeometry().width(), margins().top()));
 
     QPainter p(device);
     p.setRenderHint(QPainter::Antialiasing);
 
     // Title bar
     QPainterPath roundedRect;
-    roundedRect.addRoundedRect(surfaceRect, 6, 6);
-    for (int i = 0; i < 4; ++i) {
-        p.save();
-        p.setClipRect(clips[i]);
-        p.fillPath(roundedRect, m_backgroundColor);
-        p.restore();
-    }
+    roundedRect.addRoundedRect(0, 0, window()->frameGeometry().width(), margins().top() * 1.5,
+                dp(2), dp(2));
+
+    p.fillPath(roundedRect.simplified(), m_backgroundColor);
 
     // Window icon
     QIcon icon = waylandWindow()->windowIcon();
@@ -401,6 +398,18 @@ void QWaylandMaterialDecoration::processMouseRight(QWaylandInputDevice *inputDev
     Q_UNUSED(mods);
     waylandWindow()->setMouseCursor(inputDevice, Qt::SplitHCursor);
     startResize(inputDevice, WL_SHELL_SURFACE_RESIZE_RIGHT,b);
+}
+
+int QWaylandMaterialDecoration::dp(int dp) const
+{
+    qreal multiplier = 1.4;
+    return round(dp * ((pixelDensity()*25.4)/160) * multiplier);
+}
+
+qreal QWaylandMaterialDecoration::pixelDensity() const
+{
+    QScreen *screen = window()->screen();
+    return screen->physicalDotsPerInch() / 25.4;
 }
 
 class QWaylandMaterialDecorationPlugin : public QWaylandDecorationPlugin

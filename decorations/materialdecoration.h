@@ -61,6 +61,8 @@ class Q_WAYLAND_CLIENT_EXPORT QWaylandMaterialDecoration : public QWaylandAbstra
 {
 public:
     QWaylandMaterialDecoration();
+    
+    void setWaylandWindow(QWaylandWindow *window);
 
 public slots:
     void setBackgroundColor(QColor color) {
@@ -83,6 +85,9 @@ private:
     QRectF closeButtonRect() const;
     QRectF maximizeButtonRect() const;
     QRectF minimizeButtonRect() const;
+
+    int dp(int dp) const;
+    qreal pixelDensity() const;
 
     QColor m_foregroundColor;
     QColor m_backgroundColor;
