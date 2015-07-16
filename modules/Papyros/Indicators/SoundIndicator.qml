@@ -23,14 +23,16 @@ Indicator {
     id: indicator
 
     iconName: sound.iconName
-    tooltip: sound.master == 0 ? "Muted" : "Volume at %1%".arg(sound.master)
+    tooltip: sound.muted || sound.master == 0 ? "Muted" : "Volume at %1%".arg(sound.master)
 
     view: Column {
 
         ListItem.Subtitled {
             text: qsTr("Volume")
-            valueText: sound.master == 0 ? qsTr("Muted") : sound.master + "%"
+            valueText: sound.muted || sound.master == 0 ? qsTr("Muted") : sound.master + "%"
             content: Slider {
+                id: soundslider
+
                 width: parent.width
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.verticalCenterOffset: Units.dp(7)
@@ -38,12 +40,38 @@ Indicator {
                 minimumValue: 0
                 maximumValue: 100
 
-                value: sound.master
+                value: sound.muted ? 0 : sound.master
 
                 onValueChanged: {
                     if (value != sound.master) {
+                        sound.muted = value == 0
                         sound.master = value
-                        value = Qt.binding(function() { return sound.master })
+                        value = Qt.binding(function() {
+                            return sound.muted ? 0 : sound.master
+                        })
+                    }
+                }
+
+                Connections {
+                    target: shell
+
+                    onKeyPressed: {
+                        switch (event.key) {
+                        case Qt.Key_VolumeUp:
+                            print("Volume up!")
+                            sound.muted = false
+                            sound.increaseMaster()
+                            break
+                        case Qt.Key_VolumeDown:
+                            print("Volume down!")
+                            sound.muted = false
+                            sound.decreaseMaster()
+                            break
+                        case Qt.Key_VolumeMute:
+                            print("Volume mute!")
+                            sound.toggleMuted()
+                            break
+                        }
                     }
                 }
             }

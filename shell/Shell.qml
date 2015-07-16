@@ -416,7 +416,8 @@ View {
     Sound {
         id: sound
 
-        property string iconName: sound.muted ? "av/volume_off"
+        property string iconName: sound.muted || sound.master == 0
+                                  ? "av/volume_off"
                                   : sound.master <= 33 ? "av/volume_mute"
                                   : sound.master >= 67 ? "av/volume_up"
                                   : "av/volume_down"
