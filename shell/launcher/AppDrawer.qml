@@ -260,9 +260,15 @@ Indicator {
                 delegate: Rectangle {
                     color: index == gridView.currentIndex
                             ? Theme.dark.accentColor : "#ddd"
-                    width: height
+                    width: Math.max(gridView.width * 0.75 / gridView.count, height)
                     height: Units.dp(8)
                     radius: height/2
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        onClicked: gridView.currentIndex = index
+                    }
                 }
             }
         }
