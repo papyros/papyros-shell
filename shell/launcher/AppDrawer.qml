@@ -121,6 +121,7 @@ Indicator {
                 bottom: parent.bottom
             }
 
+            clip: true
             visible: textField.text !== ""
 
             topMargin: Units.dp(8)
