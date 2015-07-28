@@ -229,6 +229,16 @@ Indicator {
                 }
             }
 
+            MouseArea {
+                anchors.fill: parent
+                onWheel: {
+                    if (wheel.angleDelta.y > 0)
+                        gridView.decrementCurrentIndex();
+                    else
+                        gridView.incrementCurrentIndex();
+                }
+            }
+
             property int pageCount: 16
 
             Component.onCompleted: print("COUNT:", model)
