@@ -231,6 +231,7 @@ Indicator {
 
             MouseArea {
                 anchors.fill: parent
+                propagateComposedEvents: true
                 onWheel: {
                     if (wheel.angleDelta.y > 0)
                         gridView.decrementCurrentIndex();
