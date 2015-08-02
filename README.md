@@ -26,7 +26,6 @@ Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the
  * [GreenIsland](https://github.com/greenisland/greenisland)
    * Requires an in-development branch ([feature/window_manager](https://github.com/papyros/greenisland/tree/feature/window_manager)). This is branch is currently awaiting upstream review.
  * A Green Island development version of QtCompositor, as described on the Green Island GitHub page.
- * [QML Extras](https://github.com/papyros/qml-extras) (the `develop` branch).
  * [QML Material](https://github.com/papyros/qml-material) (the `develop` branch).
  users).
  * [QT5XDG](https://github.com/lxde/libqtxdg) for desktop file parsing
