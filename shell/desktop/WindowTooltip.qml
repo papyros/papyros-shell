@@ -48,7 +48,7 @@ Tooltip {
                     height: Units.dp(100)
                     width: item.width * height/item.height
 
-                    property var item: modelData.item 
+                    property var item: modelData.item
                     property var window: modelData.window
                 }
             }
@@ -57,16 +57,23 @@ Tooltip {
         Label {
             id: tooltipLabel
             Layout.alignment: Qt.AlignHCenter
-            text: app && app.desktopFile.name !== "" ? app.desktopFile.name : app.appId
+            text: {
+                if (!app)
+                    return ""
+                else if (app.desktopFile.name !== "")
+                    return app.desktopFile.name
+                else
+                    return app.appId
+            }
             color: Theme.dark.textColor
             style: "subheading"
         }
     }
 
-    width: windows.length == 0 
+    width: windows.length == 0
             ? tooltipLabel.paintedWidth + Units.dp(32)
             : layout.width + Units.dp(32)
-    height: windows.length == 0 
-            ? Device.isMobile ? Units.dp(44) : Units.dp(40) 
+    height: windows.length == 0
+            ? Device.isMobile ? Units.dp(44) : Units.dp(40)
             : layout.height + Units.dp(32)
 }
