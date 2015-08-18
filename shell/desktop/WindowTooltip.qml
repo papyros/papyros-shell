@@ -57,7 +57,9 @@ Tooltip {
         Label {
             id: tooltipLabel
             Layout.alignment: Qt.AlignHCenter
-            text: app && app.desktopFile.name !== "" ? app.desktopFile.name : app.appId
+            text: if (!app) { "" }
+                  else if (app.desktopFile.name !== "") { app.desktopFile.name }
+                  else { app.appId }
             color: Theme.dark.textColor
             style: "subheading"
         }

@@ -35,7 +35,7 @@ class NotificationServer : public QQuickItem
     Q_OBJECT
     Q_DISABLE_COPY(NotificationServer)
 
-    Q_PROPERTY(QObjectListModel *notifications READ notifications)
+    Q_PROPERTY(QObjectListModel *notifications READ notifications NOTIFY notificationsChanged)
 
 public:
     explicit NotificationServer(QQuickItem *parent = new QQuickItem());
@@ -50,6 +50,9 @@ public slots:
     void onNotificationUpdated(uint id, Notification *notification);
     void onNotificationAdded(uint id, Notification *notification);
     void onNotificationRemoved(uint id);
+
+signals:
+    void notificationsChanged();
 
 private:
     NotificationAdaptor *adaptor;

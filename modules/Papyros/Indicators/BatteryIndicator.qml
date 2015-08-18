@@ -24,10 +24,11 @@ import Material.ListItems 0.1 as ListItem
 Indicator {
     id: indicator
 
+    visible: hardware.batteries.length > 0
     iconName: deviceChargeIcon(hardware.primaryBattery)
     tooltip: deviceSummary(hardware.primaryBattery)
     color: {
-        if (hardware.primaryBattery.chargeState != Battery.Charging) {
+        if (hardware.primaryBattery && hardware.primaryBattery.chargeState != Battery.Charging) {
             if (hardware.primaryBattery.chargePercent < 10) {
                 return Palette.colors.red["500"]
             } else if (hardware.primaryBattery.chargePercent < 15) {
@@ -112,6 +113,9 @@ Indicator {
     }
 
     function deviceChargeIcon(device) {
+        if (!device)
+            return ""
+
         var level = "full"
 
         if (!device)
@@ -142,6 +146,9 @@ Indicator {
     }
 
     function deviceSummary(device) {
+        if (!device)
+            return "";
+
         var percent = device.chargePercent + "%"
 
         print("Battery state", device.chargeState)
