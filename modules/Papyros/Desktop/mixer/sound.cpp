@@ -91,7 +91,7 @@ int Sound::master() const
 {
     if (m_backend) {
         int vol = m_backend->rawVol();
-        vol = (float)vol * 100.f / (float)m_max;
+        vol = qCeil((double)vol * 100. / (double)m_max);
         return vol;
     }
     return 0;
