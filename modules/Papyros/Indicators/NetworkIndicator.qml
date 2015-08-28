@@ -29,6 +29,7 @@ Indicator {
     tooltip: networkStatus.activeConnections
 
     property var icons: {
+        "": "device/signal_wifi_0_bar",
         "network-wireless-100-locked": "device/signal_wifi_4_bar",
         "network-wireless-80-locked": "device/signal_wifi_3_bar",
         "network-wireless-60-locked": "device/signal_wifi_2_bar",
@@ -94,6 +95,10 @@ Indicator {
 
     Handler {
         id: handler;
+    }
+
+    AvailableDevices {
+        id: devices
     }
 
     function statusIcon(type, signal) {
