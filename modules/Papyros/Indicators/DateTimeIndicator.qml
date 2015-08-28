@@ -17,8 +17,6 @@
  */
 import QtQuick 2.0
 import Material 0.1
-import Material.ListItems 0.1 as ListItem
-import Papyros.Components 0.1
 import Papyros.Desktop 0.1
 
 Indicator {
@@ -26,97 +24,8 @@ Indicator {
 
     text: Qt.formatTime(now)
     tooltip: Qt.formatDate(now, Locale.LongFormat)
-
-    view: Item {
-        id: dropdown
-
-        implicitHeight: titleItem.height + subItem.height + calendar.height + Units.dp(32)
-
-        Item {
-            id: titleItem
-
-            width: parent.width
-            height: dayLabel.height + Units.dp(16)
-            clip: true
-
-            Rectangle {
-                width: parent.width
-                height: dropdown.height
-                radius: Units.dp(2)
-
-                color: Palette.colors[ShellSettings.desktop.accentColor]['700']
-            }
-
-            Label {
-                id: dayLabel
-                anchors.centerIn: parent
-                text: Qt.formatDate(now, "dddd")
-                color: Theme.dark.textColor
-            }
-        }
-
-        Rectangle {
-            id: subItem
-            anchors.top: titleItem.bottom
-
-            width: parent.width
-            height: column.height + Units.dp(32)
-            color: Palette.colors[ShellSettings.desktop.accentColor]['500']
-
-            Column {
-                id: column
-                anchors.centerIn: parent
-
-                Label {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: Qt.formatDate(now, "MMM").toUpperCase()
-                    style: "title"
-                    color: Theme.dark.textColor
-                    font.pixelSize: Units.dp(27)
-                }
-
-                Label {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: Qt.formatDate(now, "dd")
-                    style: "display3"
-                    color: Theme.dark.textColor
-                }
-
-                Label {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: Qt.formatDate(now, "yyyy")
-                    style: "title"
-                    color: Theme.dark.subTextColor
-                    font.pixelSize: Units.dp(27)
-                }
-            }
-        }
-
-        Calendar {
-            id: calendar
-            anchors {
-                top: subItem.bottom
-                left: parent.left
-                right: parent.right
-                margins: Units.dp(16)
-            }
-
-            frameVisible: false
-        }
-    }
-
-    function getDay(day) {
-
-        var days = {
-            0: "Sun",
-            1: "Mon",
-            2: "Tue",
-            3: "Wed",
-            4: "Thu",
-            5: "Fri",
-            6: "Sat"
-        }
-
-        return days[day]
+    
+    view: DatePicker {
+    
     }
 }
