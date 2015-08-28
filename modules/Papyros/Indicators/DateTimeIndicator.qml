@@ -26,6 +26,6 @@ Indicator {
     tooltip: Qt.formatDate(now, Locale.LongFormat)
     
     view: DatePicker {
-    
+        frameVisible: false
     }
 }
