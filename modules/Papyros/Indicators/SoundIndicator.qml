@@ -31,6 +31,8 @@ Indicator {
             text: qsTr("Volume")
             valueText: sound.master == 0 ? qsTr("Muted") : sound.master + "%"
             content: Slider {
+                id: soundslider
+                
                 width: parent.width
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.verticalCenterOffset: Units.dp(7)
@@ -44,6 +46,24 @@ Indicator {
                     if (value != sound.master) {
                         sound.master = value
                         value = Qt.binding(function() { return sound.master })
+                    }
+                }
+                
+                Connections {
+                    target: shell
+
+                    onKeyPressed: {
+                        switch (event.key) {
+                        case Qt.Key_VolumeUp:
+                            soundslider.value += 5
+                            break
+                        case Qt.Key_VolumeDown:
+                            soundslider.value -= 5
+                            break
+                        case Qt.Key_VolumeMute:
+                            soundslider.value = 0
+                            break
+                        }
                     }
                 }
             }
