@@ -108,7 +108,7 @@ View {
 
         Label {
             id: label
-            text: realName
+            text: realName || name
             height: visible ? implicitHeight + Units.dp(8) : Units.dp(32)
             verticalAlignment: Text.AlignVCenter
             anchors.horizontalCenter: parent.horizontalCenter
