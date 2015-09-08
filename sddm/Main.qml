@@ -25,114 +25,114 @@ import SddmComponents 2.0
 import org.kde.kcoreaddons 1.0 as KCoreAddons
 
 MainView {
-	anchors.fill: parent
+    anchors.fill: parent
 
-	theme.primaryColor: Palette.colors["blue"]["500"]
-	theme.accentColor: Palette.colors["blue"]["500"]
+    theme.primaryColor: Palette.colors["blue"]["500"]
+    theme.accentColor: Palette.colors["blue"]["500"]
 
-	Repeater {
-		model: screenModel
+    Repeater {
+        model: screenModel
 
-		Background {
-			z: -1
-			x: geometry.x; y: geometry.y; width: geometry.width; height:geometry.height
-			source: config.background
-			fillMode: Image.PreserveAspectCrop
-			onStatusChanged: {
-				if (status === Image.Error && source !== config.defaultBackground) {
-	    			source = config.defaultBackground
-				}
-			}
-		}
-	}
+        Background {
+            z: -1
+            x: geometry.x; y: geometry.y; width: geometry.width; height:geometry.height
+            source: config.background
+            fillMode: Image.PreserveAspectCrop
+            onStatusChanged: {
+                if (status === Image.Error && source !== config.defaultBackground) {
+                    source = config.defaultBackground
+                }
+            }
+        }
+    }
 
-	property int selectedUser: users.lastIndex
-	property int selectedSession: sessionModel.lastIndex
+    property int selectedUser: users.lastIndex
+    property int selectedSession: sessionModel.lastIndex
 
-	Item {
-		id: primaryScreen
+    Item {
+        id: primaryScreen
 
-		property var geometry: screenModel.geometry(screenModel.primary)
-		x: geometry.x; y: geometry.y; width: geometry.width; height: geometry.height
+        property var geometry: screenModel.geometry(screenModel.primary)
+        x: geometry.x; y: geometry.y; width: geometry.width; height: geometry.height
 
-		Item {
-			id: desktop
+        Item {
+            id: desktop
 
-			anchors.fill: parent
+            anchors.fill: parent
 
-		    property alias overlayLayer: desktopOverlayLayer
+            property alias overlayLayer: desktopOverlayLayer
 
-			function updateTooltip(item, containsMouse) {
-		        if (containsMouse) {
-		            if (item.tooltip) {
-		                tooltip.text = Qt.binding(function() { return item.tooltip })
-		                tooltip.open(item, 0, Units.dp(16))
-		            }
-		        } else if (tooltip.showing) {
-		            tooltip.close()
-		        }
-		    }
+            function updateTooltip(item, containsMouse) {
+                if (containsMouse) {
+                    if (item.tooltip) {
+                        tooltip.text = Qt.binding(function() { return item.tooltip })
+                        tooltip.open(item, 0, Units.dp(16))
+                    }
+                } else if (tooltip.showing) {
+                    tooltip.close()
+                }
+            }
 
-		    Tooltip {
-		        id: tooltip
-		        overlayLayer: "desktopTooltipOverlayLayer"
-		    }
+            Tooltip {
+                id: tooltip
+                overlayLayer: "desktopTooltipOverlayLayer"
+            }
 
-			OverlayLayer {
-		        id: tooltipOverlayLayer
-		        objectName: "desktopTooltipOverlayLayer"
-		        z: 100
-		        enabled: desktopOverlayLayer.currentOverlay == null
-		    }
+            OverlayLayer {
+                id: tooltipOverlayLayer
+                objectName: "desktopTooltipOverlayLayer"
+                z: 100
+                enabled: desktopOverlayLayer.currentOverlay == null
+            }
 
-		    OverlayLayer {
-		        id: desktopOverlayLayer
-		        z: 99
-		        objectName: "desktopOverlayLayer"
-		    }
-		}
+            OverlayLayer {
+                id: desktopOverlayLayer
+                z: 99
+                objectName: "desktopOverlayLayer"
+            }
+        }
 
-		IndicatorRow {
-			id: indicatorRow
-		}
+        IndicatorRow {
+            id: indicatorRow
+        }
 
-		Row {
-			anchors.centerIn: parent
+        Row {
+            anchors.centerIn: parent
 
-			spacing: Units.dp(32)
+            spacing: Units.dp(32)
 
-			Repeater {
-				id: users
-				model: userModel
+            Repeater {
+                id: users
+                model: userModel
 
-				delegate: UserDelegate {}
-			}
-		}
+                delegate: UserDelegate {}
+            }
+        }
 
-		Wave {
-			id: background
+        Wave {
+            id: background
 
-			color: Palette.colors.blue["500"]
-		}
+            color: Palette.colors.blue["500"]
+        }
 
-		Label {
-			id: label
+        Label {
+            id: label
 
-			anchors.centerIn: parent
-			//style: "headline"
-			style: "display1"
-			text: "Signing in..."
-			color: "white"
+            anchors.centerIn: parent
+            //style: "headline"
+            style: "display1"
+            text: "Signing in..."
+            color: "white"
 
-			opacity: background.opened ? 1 : 0
+            opacity: background.opened ? 1 : 0
 
-			Behavior on opacity {
-				NumberAnimation {}
-			}
-		}
-	}
+            Behavior on opacity {
+                NumberAnimation {}
+            }
+        }
+    }
 
-	KCoreAddons.KUser {
+    KCoreAddons.KUser {
         id: currentUser
     }
 
@@ -149,22 +149,22 @@ MainView {
                                   : "av/volume_down"
     }
 
-	HardwareEngine {
-		id: hardware
-	}
+    HardwareEngine {
+        id: hardware
+    }
 
-	property var now: new Date()
+    property var now: new Date()
 
-	Timer {
-		interval: 1000
-		repeat: true
-		running: true
-		onTriggered: now = new Date()
-	}
+    Timer {
+        interval: 1000
+        repeat: true
+        running: true
+        onTriggered: now = new Date()
+    }
 
-	Connections {
-		target: sddm
+    Connections {
+        target: sddm
 
-		onLoginFailed: background.close(primaryScreen.width/2, primaryScreen.height/2)
-	}
+        onLoginFailed: background.close(primaryScreen.width/2, primaryScreen.height/2)
+    }
 }
