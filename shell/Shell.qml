@@ -73,14 +73,14 @@ View {
     property list<Action>keybindings: [
         Action {
             name: "Kill session"
-            keybinding: "Ctrl+Alt+Backspace"
+            shortcut: "Ctrl+Alt+Backspace"
             onTriggered: Compositor.abortSession();
         },
 
         Action {
             id: lockAction
             name: "Lock your " + Device.name
-            keybinding: "Alt+L"
+            shortcut: "Alt+L"
             onTriggered: lockScreen();
         }
     ]
@@ -279,7 +279,7 @@ View {
         for (var i = 0; i < keybindings.length; i++) {
             var action = keybindings[i]
 
-            var keybinding = action.keybinding.split("+")
+            var keybinding = action.shortcut.split("+")
             var keycode = -1
             var modifiers = 0
             var text = ''
