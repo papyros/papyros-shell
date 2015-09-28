@@ -36,9 +36,6 @@ set(KF5_MIN_VERSION "5.8.0")
 # Find pkg-config here so that it can be referenced soon
 find_package(PkgConfig)
 
-find_package(QT5XDG REQUIRED)
-link_directories("${QTXDG_LIBRARY_DIRS}")
-include_directories("${QTXDG_INCLUDE_DIRS}")
 find_package(PAM REQUIRED)
 find_package(GreenIsland 0.5.9 REQUIRED)
 
@@ -51,6 +48,8 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
              Widgets
              Qml
              Quick)
+
+find_package(QT5XDG REQUIRED)
 
 # Find KF5
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS

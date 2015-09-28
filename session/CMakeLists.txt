@@ -23,7 +23,7 @@ target_link_libraries(papyros-session
     Qt5::Core
     Qt5::DBus
     PapyrosSigWatch
-    ${QTXDG_LIBRARIES}
+    Qt5Xdg
 )
 
 install(TARGETS papyros-session DESTINATION ${BIN_INSTALL_DIR})
