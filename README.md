@@ -2,7 +2,6 @@ Papyros Shell
 ============
 
 [![ZenHub.io](https://img.shields.io/badge/supercharged%20by-zenhub.io-blue.svg)](https://zenhub.io)
-
 [![GitHub release](https://img.shields.io/github/release/papyros/papyros-shell.svg)](https://github.com/papyros/papyros-shell)
 [![GitHub issues](https://img.shields.io/github/issues/papyros/papyros-shell.svg)](https://github.com/papyros/papyros-shell/issues)
 [![Bountysource](https://img.shields.io/bountysource/team/papyros/activity.svg)](https://www.bountysource.com/teams/papyros)
@@ -48,32 +47,31 @@ Once the necessary dependencies are installed, you can build and install the Pap
 
 ### Running the shell ###
 
-To run the shell as a window on your desktop, you need to create a fake screen
-configuration similar to this one for a MacBook Pro:
+To run the shell as a window on your desktop, you need to create a fake screen configuration similar to this one for a MacBook Pro:
 
-    {
-        "outputs": [
-            {
-                "mode": {
-                    "refreshRate": 60000,
-                    "size": {
-                        "height": 736,
-                        "width": 1285
-                    }
-                },
-                "name": "Fake1",
-                "orientation": 2,
-                "position": {
-                    "x": 0,
-                    "y": 0
+```json
+{
+    "outputs": [
+        {
+            "mode": {
+                "refreshRate": 60000,
+                "size": {
+                    "height": 736,
+                    "width": 1285
                 }
+            },
+            "name": "Fake1",
+            "orientation": 2,
+            "position": {
+                "x": 0,
+                "y": 0
             }
-        ]
-    }
+        }
+    ]
+}
+```
 
-You will need to tweak the width and height to match your screen, taking into
-account the window decoration of the shell window and any system panels in your
-desktop environment. Save this file somewhere, for example, `~/.config/fake-screen.json`.
+You will need to tweak the width and height to match your screen, taking into account the window decoration of the shell window and any system panels in your desktop environment. Save this file somewhere, for example, `~/.config/fake-screen.json`.
 
 You can then test the shell by running it in a new window on top of your desktop:
 
@@ -85,9 +83,7 @@ To run the shell from a virtual terminal as a full Wayland compositor:
 
 ### Using the SDDM theme ###
 
-The SDDM theme for Papyros is installed along with the shell. To set it as the
-current theme, edit the `/etc/sddm.conf` file and edit the `Current` key under the `[Theme]` group
-to match:
+The SDDM theme for Papyros is installed along with the shell. To set it as the current theme, edit the `/etc/sddm.conf` file and edit the `Current` key under the `[Theme]` group to match:
 
     [Theme]
     # Current theme name
