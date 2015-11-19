@@ -163,6 +163,7 @@ Item {
                             }
 
                             iconName: desktopFile.iconName
+                            hasIcon: desktopFile.hasIcon
                             name: desktopFile.name !== "" ? desktopFile.name : appId
                         }
 
