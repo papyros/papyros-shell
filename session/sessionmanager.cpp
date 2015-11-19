@@ -186,7 +186,7 @@ void SessionManager::setupEnvironment()
     qputenv("QT_PLATFORM_PLUGIN", QByteArray("Material"));
     qputenv("QT_QPA_PLATFORMTHEME", QByteArray("Material"));
     qputenv("QT_QUICK_CONTROLS_STYLE", QByteArray("Material"));
-    qputenv("QT_WAYLAND_DISABLE_WINDOWDECORATION", QByteArray("1"));
+    // qputenv("QT_WAYLAND_DISABLE_WINDOWDECORATION", QByteArray("1"));
     qputenv("XDG_CURRENT_DESKTOP", QByteArray("Papyros"));
     qputenv("XCURSOR_THEME", QByteArray("Adwaita"));
     qputenv("XCURSOR_SIZE", QByteArray("16"));
