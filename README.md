@@ -20,6 +20,10 @@ Green Island provides the C++ code necessary to interact with Wayland, and QML D
 
 Special thanks to Hawaii shell and its author Pier Luigi Fiorini for some of the QML backend plugins, including the hardware plugin and the original code for the app launcher model.
 
+### Installing on Arch ###
+
+Papyros has an Arch repository with binary packages of Papyros shell and necessary dependencies, along with some other Material Design apps. Instructions are available [here](http://papyros.io/download/index.html).
+
 ### Dependencies ###
 
  * Qt 5.5
@@ -49,39 +53,9 @@ Once the necessary dependencies are installed, you can build and install the Pap
 
 ### Running the shell ###
 
-To run the shell as a window on your desktop, you need to create a fake screen configuration similar to this one for a MacBook Pro:
+To run the shell from an existing desktop environment as a windowed shell or from a virtual terminal as a full Wayland compositor, run:
 
-```json
-{
-    "outputs": [
-        {
-            "mode": {
-                "refreshRate": 60000,
-                "size": {
-                    "height": 736,
-                    "width": 1285
-                }
-            },
-            "name": "Fake1",
-            "orientation": 2,
-            "position": {
-                "x": 0,
-                "y": 0
-            }
-        }
-    ]
-}
-```
-
-You will need to tweak the width and height to match your screen, taking into account the window decoration of the shell window and any system panels in your desktop environment. Save this file somewhere, for example, `~/.config/fake-screen.json`.
-
-You can then test the shell by running it in a new window on top of your desktop:
-
-    greenisland --fake-screen ~/.config/fake-screen.json --shell io.papyros.shell
-
-To run the shell from a virtual terminal as a full Wayland compositor:
-
-    greenisland --platform eglfs --shell io.papyros.shell
+    papyros-session
 
 ### Using the SDDM theme ###
 
