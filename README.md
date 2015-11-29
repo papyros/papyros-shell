@@ -1,6 +1,8 @@
 Papyros Shell
 ============
 
+[![Join the chat at https://gitter.im/papyros/papyros](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/papyros/papyros?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![ZenHub.io](https://img.shields.io/badge/supercharged%20by-zenhub.io-blue.svg)](https://zenhub.io)
 [![GitHub release](https://img.shields.io/github/release/papyros/papyros-shell.svg)](https://github.com/papyros/papyros-shell)
 [![GitHub issues](https://img.shields.io/github/issues/papyros/papyros-shell.svg)](https://github.com/papyros/papyros-shell/issues)
