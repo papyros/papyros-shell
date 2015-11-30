@@ -1,5 +1,5 @@
 /*
-* Quantum Shell - The desktop shell for Quantum OS following Material Design
+* Papyros Shell - The desktop shell for Papyros following Material Design
 * Copyright (C) 2014 Michael Spencer
 *
 * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import Papyros.Desktop 0.1
 import "../../components"
 
 /*
-* The Panel is the top panel with the status icons on the right and the Quantum icon and active app info on the left.
+* The Panel is the top panel with the status icons on the right and the Papyros icon and active app info on the left.
 */
 Rectangle {
     anchors {
