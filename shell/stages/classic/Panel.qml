@@ -41,6 +41,12 @@ View {
         bottom: parent.bottom
     }
 
+    Connections {
+        target: shell
+
+        onSuperPressed: appDrawerButton.toggle()
+    }
+
     RowLayout {
         anchors {
             left: parent.left
@@ -95,6 +101,7 @@ View {
                 spacing: anchors.margins * 2
 
                 IndicatorView {
+                    id: appDrawerButton
                     width: height
                     iconSize: Units.dp(24)
                     indicator: AppDrawer {

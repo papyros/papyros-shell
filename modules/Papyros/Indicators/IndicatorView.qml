@@ -45,7 +45,9 @@ PanelItem {
 
     selected: desktop.overlayLayer.currentOverlay == dropdown
 
-    onClicked: {
+    onClicked: toggle()
+
+    function toggle() {
         if (selected)
             dropdown.close()
         else if (indicator.view)

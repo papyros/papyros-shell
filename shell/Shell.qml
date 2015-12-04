@@ -40,7 +40,7 @@ View {
             name: "locked"
 
             PropertyChanges {
-                target: keyFilter
+                target: keyboardListener
                 enabled: false
             }
         },
@@ -88,9 +88,6 @@ View {
     property alias screenInfo: __screenInfo
 
     signal superPressed()
-
-    signal keyPressed(var event)
-    signal keyReleased(var event)
 
     onStateChanged: {
         powerDialog.close()
@@ -170,214 +167,6 @@ View {
         id: powerDialog
     }
 
-    // ===== Keyboard Shortcuts =====
-
-    KeyEventFilter {
-        id: keyFilter
-
-        enabled: shell.state != "locked"
-
-        Keys.onPressed: shell.keyPressed(event)
-        Keys.onReleased: shell.keyReleased(event)
-    }
-
-    property bool superOnly: false
-
-    onKeyPressed: {
-        if (!keyFilter.enabled) return
-
-        print("Key pressed", event.key, event.text)
-
-        if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_Meta) {
-            superOnly = true
-            helpTimer.restart()
-            return
-        }
-
-        superOnly = false
-
-        if (event.key == Qt.Key_PowerOff || event.key == Qt.Key_PowerDown ||
-                event.key == Qt.Key_Suspend || event.key == Qt.Key_Hibernate) {
-            showPowerDialog()
-            return
-        }
-
-        // Window switcher
-        if (event.modifiers === Qt.ControlModifier) {
-            if (state === "switcher") {
-                if (event.key === Qt.Key_Tab) {
-                    desktop.windowSwitcher.next()
-                    event.accepted = true;
-                    return
-                } else if (event.key === Qt.Key_Backtab) {
-                    desktop.windowSwitcher.prev()
-                    event.accepted = true;
-                    return
-                } else if (event.key === Qt.Key_QuoteLeft) {
-                    desktop.windowSwitcher.nextWindow()
-                    event.accepted = true;
-                    return
-                } else if (event.key === Qt.Key_AsciiTilde) {
-                    desktop.windowSwitcher.prevWindow()
-                    event.accepted = true;
-                    return
-                }
-            } else if (event.key === Qt.Key_Tab) {
-                if (desktop.windowSwitcher.enabled) {
-                    if (appNextTimer.running) {
-                        desktop.windowSwitcher.show()
-                        desktop.windowSwitcher.next()
-                    } else {
-                        appNextTimer.start()
-                    }
-                    event.accepted = true;
-                    return;
-                }
-            } else if (event.key === Qt.Key_Backtab) {
-                if (desktop.windowSwitcher.enabled) {
-                    if (appPreviousTimer.running) {
-                        desktop.windowSwitcher.show()
-                        desktop.windowSwitcher.prev()
-                    } else {
-                        appPreviousTimer.start()
-                    }
-                    event.accepted = true;
-                    return;
-                }
-            } else if (event.key === Qt.Key_QuoteLeft) {
-                if (desktop.windowSwitcher.enabled) {
-                    if (windowNextTimer.running) {
-                        desktop.windowSwitcher.show()
-                        desktop.windowSwitcher.nextWindow()
-                    } else {
-                        windowNextTimer.start()
-                    }
-                    event.accepted = true;
-                    return;
-                }
-            } else if (event.key === Qt.Key_AsciiTilde) {
-                if (desktop.windowSwitcher.enabled) {
-                    if (windowPreviousTimer.running) {
-                        desktop.windowSwitcher.show()
-                        desktop.windowSwitcher.prevWindow()
-                    } else {
-                        windowPreviousTimer.start()
-                    }
-                    event.accepted = true;
-                    return;
-                }
-            }
-        }
-
-        if (event.key == Qt.Key_Down && state == "switcher") {
-            desktop.windowSwitcher.showWindowsView()
-
-            event.accepted = true;
-            return;
-        }
-
-        for (var i = 0; i < keybindings.length; i++) {
-            var action = keybindings[i]
-
-            var keybinding = action.shortcut.split("+")
-            var keycode = -1
-            var modifiers = 0
-            var text = ''
-
-            for (var j = 0; j < keybinding.length; j++) {
-                var key = keybinding[j]
-
-                if (key == 'Ctrl')
-                    modifiers |= Qt.ControlModifier
-                else if (key == 'Alt')
-                    modifiers |= Qt.AltModifier
-                else if (key == 'Super')
-                    modifiers |= Qt.MetaModifier
-                else if (key == 'Backspace')
-                    keycode = Qt.Key_Backspace
-                else
-                    text = key.toLowerCase()
-            }
-
-            if (modifiers != -1 && event.modifiers != modifiers)
-                continue
-            if (event != -1 && text == '' && event.key != keycode)
-                continue
-            if (text != '' && event.text != text)
-                continue
-
-            print("Action triggered: " + action.name)
-            event.accepted = true;
-            action.triggered(shell)
-            return
-        }
-    }
-
-    onKeyReleased: {
-        if (!keyFilter.enabled) return
-
-        if (superOnly) {
-            superPressed()
-        }
-
-        superOnly = false
-
-        if (event.key == Qt.Key_Control) {
-            print("Releasing control!", event.key)
-            if (state == "switcher") {
-                desktop.windowSwitcher.dismiss()
-            } else if (appNextTimer.running) {
-                appNextTimer.stop()
-                desktop.switchNext()
-            } else if (appPreviousTimer.running) {
-                appPreviousTimer.stop()
-                desktop.switchPrev()
-            } else if (windowNextTimer.running) {
-                windowNextTimer.stop()
-                desktop.switchNextWindow()
-            } else if (windowPreviousTimer.running) {
-                windowPreviousTimer.stop()
-                desktop.switchPrevWindow()
-            }
-        }
-    }
-
-    Timer {
-        id: appNextTimer
-        interval: 100
-        onTriggered: {
-            desktop.windowSwitcher.show()
-            desktop.windowSwitcher.next()
-        }
-    }
-
-    Timer {
-        id: appPreviousTimer
-        interval: 100
-        onTriggered: {
-            desktop.windowSwitcher.show()
-            desktop.windowSwitcher.prev()
-        }
-    }
-
-    Timer {
-        id: windowNextTimer
-        interval: 100
-        onTriggered: {
-            desktop.windowSwitcher.show()
-            desktop.windowSwitcher.nextWindow()
-        }
-    }
-
-    Timer {
-        id: windowPreviousTimer
-        interval: 100
-        onTriggered: {
-            desktop.windowSwitcher.show()
-            desktop.windowSwitcher.prevWindow()
-        }
-    }
-
     // ===== Configuration and Settings =====
 
     Connections {
@@ -395,6 +184,10 @@ View {
                 DesktopFiles.iconTheme = ShellSettings.desktop.iconTheme
             }
         }
+    }
+
+    KeyboardListener {
+        id: keyboardListener
     }
 
     QtObject {

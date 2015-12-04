@@ -273,11 +273,4 @@ Indicator {
             }
         }
     }
-
-    Connections {
-        target: shell
-
-        onSuperPressed: selected ? selectedIndicator = null
-                                 : selectedIndicator = appDrawer
-    }
 }
