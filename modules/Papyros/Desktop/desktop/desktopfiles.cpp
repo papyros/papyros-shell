@@ -58,6 +58,7 @@ QStringList DesktopFiles::filesInPaths(QStringList paths, QStringList filters)
     QStringList allFiles;
 
     for (QString path : paths) {
+        path.replace("~", QDir::homePath());
         QStringList fileNames = QDir(path).entryList(filters);
 
         for (QString fileName : fileNames) {
