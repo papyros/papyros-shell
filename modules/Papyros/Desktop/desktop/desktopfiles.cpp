@@ -28,6 +28,10 @@ DesktopFiles::DesktopFiles(QObject *parent)
         : QObject(parent),
           m_interface("io.papyros.session", "/PapyrosSession", "io.papyros.launcher", QDBusConnection::sessionBus())
 {
+    QStringList iconSearchPaths = QIcon::themeSearchPaths();
+    iconSearchPaths << QDir::homePath() + "/.local/share/icons";
+    QIcon::setThemeSearchPaths(iconSearchPaths);
+
     QStringList paths; paths << "~/.local/share/applications"
                              << "/usr/local/share/applications"
                              << "/usr/share/applications";

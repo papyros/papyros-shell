@@ -28,8 +28,9 @@ Item {
     Image {
         id: icon
         anchors.fill: parent
-        source: hasIcon ? "image://desktoptheme/" + iconName : ""
-        visible: source != ""
+        source: iconName.indexOf('/') == 0 ? iconName
+                                           : hasIcon ? "image://desktoptheme/" + iconName : ""
+        visible: status == Image.Ready
 
         sourceSize {
             width: Math.max(16, icon.width * Screen.devicePixelRatio)
@@ -42,7 +43,7 @@ Item {
         width: parent.width * 0.8
         height: width
         radius: width/2
-        visible: icon.source == ""
+        visible: !icon.visible
         color: {
             if (name === "") {
                 return Palette.colors["blue"]["400"]
