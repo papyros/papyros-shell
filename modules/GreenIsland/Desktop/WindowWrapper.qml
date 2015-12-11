@@ -33,7 +33,7 @@ import GreenIsland 1.0
 Item {
     id: window
     objectName: "clientWindow"
-      
+
     visible: false
 
     rotation: {
@@ -187,7 +187,7 @@ Item {
     Loader {
         id: unresponsiveEffectLoader
         anchors.fill: parent
-        
+
         active: opacity > 0
         sourceComponent: unresponsiveEffectComponent
 

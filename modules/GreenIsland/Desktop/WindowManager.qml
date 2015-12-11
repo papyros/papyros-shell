@@ -90,7 +90,11 @@ Item {
         }
 
         function removeWindow(window) {
+            print("Forgetting window", window.clientWindow.id)
+
             var id = window.clientWindow.id
+            window.parent.transientChildren = null;
+            window.parent.popupChild = null;
             window.workspace.windows.removeById(id)
             window.workspace.orderedWindows.removeById(id)
             surfaces.removeById(id)
@@ -99,6 +103,7 @@ Item {
 
             if (window.clientWindow.maximized)
                 window.parent.maximizedCount--
+            print("WINDOW REMOVED!!")
         }
     }
 
@@ -210,27 +215,25 @@ Item {
     }
 
     function windowUnmapped(window) {
-        var entry = windows.findByWindow(window)
+        var entry = surfaces.findByWindow(window)
 
         if (!entry) return;
 
         console.debug("Application window unmapped");
         _printWindowInfo(window);
 
-        _forgetWindow(entry.item, false);
+        surfaces.removeWindow(entry.item);
     }
 
     function windowDestroyed(id) {
-        var entry = windows.findById(id)
+        var entry = surfaces.findById(id)
 
         if (!entry) return;
 
-        // Debug
         console.debug("Application window destroyed");
         _printWindowInfo(entry.window);
 
-        // Forget window
-        _forgetWindow(entry.item, true);
+        surfaces.removeWindow(entry.item);
     }
 
     /*
@@ -241,14 +244,6 @@ Item {
         var workspace = window.workspace
 
         workspace.moveFront(window)
-    }
-
-    function _forgetWindow(window, destruction) {
-        print("Forgetting window", window.clientWindow.id, destruction)
-
-        var workspace = window.workspace
-        workspace.forgetWindow(window)
-        print("WINDOW REMOVED!!")
     }
 
     function enableInput() {

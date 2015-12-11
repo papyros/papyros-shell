@@ -28,7 +28,7 @@ ListModel {
         for (var i = 0; i < windows.count; i++) {
             var entry = windows.get(i);
 
-            if (entry.window === window) {
+            if (entry.window.id === window.id) {
                 entry.index = i;
                 return entry;
             }
@@ -52,7 +52,7 @@ ListModel {
             print("Updating z at ", i, "to", windows.count - i - 1)
             if (windows.get(i).window.type == ClientWindow.TopLevel)
                 windows.get(i).item.z = windows.count - i - 1
-        } 
+        }
     }
 
     function findById(id) {
