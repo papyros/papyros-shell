@@ -72,8 +72,11 @@ Item {
         } else if (item != undefined) {
             windowManager.moveFront(item)
         } else {
-            var item = windowView.windows[windowView.index].item
-            windowManager.moveFront(item)
+            var window = windowView.windows[windowView.index]
+            if (window) {
+                var item = window.item
+                windowManager.moveFront(item)
+            }
         }
 
         shell.state = "default"

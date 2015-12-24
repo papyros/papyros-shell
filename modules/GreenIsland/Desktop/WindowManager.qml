@@ -93,8 +93,11 @@ Item {
             print("Forgetting window", window.clientWindow.id)
 
             var id = window.clientWindow.id
-            window.parent.transientChildren = null;
-            window.parent.popupChild = null;
+            window.destroyed = true
+            if (window.parent && window.parent.transientChildren)
+                window.parent.transientChildren = null;
+            if (window.parent && window.parent.popupChild)
+                window.parent.popupChild = null;
             window.workspace.windows.removeById(id)
             window.workspace.orderedWindows.removeById(id)
             surfaces.removeById(id)

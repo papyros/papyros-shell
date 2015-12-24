@@ -68,6 +68,7 @@ Item {
     property var child
     property bool unresponsive: false
     property var animation: null
+    property bool destroyed
 
     Component.onCompleted: {
         child.parent = window;
@@ -204,7 +205,7 @@ Item {
 
     Timer {
         interval: 10000
-        running: true
+        running: visible && !destroyed
         repeat: true
         onTriggered: window.pingSurface()
     }
@@ -217,9 +218,6 @@ Item {
 
     function pingSurface() {
         print("PING!")
-        // Ping logic applies only to windows actually visible
-        if (!visible)
-            return;
 
         // Ping the surface to see whether it's responsive, if a pong
         // doesn't arrive before the timeout is trigger we know the
