@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <GreenIsland/ApplicationManager>
+#include <GreenIsland/Server/ApplicationManager>
 #include <QtCore/QLocale>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QDebug>

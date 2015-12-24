@@ -31,7 +31,7 @@
 
 #include <KConfigCore/KConfigGroup>
 
-#include <GreenIsland/ApplicationManager>
+#include <GreenIsland/Server/ApplicationManager>
 
 #include "launchermodel.h"
 #include "application.h"
