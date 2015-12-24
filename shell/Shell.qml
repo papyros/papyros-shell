@@ -20,13 +20,9 @@ import QtQuick.Window 2.0
 import Material 0.1
 import Papyros.Desktop 0.1
 import Papyros.Indicators 0.1
-import QtCompositor 1.0
-import GreenIsland 1.0
 import org.kde.kcoreaddons 1.0 as KCoreAddons
 
-import "dashboard"
 import "desktop"
-import "launcher"
 import "lockscreen"
 import "notifications"
 
@@ -65,7 +61,8 @@ View {
     property list<Indicator> indicators: [
         StorageIndicator {},
         NetworkIndicator {},
-        SoundIndicator {},
+        // FIXME: Uncomment after fixing the sound code (see comment above sound object)
+        // SoundIndicator {},
         BatteryIndicator {},
         ActionCenterIndicator {},
         SystemIndicator {}
@@ -95,9 +92,9 @@ View {
 
     function toggleState(state) {
         if (shell.state == state)
-        shell.state = "default"
+            shell.state = "default"
         else
-        shell.state = state
+            shell.state = state
     }
 
     function lockScreen() {
@@ -206,15 +203,17 @@ View {
         id: musicPlayer
     }
 
-    Sound {
-        id: sound
-
-        property string iconName: sound.muted || sound.master == 0
-                                  ? "av/volume_off"
-                                  : sound.master <= 33 ? "av/volume_mute"
-                                  : sound.master >= 67 ? "av/volume_up"
-                                  : "av/volume_down"
-    }
+    // FIXME: For some reason, uncommenting the Sound object causes the shell to lock up
+    // when starting from a VT or DM
+    // Sound {
+    //     id: sound
+    //
+    //     property string iconName: sound.muted || sound.master == 0
+    //                               ? "av/volume_off"
+    //                               : sound.master <= 33 ? "av/volume_mute"
+    //                               : sound.master >= 67 ? "av/volume_up"
+    //                               : "av/volume_down"
+    // }
 
     HardwareEngine {
         id: hardware
