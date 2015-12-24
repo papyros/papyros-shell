@@ -61,7 +61,7 @@ PulseAudioMixer *PulseAudioMixer::create(Sound *mixer)
     char *dpy = getenv("DISPLAY");
     setenv("DISPLAY", "", 1);
     pulse->m_context = pa_context_new(pulse->m_mainloopApi, nullptr);
-    setenv("DISPLAY", dpy, 1);
+    setenv("DISPLAY", dpy != nullptr ? dpy : "", 1);
     if (!pulse->m_context) {
         qWarning("pa_context_new() failed.");
         delete pulse;

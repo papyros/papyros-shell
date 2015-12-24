@@ -61,8 +61,7 @@ View {
     property list<Indicator> indicators: [
         StorageIndicator {},
         NetworkIndicator {},
-        // FIXME: Uncomment after fixing the sound code (see comment above sound object)
-        // SoundIndicator {},
+        SoundIndicator {},
         BatteryIndicator {},
         ActionCenterIndicator {},
         SystemIndicator {}
@@ -203,17 +202,15 @@ View {
         id: musicPlayer
     }
 
-    // FIXME: For some reason, uncommenting the Sound object causes the shell to lock up
-    // when starting from a VT or DM
-    // Sound {
-    //     id: sound
-    //
-    //     property string iconName: sound.muted || sound.master == 0
-    //                               ? "av/volume_off"
-    //                               : sound.master <= 33 ? "av/volume_mute"
-    //                               : sound.master >= 67 ? "av/volume_up"
-    //                               : "av/volume_down"
-    // }
+    Sound {
+        id: sound
+
+        property string iconName: sound.muted || sound.master == 0
+                                  ? "av/volume_off"
+                                  : sound.master <= 33 ? "av/volume_mute"
+                                  : sound.master >= 67 ? "av/volume_up"
+                                  : "av/volume_down"
+    }
 
     HardwareEngine {
         id: hardware
