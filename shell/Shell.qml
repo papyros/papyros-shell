@@ -155,6 +155,30 @@ View {
         }
     }
 
+    // This catches mouse clicks outside of the active popup menu and closes the popup menu
+    MouseArea {
+        id: popupWindowOverlay
+
+        anchors.fill: parent
+
+        visible: desktop.windowManager.activeWindow !== undefined &&
+                desktop.windowManager.activeWindow.popupChild !== null
+        enabled: visible
+        acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
+
+        onPressed: {
+            var point = popupWindowOverlay.mapToItem(desktop.windowManager.activeWindow.popupChild,
+                    mouse.x, mouse.y)
+            console.log(point)
+            if (!desktop.windowManager.activeWindow.popupChild.contains(point)) {
+                mouse.accepted = true
+                desktop.windowManager.activeWindow.popupChild.close(destroy)
+            } else {
+                mouse.accepted = false
+            }
+        }
+    }
+
     Lockscreen {
         id: lockscreen
     }
