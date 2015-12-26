@@ -51,29 +51,6 @@ Indicator {
                         })
                     }
                 }
-
-                Connections {
-                    target: shell
-
-                    onKeyPressed: {
-                        switch (event.key) {
-                        case Qt.Key_VolumeUp:
-                            print("Volume up!")
-                            sound.muted = false
-                            sound.increaseMaster()
-                            break
-                        case Qt.Key_VolumeDown:
-                            print("Volume down!")
-                            sound.muted = false
-                            sound.decreaseMaster()
-                            break
-                        case Qt.Key_VolumeMute:
-                            print("Volume mute!")
-                            sound.toggleMuted()
-                            break
-                        }
-                    }
-                }
             }
 
             showDivider: musicRepeater.count > 0

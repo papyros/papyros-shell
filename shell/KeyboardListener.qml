@@ -28,7 +28,7 @@ KeyEventFilter {
     Keys.onPressed: {
         if (!keyFilter.enabled) return
 
-        print("Key pressed", event.key, event.text)
+        shell.log("Key pressed " + event.key + " " + event.text)
 
         if (event.modifiers & Qt.MetaModifier && event.key === Qt.Key_Meta) {
             superOnly = true
@@ -40,7 +40,28 @@ KeyEventFilter {
         if (event.key == Qt.Key_PowerOff || event.key == Qt.Key_PowerDown ||
                 event.key == Qt.Key_Suspend || event.key == Qt.Key_Hibernate) {
             showPowerDialog()
+            event.accepted = true
             return
+        }
+
+        switch (event.key) {
+            case Qt.Key_VolumeUp:
+                print("Volume up!")
+                sound.muted = false
+                sound.increaseMaster()
+                event.accepted = true
+                return
+            case Qt.Key_VolumeDown:
+                print("Volume down!")
+                sound.muted = false
+                sound.decreaseMaster()
+                event.accepted = true
+                return
+            case Qt.Key_VolumeMute:
+                print("Volume mute!")
+                sound.toggleMuted()
+                event.accepted = true
+                return
         }
 
         // Window switcher
