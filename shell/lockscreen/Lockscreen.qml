@@ -118,6 +118,7 @@ Item {
             id: image
 
             source: currentUser.faceIconUrl
+            visible: status == Image.Ready
             width: Units.dp(80)
             height: width
             anchors {
@@ -131,6 +132,17 @@ Item {
                 color: "transparent"
                 border.color: Qt.rgba(0,0,0,0.3)
                 radius: width/2
+            }
+        }
+
+        Item {
+            anchors.fill: image
+            visible: !image.visible
+
+            Icon {
+                anchors.centerIn: parent
+                name: "action/account_circle"
+                size: Units.dp(95)
             }
         }
 
