@@ -76,7 +76,7 @@ Indicator {
         if (isMouse(battery)) {
             return battery.product
         } else if (battery.type == Battery.PrimaryBattery) {
-            return "Laptop battery"
+            return "Battery"
         } else if (battery.type == Battery.MonitorBattery) {
             return "External monitor"
         } else if (battery.type == Battery.KeyboardBattery) {
@@ -93,7 +93,7 @@ Indicator {
         if (isMouse(battery)) {
             return "icon://hardware/mouse"
         } else if (battery.type == Battery.PrimaryBattery) {
-            return "icon://hardware/laptop"
+            return "icon://" + deviceChargeIcon(battery)
         } else if (battery.type == Battery.MonitorBattery) {
             return "icon://hardware/desktop_windows"
         } else if (battery.type == Battery.KeyboardBattery) {
