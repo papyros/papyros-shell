@@ -141,7 +141,7 @@ View {
         }
 
         NotificationsView {
-
+            
         }
 
         onXChanged: updateOutputGeometry()

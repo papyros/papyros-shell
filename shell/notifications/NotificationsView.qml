@@ -22,6 +22,12 @@ import Papyros.Desktop 0.1
 Item {
     anchors.fill: parent
 
+    opacity: desktop.overlayLayer.currentOverlay ? 0 : 1
+
+    Behavior on opacity {
+        NumberAnimation { duration: 200 }
+    }
+
     ListView {
         id: listView
 
