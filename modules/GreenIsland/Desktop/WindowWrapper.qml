@@ -27,7 +27,6 @@
  ***************************************************************************/
 
 import QtQuick 2.0
-import QtCompositor 1.0
 import GreenIsland 1.0
 
 Item {
@@ -38,17 +37,17 @@ Item {
 
     rotation: {
         switch (_greenisland_output.transform) {
-            case WaylandOutput.Transform90:
+            case Output.Transform90:
                 return 90;
-            case WaylandOutput.TransformFlipped90:
+            case Output.TransformFlipped90:
                 return -90;
-            case WaylandOutput.Transform180:
+            case Output.Transform180:
                 return 180;
-            case WaylandOutput.TransformFlipped180:
+            case Output.TransformFlipped180:
                 return -180;
-            case WaylandOutput.Transform270:
+            case Output.Transform270:
                 return 270;
-            case WaylandOutput.TransformFlipped270:
+            case Output.TransformFlipped270:
                 return -270;
             default:
                 return 0;

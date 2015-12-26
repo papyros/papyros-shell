@@ -35,7 +35,7 @@ target_link_libraries(papyrosdesktop
                       Qt5::Quick
                       KF5::Solid
                       KF5::ConfigCore
-                      GreenIsland::GreenIsland
+                      GreenIsland::Server
                       ${PAM_LIBRARIES}
                       Qt5Xdg)
 
