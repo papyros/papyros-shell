@@ -35,7 +35,7 @@ PanelItem {
 
     visible: !indicator.hidden && indicator.visible
 
-    property bool smallMode: height < Units.dp(40)
+    property bool smallMode: height < Units.dp(35)
     property Indicator indicator
     property color defaultColor: Theme.dark.iconColor
     property color defaultTextColor: Theme.dark.textColor
