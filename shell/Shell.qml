@@ -52,6 +52,8 @@ View {
 
     backgroundColor: Qt.rgba(0.2, 0.2, 0.2, 1)
 
+    property string logs: "Shell running\n"
+
     readonly property bool hasErrors: stage.status == Loader.Error
     readonly property string errorMessage: stage.sourceComponent.errorString()
 
@@ -78,6 +80,12 @@ View {
             name: "Lock your " + Device.name
             shortcut: "Alt+L"
             onTriggered: lockScreen();
+        },
+
+        Action {
+            name: "Developer tools"
+            shortcut: "Ctrl+Alt+D"
+            onTriggered: toggleDeveloperTools()
         }
     ]
 
@@ -89,11 +97,19 @@ View {
         powerDialog.close()
     }
 
+    function log(message) {
+        logs = logs + message + '\n'
+    }
+
     function toggleState(state) {
         if (shell.state == state)
             shell.state = "default"
         else
             shell.state = state
+    }
+
+    function toggleDeveloperTools() {
+        toggleState("developer")
     }
 
     function lockScreen() {
@@ -187,6 +203,8 @@ View {
         id: powerDialog
     }
 
+    DeveloperOverlay {}
+
     // ===== Configuration and Settings =====
 
     Connections {
@@ -249,7 +267,7 @@ View {
             onTriggered: {
                 if (sound.master !== volume && volume !== -1) {
                     sound.notificationId = notifyServer.notify("Sound", sound.notificationId,
-                            "icon://" + sound.getIcon(), "Volume changed", "", [], {}, 0,
+                            "icon://" + sound.iconName, "Volume changed", "", [], {}, 0,
                             sound.master).id
                 }
                 volume = sound.master
