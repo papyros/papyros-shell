@@ -22,8 +22,6 @@
 
 #include <QDBusAbstractAdaptor>
 #include <QStringList>
-#include <QTimer>
-#include <QSignalMapper>
 #include <QList>
 #include "notification.h"
 #include <QQmlListProperty>
@@ -43,17 +41,17 @@ public:
         Unknown = 4
     };
 
-    NotificationAdaptor(QObject *parent, NotificationServer *server) : QDBusAbstractAdaptor(parent), availableId(1) {
+    NotificationAdaptor(QObject *parent, NotificationServer *server) : QDBusAbstractAdaptor(parent) {
         this->server = server;
     }
 
 public slots:
-    QStringList GetCapabilities() 
+    QStringList GetCapabilities()
     {
         return QStringList() << "body";
     }
 
-    void CloseNotification(uint id) 
+    void CloseNotification(uint id)
     {
         server->onNotificationRemoved(id);
 
@@ -68,37 +66,16 @@ public slots:
         spec_version = "1.2"; // TODO: Check that this is correct
     }
 
-    uint Notify(QString app_name, uint replaces_id, QString app_icon, QString summary, 
-            QString body, QStringList actions, QVariantMap hints, int expire_timeout) 
+    uint Notify(QString app_name, uint replaces_id, QString app_icon, QString summary,
+            QString body, QStringList actions, QVariantMap hints, int expire_timeout)
     {
-        Notification *notification = new Notification(app_name, 
-                (replaces_id == 0 ? availableId++ : replaces_id), 
-                app_icon, summary, body, actions, hints, expire_timeout);
-
-        if (expire_timeout == 0) {
-            expire_timeout = 2500;
-        }
-
-        if (expire_timeout != -1) {
-            QSignalMapper *mapper = new QSignalMapper(this);
-            QObject::connect(mapper, SIGNAL(mapped(QString)), this, SLOT(forTimer(QString)));
-            QTimer *timer = new QTimer(this);
-            QObject::connect(timer, SIGNAL(timeout()), mapper, SLOT(map()));
-            mapper->setMapping(timer, QVariant(notification->m_id).toString());
-            timer->setSingleShot(true);
-            timer->start(expire_timeout);
-        }
-
-        if (replaces_id != 0) {
-            server->onNotificationUpdated(replaces_id, notification);
-        } else {
-            server->onNotificationAdded(notification->m_id, notification);
-        }
+        Notification *notification = server->notify(app_name, replaces_id, app_icon, summary,
+                body, actions, hints, expire_timeout);
 
         return notification->m_id;
     }
 
-    void closeNotification(int id) 
+    void closeNotification(int id)
     {
         server->onNotificationRemoved(id);
         emit NotificationClosed(id, Dismissed);
@@ -108,17 +85,8 @@ signals:
     void NotificationClosed(uint id, uint reason);
     void ActionInvoked(uint id, QString action_key);
 
-private slots:
-
-    void forTimer(QString id) 
-    {
-        server->onNotificationRemoved(id.toInt());
-        emit NotificationClosed(QVariant(id).toUInt(), Expired);
-    }
-
 private:
 
-    uint availableId;
     NotificationServer *server;
 };
 

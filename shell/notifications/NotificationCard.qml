@@ -104,10 +104,10 @@ View {
                 color: Theme.light.iconColor
                 size: Units.dp(24)
                 source: {
-                    print(notification.iconName)
-                    if (!notification.iconName) {
+                    if (!notification || !notification.iconName) {
                         return ""
-                    } else if (notification.iconName.indexOf("/") === 0 || notification.iconName.indexOf("://") !== -1) {
+                    } else if (notification.iconName.indexOf("/") === 0 ||
+                            notification.iconName.indexOf("://") !== -1) {
                         return notification.iconName
                     } else {
                         return "image://desktoptheme/" + notification.iconName
@@ -136,7 +136,7 @@ View {
 
                     elide: Text.ElideRight
                     style: "subheading"
-                    text: notification.summary
+                    text: notification ? notification.summary : ""
                 }
 
                 Label {
@@ -150,6 +150,8 @@ View {
                     horizontalAlignment: Qt.AlignHCenter
                     style: "body1"
                     visible: text != ""
+                    text: notification && notification.progress > -1
+                            ? "%1%".arg(notification.progress) : ""
                 }
             }
 
@@ -157,9 +159,16 @@ View {
                 id: contentItem
 
                 Layout.fillWidth: true
+                Layout.preferredHeight: showing ? subLabel.implicitHeight : 0
 
-                visible: children.length > 0
-                height: visible ? subLabel.implicitHeight : 0
+                property bool showing: visibleChildren.length > 0
+
+                ProgressBar {
+                    visible: notification && notification.progress > -1
+                    value: (notification ? notification.progress : 0)/100
+                    width: parent.width
+                    anchors.verticalCenter: parent.verticalCenter
+                }
             }
 
             Label {
@@ -172,8 +181,8 @@ View {
                 wrapMode: Text.WordWrap
                 style: "body1"
 
-                visible: text != "" && !contentItem.visible
-                text: "~~"  + notification.body + "~~"
+                visible: text != "" && !contentItem.showing
+                text: notification ? notification.body : ""
                 maximumLineCount: 2
             }
         }

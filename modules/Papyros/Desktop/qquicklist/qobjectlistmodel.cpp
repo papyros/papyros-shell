@@ -58,6 +58,17 @@ bool QObjectListModel::setData(const QModelIndex &index, const QVariant &value, 
     return true;
 }
 
+bool QObjectListModel::replace(QObject * const &item, int row) {
+    Q_ASSERT(item);
+
+    if (m_data.at(row) == item) return true;
+
+    m_data[row] = item;
+    emit dataChanged(index(row), index(row));
+
+    return true;
+}
+
 bool QObjectListModel::insert(QObject * const &item, int row) {
     if(row == -1)
         row = m_data.count();
@@ -225,4 +236,3 @@ void QObjectListModel::propertyNotification() {
     // All of the notifications will be sent as a single signal from the event loop.
     if (!m_notifyTimer.isActive()) m_notifyTimer.start(0, this);
 }
-

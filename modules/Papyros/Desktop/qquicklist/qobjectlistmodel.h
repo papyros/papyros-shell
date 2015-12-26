@@ -42,6 +42,7 @@ public:
     int rowCount(const QModelIndex &) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     bool setData(const QModelIndex &index, const QVariant &value, int role) Q_DECL_OVERRIDE;
+    bool replace(QObject * const &item, int row);
     bool insert(QObject * const &item, int row = -1);
     template<class T> bool insert(QList <T*> const &items, int row = -1) {
         if(row == -1)

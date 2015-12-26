@@ -76,7 +76,7 @@ public:
     inline void append(const QList<T*> &t) { QList<T*>::append(t); m_model->insert(t); }
     inline void prepend(T *const &t) { QList<T*>::prepend(t); m_model->insert(t,0); }
     inline void insert(int i, T *const &t) { QList<T*>::insert(i,t); m_model->insert(t,i); }
-    inline void replace(int i, T *const &t) { QList<T*>::replace(i,t); m_model->insert(t,i); m_model->removeAt(i + 1); }
+    inline void replace(int i, T *const &t) { QList<T*>::replace(i,t); m_model->replace(t,i); }
     inline void removeAt(int i) { QList<T*>::removeAt(i); m_model->removeAt(i); }
     inline int removeAll(T *const &t) { m_model->removeAll(t); return QList<T*>::removeAll(t); }
     inline bool removeOne(T *const &t) { m_model->removeOne(t); return QList<T*>::removeOne(t); }

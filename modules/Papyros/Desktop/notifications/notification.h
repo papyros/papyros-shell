@@ -22,24 +22,29 @@
 #include <QObject>
 #include <QStringList>
 #include <QVariantMap>
+#include <QTimer>
+#include <QSignalMapper>
 
 class Notification : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString appName MEMBER m_app_name CONSTANT)
     Q_PROPERTY(uint id MEMBER m_id CONSTANT)
-    Q_PROPERTY(QString appIcon MEMBER m_app_icon CONSTANT)
+    Q_PROPERTY(QString iconName MEMBER m_app_icon CONSTANT)
     Q_PROPERTY(QString summary MEMBER m_summary CONSTANT)
     Q_PROPERTY(QString body MEMBER m_body CONSTANT)
     Q_PROPERTY(QStringList actions MEMBER m_actions CONSTANT)
     Q_PROPERTY(QVariantMap hints MEMBER m_hints CONSTANT)
     Q_PROPERTY(int expireTimeout MEMBER m_expire_timeout CONSTANT)
+    Q_PROPERTY(int progress MEMBER m_progress CONSTANT)
     Q_ENUMS(Urgency)
 public:
     enum Urgency {
         Low, Normal, Critical
     };
-    explicit Notification(QString &app_name, uint id, QString &app_icon, QString &summary, QString &body, QStringList actions, QVariantMap &hints, int &expire_timeout, QObject *parent = 0) : QObject(parent){
+    explicit Notification(QString &app_name, uint id, QString &app_icon, QString &summary,
+            QString &body, QStringList actions, QVariantMap &hints, int &expire_timeout,
+            int &progress, QObject *parent = 0) : QObject(parent){
         m_app_name = app_name;
         m_id = id;
         m_app_icon = app_icon;
@@ -48,6 +53,7 @@ public:
         m_actions = actions;
         m_hints = hints;
         m_expire_timeout = expire_timeout;
+        m_progress = progress;
     }
     QString m_app_name;
     uint m_id;
@@ -57,6 +63,25 @@ public:
     QStringList m_actions;
     QVariantMap m_hints;
     int m_expire_timeout;
+    int m_progress;
+    QTimer *m_timer = nullptr;
+
+    void timeout(const QObject * receiver, const char *slot) {
+        if (m_timer) {
+            m_timer->stop();
+            delete m_timer;
+        }
+
+        m_timer = new QTimer(this);
+        QSignalMapper *mapper = new QSignalMapper(m_timer);
+        mapper->setMapping(m_timer, QVariant(m_id).toString());
+
+        QObject::connect(m_timer, SIGNAL(timeout()), mapper, SLOT(map()));
+        QObject::connect(mapper, SIGNAL(mapped(QString)), receiver, slot);
+
+        m_timer->setSingleShot(true);
+        m_timer->start(m_expire_timeout);
+    }
 };
 
 #endif // NOTIFICATION_H

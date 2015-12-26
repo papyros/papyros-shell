@@ -22,10 +22,6 @@ import Papyros.Desktop 0.1
 Item {
     anchors.fill: parent
 
-    NotificationServer {
-        id: notifyServer
-    }
-
     ListView {
         id: listView
 
@@ -45,7 +41,7 @@ Item {
         width: Units.dp(280)
 
         verticalLayoutDirection: shell.stageName === "classic"
-                                 ? ListView.BottomToTop : ListView.TopToBottom 
+                                 ? ListView.BottomToTop : ListView.TopToBottom
         orientation: Qt.Vertical
         interactive: false
 

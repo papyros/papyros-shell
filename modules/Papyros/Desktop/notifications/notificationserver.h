@@ -35,7 +35,7 @@ class NotificationServer : public QQuickItem
     Q_OBJECT
     Q_DISABLE_COPY(NotificationServer)
 
-    Q_PROPERTY(QObjectListModel *notifications READ notifications NOTIFY notificationsChanged)
+    Q_PROPERTY(QObjectListModel *notifications READ notifications CONSTANT)
 
 public:
     explicit NotificationServer(QQuickItem *parent = new QQuickItem());
@@ -46,15 +46,20 @@ public:
     }
 
 public slots:
+    Notification *notify(QString app_name, uint replaces_id, QString app_icon,
+            QString summary, QString body, QStringList actions, QVariantMap hints,
+            int expire_timeout = 0, int progress = -1);
+
     void closeNotification(uint id);
     void onNotificationUpdated(uint id, Notification *notification);
     void onNotificationAdded(uint id, Notification *notification);
     void onNotificationRemoved(uint id);
 
-signals:
-    void notificationsChanged();
+private slots:
+    void forTimer(QString id);
 
 private:
+    uint availableId = 1;
     NotificationAdaptor *adaptor;
     QQuickList<Notification> notificationsList;
 };

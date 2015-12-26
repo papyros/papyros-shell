@@ -31,10 +31,44 @@ void NotificationServer::closeNotification(uint id)
     adaptor->closeNotification(id);
 }
 
+Notification *NotificationServer::notify(QString app_name, uint replaces_id, QString app_icon,
+        QString summary, QString body, QStringList actions, QVariantMap hints,
+        int expire_timeout, int progress)
+{
+    if (expire_timeout == 0) {
+        expire_timeout = 2500;
+    }
+
+    Notification *notification = new Notification(app_name,
+            (replaces_id == 0 ? availableId++ : replaces_id),
+            app_icon, summary, body, actions, hints, expire_timeout, progress);
+
+    if (expire_timeout != -1) {
+        notification->timeout(this, SLOT(forTimer(QString)));
+    }
+
+    if (replaces_id != 0) {
+        onNotificationUpdated(replaces_id, notification);
+    } else {
+        onNotificationAdded(notification->m_id, notification);
+    }
+
+    return notification;
+}
+
 void NotificationServer::onNotificationUpdated(uint id, Notification *notification)
 {
-	onNotificationRemoved(id);
-	notificationsList << notification;
+    for (int i = 0; i < notificationsList.size(); i++) {
+        Notification *existing_notification = notificationsList[i];
+
+    	if (existing_notification->m_id == id) {
+			notificationsList.replace(i, notification);
+			delete existing_notification;
+			return;
+		}
+	}
+
+    onNotificationAdded(id, notification);
 }
 
 void NotificationServer::onNotificationAdded(uint id, Notification *notification)
@@ -51,4 +85,10 @@ void NotificationServer::onNotificationRemoved(uint id)
 			return;
 		}
 	}
+}
+
+void NotificationServer::forTimer(QString id)
+{
+    onNotificationRemoved(id.toInt());
+    emit adaptor->NotificationClosed(QVariant(id).toUInt(), NotificationAdaptor::Expired);
 }
