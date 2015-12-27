@@ -26,11 +26,9 @@ Papyros has an Arch repository with binary packages of Papyros shell and necessa
 
 ### Dependencies ###
 
- * Qt 5.5
+ * Qt 5.5 (including QtWayland)
  * Wayland
  * [GreenIsland](https://github.com/greenisland/greenisland)
-   * Requires an in-development branch ([feature/window_manager](https://github.com/papyros/greenisland/tree/feature/window_manager)). This is branch is currently awaiting upstream review.
- * A Green Island development version of QtCompositor, as described on the Green Island GitHub page.
  * [QML Material](https://github.com/papyros/qml-material) (the `develop` branch).
  users).
  * [QT5XDG](https://github.com/lxde/libqtxdg) for desktop file parsing
