@@ -30,7 +30,6 @@ Papyros has an Arch repository with binary packages of Papyros shell and necessa
  * Wayland
  * [GreenIsland](https://github.com/greenisland/greenisland)
  * [QML Material](https://github.com/papyros/qml-material) (the `develop` branch).
- users).
  * [QT5XDG](https://github.com/lxde/libqtxdg) for desktop file parsing
  * PAM for authentication
  * Several KDE Frameworks
