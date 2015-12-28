@@ -292,7 +292,8 @@ QProcessEnvironment CompositorLauncher::compositorEnv() const
             env.insert(QStringLiteral("QT_QPA_EGLFS_DISABLE_INPUT"), QStringLiteral("1"));
         break;
     case X11Mode:
-        env.insert(QStringLiteral("QT_XCB_GL_INTEGRATION"), QStringLiteral("xcb_egl"));
+        // TODO: Figure out why this was necessary and why it makes closing Qt apps freeze the shell
+        // env.insert(QStringLiteral("QT_XCB_GL_INTEGRATION"), QStringLiteral("xcb_egl"));
         break;
     default:
         break;
@@ -312,6 +313,6 @@ void CompositorLauncher::setupEnvironment()
         qputenv("QT_QPA_PLATFORM", QByteArray("wayland"));
     }
     qputenv("GDK_BACKEND", QByteArray("wayland"));
-    
+
     qunsetenv("WAYLAND_DISPLAY");
 }
