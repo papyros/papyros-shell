@@ -141,7 +141,7 @@ View {
         }
 
         NotificationsView {
-            
+
         }
 
         onXChanged: updateOutputGeometry()
@@ -150,7 +150,15 @@ View {
         onHeightChanged: updateOutputGeometry()
 
         function updateOutputGeometry() {
-            _greenisland_output.availableGeometry = Qt.rect(x,y,width,height)
+            var pt = _greenisland_output.mapToGlobal(0, 0);
+            var g = Qt.rect(pt.x + stage.item.leftMargin, pt.y + stage.item.topMargin,
+                    _greenisland_output.geometry.width - stage.item.leftMargin
+                                                      - stage.item.rightMargin,
+                     _greenisland_output.geometry.height - stage.item.topMargin
+                                                         - stage.item.bottomMargin);
+            _greenisland_output.availableGeometry = g;
+            console.debug("Available geometry for", name, "is:",
+                    _greenisland_output.availableGeometry);
         }
     }
 
