@@ -94,6 +94,7 @@ Item {
 
             var id = window.clientWindow.id
             window.destroyed = true
+            window.visible = false
             if (window.parent && window.parent.transientChildren)
                 window.parent.transientChildren = null;
             if (window.parent && window.parent.popupChild)
