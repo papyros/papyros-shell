@@ -114,6 +114,19 @@ void CompositorLauncher::stop()
     Q_EMIT stopped();
 }
 
+void CompositorLauncher::compositorError(QProcess::ProcessError error)
+{
+    qDebug() << "Compositor crashed: " << error;
+
+    // Exit
+    QCoreApplication::quit();
+}
+
+void CompositorLauncher::compositorFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    qDebug() << "Compositor finished";
+}
+
 void CompositorLauncher::startProcess(const QString &command, const QStringList &args,
         QProcessEnvironment environment)
 {
@@ -261,39 +274,17 @@ QProcessEnvironment CompositorLauncher::compositorEnv() const
     // Standard environment
     env.insert(QStringLiteral("QT_QPA_PLATFORMTHEME"), QStringLiteral("Material"));
     env.insert(QStringLiteral("QT_QUICK_CONTROLS_STYLE"), QStringLiteral("Material"));
-    env.insert(QStringLiteral("XCURSOR_THEME"), QStringLiteral("Adwaita"));
-    env.insert(QStringLiteral("XCURSOR_SIZE"), QStringLiteral("16"));
-    env.insert(QStringLiteral("QSG_RENDER_LOOP"), QStringLiteral("windows"));
 
     // Specific environment
     switch (m_mode) {
     case EglFSMode:
-        // General purpose distributions do not have the proper eglfs
-        // integration and may want to build it out of tree, let them
-        // specify a QPA plugin with an environment variable
-        if (qEnvironmentVariableIsSet("PAPYROS_QPA_PLATFORM"))
-            env.insert(QStringLiteral("QT_QPA_PLATFORM"), qgetenv("PAPYROS_QPA_PLATFORM"));
-        else
-            env.insert(QStringLiteral("QT_QPA_PLATFORM"), QStringLiteral("eglfs"));
-
-        switch (m_hardware) {
-        case BroadcomHardware:
-            env.insert(QStringLiteral("QT_QPA_EGLFS_INTEGRATION"), QStringLiteral("eglfs_brcm"));
-            break;
-        default:
-            env.insert(QStringLiteral("QT_QPA_EGLFS_INTEGRATION"), QStringLiteral("eglfs_kms"));
-            env.insert(QStringLiteral("QT_QPA_EGLFS_KMS_CONFIG"),
-                       QStandardPaths::locate(QStandardPaths::GenericDataLocation,
-                                              QStringLiteral("papyros-shell/eglfs/eglfs_kms.json")));
-            break;
-        }
-
-        if (m_hasLibInputPlugin)
-            env.insert(QStringLiteral("QT_QPA_EGLFS_DISABLE_INPUT"), QStringLiteral("1"));
+        env.insert(QStringLiteral("QT_QPA_PLATFORM"), QStringLiteral("greenisland"));
         break;
     case X11Mode:
-        // TODO: Figure out why this was necessary and why it makes closing Qt apps freeze the shell
-        // env.insert(QStringLiteral("QT_XCB_GL_INTEGRATION"), QStringLiteral("xcb_egl"));
+        env.insert(QStringLiteral("QT_XCB_GL_INTEGRATION"), QStringLiteral("xcb_egl"));
+        break;
+    case WaylandMode:
+        env.insert(QStringLiteral("QT_QPA_PLATFORM"), QStringLiteral("wayland"));
         break;
     default:
         break;

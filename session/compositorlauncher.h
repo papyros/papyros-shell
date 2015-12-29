@@ -52,7 +52,7 @@
  *
  * $END_LICENSE$
  ***************************************************************************/
- 
+
 #ifndef COMPOSITORLAUNCHER_H
 #define COMPOSITORLAUNCHER_H
 
@@ -93,6 +93,10 @@ public slots:
 signals:
     void started();
     void stopped();
+
+private slots:
+    void compositorError(QProcess::ProcessError error);
+    void compositorFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
     Mode m_mode;
