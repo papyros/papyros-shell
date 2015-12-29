@@ -33,11 +33,19 @@ target_link_libraries(papyrosdesktop
                       Qt5::Qml
                       Qt5::DBus
                       Qt5::Quick
+                      Qt5::WaylandClient
                       KF5::Solid
                       KF5::ConfigCore
                       GreenIsland::Server
+                      Qt5Xdg
                       ${PAM_LIBRARIES}
-                      Qt5Xdg)
+                      ${CMAKE_INSTALL_PREFIX}/lib/qt/plugins/wayland-decoration-client/libmaterial.so)
+
+include_directories(
+    ${Qt5WaylandClient_INCLUDE_DIRS}
+    ${Qt5WaylandClient_PRIVATE_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/decorations
+)
 
 if(ALSA_FOUND)
     include_directories(${ALSA_INCLUDE_DIRS})

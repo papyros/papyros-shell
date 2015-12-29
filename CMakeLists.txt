@@ -16,6 +16,7 @@ option(ENABLE_PULSEAUDIO "Enables PulseAudio mixer backend" ON)
 # ECM setup
 find_package(ECM 1.4.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_SOURCE_DIR}/cmake")
+set(Qt5WaylandClient_DIR "${CMAKE_SOURCE_DIR}/cmake/Qt5WaylandClient")
 
 # Macros
 include(FeatureSummary)
@@ -48,6 +49,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
              Widgets
              Qml
              Quick)
+find_package(Qt5WaylandClient 5.5 CONFIG REQUIRED COMPONENTS PRIVATE)
 
 find_package(QT5XDG REQUIRED)
 
@@ -65,6 +67,7 @@ install(DIRECTORY sddm/
 
 add_subdirectory(3rdparty)
 add_subdirectory(data)
+add_subdirectory(decorations)
 add_subdirectory(headers)
 add_subdirectory(modules)
 add_subdirectory(session)

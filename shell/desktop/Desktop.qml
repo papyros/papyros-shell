@@ -78,6 +78,16 @@ Item {
         topLevelWindowComponent: TopLevelWindow {
             id: window
 
+            View {
+                id: dropShadow
+                anchors.fill: parent
+                elevation: window.clientWindow.active ? 5 : 2
+                // A hack to see if a window draws its own shadow via CSDs
+                visible: window.clientWindow.internalGeometry.x == 0
+                backgroundColor: "transparent"
+                radius: Units.dp(2)
+            }
+
             animation: WindowAnimation {
                 mapAnimation: NumberAnimation {
                     target: window
