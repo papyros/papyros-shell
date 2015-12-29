@@ -216,6 +216,9 @@ Item {
 
         if (window.type == ClientWindow.TopLevel)
             currentWorkspace.activeWindow = item
+
+        if (window.maximized)
+            currentWorkspace.maximizedCount++
     }
 
     function windowUnmapped(window) {
