@@ -142,7 +142,7 @@ Indicator {
                 height: visible ? implicitHeight : 0
 
                 onClicked: {
-                    edit.launch([])
+                    AppLauncherModel.launchApplication(edit.appId)
                     desktop.overlayLayer.currentOverlay.close()
                 }
             }

@@ -48,6 +48,7 @@ public:
         DesktopFileRole,
         ActionsRole,
         StateRole,
+        StartingRole,
         RunningRole,
         FocusedRole,
         PinnedRole
@@ -57,7 +58,6 @@ public:
     ~LauncherModel();
 
     static QObject *launcherSingleton(QQmlEngine *engine, QJSEngine *scriptEngine);
-
     static QObject *switcherSingleton(QQmlEngine *engine, QJSEngine *scriptEngine);
 
     QHash<int, QByteArray> roleNames() const;
@@ -69,13 +69,20 @@ public:
     Q_INVOKABLE Application *get(int index) const;
     Q_INVOKABLE int indexFromAppId(const QString &appId) const;
 
-    Q_INVOKABLE void pin(const QString &appId);
-    Q_INVOKABLE void unpin(const QString &appId);
+public slots:
+    void launchApplication(const QString &appId, const QStringList& urls);
+    void launchApplication(const QString &appId) { launchApplication(appId, QStringList()); };
+
+    void pin(const QString &appId);
+    void unpin(const QString &appId);
+
 
 private:
     QList<Application *> m_list;
     KSharedConfigPtr m_config;
     bool m_includePinnedApps;
+
+    Application *addApplication(const QString &appId, bool pinned);
 
     QStringList defaultPinnedApps();
 

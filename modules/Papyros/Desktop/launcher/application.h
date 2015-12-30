@@ -29,18 +29,19 @@ class LauncherModel;
 class Application : public QObject
 {
     Q_OBJECT
-    
+
     // Properties from the desktop file
 
     Q_PROPERTY(QString appId READ appId CONSTANT)
     Q_PROPERTY(DesktopFile *desktopFile READ desktopFile CONSTANT)
     //Q_PROPERTY(QList<ApplicationAction *> actions READ actions CONSTANT)
-    
+
     Q_PROPERTY(State state READ state NOTIFY stateChanged)
     Q_PROPERTY(bool running READ isRunning NOTIFY stateChanged)
+    Q_PROPERTY(bool starting READ isStarting NOTIFY stateChanged)
     Q_PROPERTY(bool focused READ isFocused NOTIFY focusedChanged)
     Q_PROPERTY(bool pinned READ isPinned WRITE setPinned NOTIFY pinnedChanged)
-    
+
     Q_ENUMS(State)
 
     friend LauncherModel;
@@ -65,7 +66,7 @@ public:
 
     Application(const QString &appId, QObject *parent = 0);
     Application(const QString &appId, bool pinned, QObject *parent = 0);
-    
+
     /*!
      * \brief Application state.
      *
@@ -96,6 +97,7 @@ public:
     bool isFocused() const { return m_focused; }
 
     bool isRunning() const { return m_state == Application::Running; }
+    bool isStarting() const { return m_state == Application::Starting; }
 
     /*!
      * \brief Actions.
@@ -111,6 +113,8 @@ public slots:
 
     Q_INVOKABLE bool launch(const QStringList& urls);
     Q_INVOKABLE bool quit();
+
+    Q_INVOKABLE bool launch() { return launch(QStringList()); }
 
 protected slots:
     void setState(State state);

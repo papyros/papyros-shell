@@ -28,6 +28,7 @@
 
 #include <QtGui/QIcon>
 #include <QDebug>
+#include <QTimer>
 
 #include <KConfigCore/KConfigGroup>
 
@@ -63,10 +64,9 @@ LauncherModel::LauncherModel(bool includePinnedApps, QObject *parent)
 
         // Otherwise create one
         beginInsertRows(QModelIndex(), m_list.size(), m_list.size());
-        Application *app = new Application(appId, this);
+        Application *app = addApplication(appId, false);;
         app->setState(Application::Running);
         app->m_pids.insert(pid);
-        m_list.append(app);
         endInsertRows();
     });
     connect(appMan, &ApplicationManager::applicationRemoved, this, [this](const QString &appId, pid_t pid) {
@@ -130,7 +130,7 @@ LauncherModel::LauncherModel(bool includePinnedApps, QObject *parent)
         beginInsertRows(QModelIndex(), 0, m_list.size());
 
         for (QString appId : pinnedLaunchers) {
-            m_list.append(new Application(appId, true, this));
+            addApplication(appId, true);
         }
 
         endInsertRows();
@@ -144,9 +144,50 @@ LauncherModel::~LauncherModel()
         m_list.takeFirst()->deleteLater();
 }
 
+void LauncherModel::launchApplication(const QString &appId, const QStringList& urls)
+{
+    beginInsertRows(QModelIndex(), m_list.size(), m_list.size());
+    auto app = addApplication(appId, false);
+    // Q_UNUSED(app);
+    app->launch(urls);
+    endInsertRows();
+}
+
+Application *LauncherModel::addApplication(const QString &appId, bool pinned)
+{
+    auto app = new Application(appId, pinned, this);
+
+    QObject::connect(app, &Application::launched, [=]() {
+        QModelIndex modelIndex = index(indexFromAppId(appId));
+        emit dataChanged(modelIndex, modelIndex);
+    });
+
+    QTimer::singleShot(5000, [=]() {
+        if (app->isStarting()) {
+            qDebug() << "Application failed to start!" << appId;
+            auto i = indexFromAppId(appId);
+            if (app->isPinned()) {
+                QModelIndex modelIndex = index(i);
+                app->setState(Application::NotRunning);
+                emit dataChanged(modelIndex, modelIndex);
+            } else {
+                beginRemoveRows(QModelIndex(), i, i);
+                m_list.takeAt(i)->deleteLater();
+                endRemoveRows();
+            }
+        } else {
+            qDebug() << "Application is now running" << appId;
+        }
+    });
+
+    m_list.append(app);
+
+    return app;
+}
+
 QStringList LauncherModel::defaultPinnedApps() {
     QStringList defaultApps;
-    defaultApps << "org.gnome.Dictionary";
+    defaultApps << "papyros-files" << "org.kde.kate" << "org.kde.konsole";
 
     return defaultApps;
 }
@@ -159,6 +200,7 @@ QHash<int, QByteArray> LauncherModel::roleNames() const
     roles.insert(ActionsRole, "actions");
     roles.insert(StateRole, "state");
     roles.insert(RunningRole, "running");
+    roles.insert(StartingRole, "starting");
     roles.insert(FocusedRole, "focused");
     roles.insert(PinnedRole, "pinned");
     return roles;
@@ -188,6 +230,8 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(item->desktopFile());
     case PinnedRole:
         return item->isPinned();
+    case StartingRole:
+        return item->isStarting();
     case RunningRole:
         return item->isRunning();
     case FocusedRole:
@@ -210,7 +254,7 @@ int LauncherModel::indexFromAppId(const QString &appId) const
 {
     for (int i = 0; i < m_list.size(); i++) {
         if (m_list.at(i)->appId() == appId)
-            return 0;
+            return i;
     }
 
     return -1;

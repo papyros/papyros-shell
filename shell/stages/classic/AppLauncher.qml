@@ -29,9 +29,27 @@ PanelItem {
     id: appLauncher
 
     tintColor: containsMouse ? Qt.rgba(0,0,0,0.2) : Qt.rgba(0,0,0,0)
-    highlightColor: "white"
-    highlightOpacity: active ? 1 : running ? 0.4 : 0
+    highlightColor: starting ? Palette.colors.orange["500"] : "white"
+    highlightOpacity: active || starting ? 1 : running ? 0.4 : 0
     selected: active
+
+    SequentialAnimation on y {
+        loops: Animation.Infinite
+        running: starting
+        alwaysRunToEnd: true
+
+        NumberAnimation {
+            from: 0; to: -appLauncher.height/2
+            easing.type: Easing.OutExpo; duration: 300
+        }
+
+        NumberAnimation {
+            from: -appLauncher.height/2; to: 0
+            easing.type: Easing.OutBounce; duration: 1000
+        }
+
+        PauseAnimation { duration: 500 }
+    }
 
     property var listView: ListView.view
 
@@ -54,7 +72,7 @@ PanelItem {
 
     onClicked: {
         if (!running) {
-            appLauncher.listView.model.get(index).launch([])
+            appLauncher.listView.model.get(index).launch()
         } else if (active) {
             // TODO: Spread windows
         } else {

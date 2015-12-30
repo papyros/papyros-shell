@@ -68,10 +68,12 @@ void Application::setFocused(bool focused)
 
 bool Application::launch(const QStringList& urls)
 {
-	if (isRunning())
+    if (isRunning())
         return true;
 
     desktopFile()->launch(urls);
+
+    setState(Application::Starting);
 
     Q_EMIT launched();
 

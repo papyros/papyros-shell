@@ -34,6 +34,7 @@ View {
 
     backgroundColor: Qt.rgba(0.2, 0.2, 0.2, maximized ? 1 : 0)
     height: Units.dp(56)
+    clipContent: false
 
     anchors {
         left: parent.left
