@@ -160,24 +160,24 @@ Application *LauncherModel::addApplication(const QString &appId, bool pinned)
     QObject::connect(app, &Application::launched, [=]() {
         QModelIndex modelIndex = index(indexFromAppId(appId));
         emit dataChanged(modelIndex, modelIndex);
-    });
 
-    QTimer::singleShot(5000, [=]() {
-        if (app->isStarting()) {
-            qDebug() << "Application failed to start!" << appId;
-            auto i = indexFromAppId(appId);
-            if (app->isPinned()) {
-                QModelIndex modelIndex = index(i);
-                app->setState(Application::NotRunning);
-                emit dataChanged(modelIndex, modelIndex);
+        QTimer::singleShot(5000, [=]() {
+            if (app->isStarting()) {
+                qDebug() << "Application failed to start!" << appId;
+                auto i = indexFromAppId(appId);
+                if (app->isPinned()) {
+                    QModelIndex modelIndex = index(i);
+                    app->setState(Application::NotRunning);
+                    emit dataChanged(modelIndex, modelIndex);
+                } else {
+                    beginRemoveRows(QModelIndex(), i, i);
+                    m_list.takeAt(i)->deleteLater();
+                    endRemoveRows();
+                }
             } else {
-                beginRemoveRows(QModelIndex(), i, i);
-                m_list.takeAt(i)->deleteLater();
-                endRemoveRows();
+                qDebug() << "Application is now running" << appId;
             }
-        } else {
-            qDebug() << "Application is now running" << appId;
-        }
+        });
     });
 
     m_list.append(app);
