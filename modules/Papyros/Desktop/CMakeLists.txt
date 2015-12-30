@@ -27,6 +27,7 @@ if(!ALSA_FOUND)
     list(REMOVE_ITEM SOURCES mixer/alsamixer.cpp)
 endif()
 
+link_directories(${CMAKE_INSTALL_PREFIX}/lib/qt/plugins/wayland-decoration-client)
 add_library(papyrosdesktop SHARED ${SOURCES})
 target_link_libraries(papyrosdesktop
                       Qt5::Core
@@ -37,9 +38,9 @@ target_link_libraries(papyrosdesktop
                       KF5::Solid
                       KF5::ConfigCore
                       GreenIsland::Server
+                      Papyros::MaterialDecorations
                       Qt5Xdg
-                      ${PAM_LIBRARIES}
-                      ${CMAKE_INSTALL_PREFIX}/lib/qt/plugins/wayland-decoration-client/libmaterial.so)
+                      ${PAM_LIBRARIES})
 
 include_directories(
     ${Qt5WaylandClient_INCLUDE_DIRS}

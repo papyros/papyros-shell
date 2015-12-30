@@ -1,6 +1,7 @@
 set(SOURCES main.cpp icons.qrc)
 
 add_library(material SHARED ${SOURCES})
+add_library(Papyros::MaterialDecorations ALIAS material)
 target_link_libraries(material
                       Qt5::Core
                       Qt5::WaylandClient)
