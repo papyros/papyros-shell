@@ -1,4 +1,4 @@
-set(SOURCES main.cpp)
+set(SOURCES main.cpp icons.qrc)
 
 add_library(material SHARED ${SOURCES})
 target_link_libraries(material

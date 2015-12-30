@@ -37,6 +37,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QPalette>
 #include <QtGui/QLinearGradient>
+#include <QBitmap>
 
 #include <qpa/qwindowsysteminterface.h>
 
@@ -95,6 +96,8 @@ private:
 
     int dp(int dp) const;
     qreal pixelDensity() const;
+
+    QBitmap buttonIcon(const QString &name) const;
 
     Button m_clicking;
     QColor m_backgroundColor;

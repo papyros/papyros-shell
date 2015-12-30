@@ -1,6 +1,7 @@
 project(PapyrosShell)
 
 cmake_minimum_required(VERSION 2.8.12)
+set(CMAKE_AUTORCC ON)
 
 option(ENABLE_MODEMMANAGER_SUPPORT "Enables ModemManager support" OFF)
 

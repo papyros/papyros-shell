@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>window-close.svg</file>
+        <file>window-minimize.svg</file>
+        <file>window-maximize.svg</file>
+        <file>window-restore.svg</file>
+    </qresource>
+</RCC>

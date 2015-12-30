@@ -33,85 +33,23 @@
 ****************************************************************************/
 
 #include "materialdecoration.h"
-#include <QBitmap>
 
 QT_BEGIN_NAMESPACE
 
+inline void initResources() { Q_INIT_RESOURCE(icons); }
+
 namespace QtWaylandClient {
 
-#define BUTTON_SPACING 5
-
-#ifndef QT_NO_IMAGEFORMAT_XPM
-#  define BUTTON_WIDTH 10
-
-static const char * const qt_close_xpm[] = {
-"10 10 2 1",
-"# c #000000",
-". c None",
-"..........",
-".##....##.",
-"..##..##..",
-"...####...",
-"....##....",
-"...####...",
-"..##..##..",
-".##....##.",
-"..........",
-".........."};
-
-static const char * const qt_maximize_xpm[]={
-"10 10 2 1",
-"# c #000000",
-". c None",
-"#########.",
-"#########.",
-"#.......#.",
-"#.......#.",
-"#.......#.",
-"#.......#.",
-"#.......#.",
-"#.......#.",
-"#########.",
-".........."};
-
-static const char * const qt_minimize_xpm[] = {
-"10 10 2 1",
-"# c #000000",
-". c None",
-"..........",
-"..........",
-"..........",
-"..........",
-"..........",
-"..........",
-"..........",
-".#######..",
-".#######..",
-".........."};
-
-static const char * const qt_normalizeup_xpm[] = {
-"10 10 2 1",
-"# c #000000",
-". c None",
-"...######.",
-"...######.",
-"...#....#.",
-".######.#.",
-".######.#.",
-".#....###.",
-".#....#...",
-".#....#...",
-".######...",
-".........."};
-#else
-#  define BUTTON_WIDTH 22
-#endif
+#define BUTTON_WIDTH dp(24)
+#define BUTTON_SPACING dp(12)
 
 QWaylandMaterialDecoration::QWaylandMaterialDecoration()
     : QWaylandAbstractDecoration()
     , m_clicking(None), m_backgroundColor("#455a64"),
       m_iconColor("#b4ffffff"), m_textColor("#ffffff")
 {
+    initResources();
+
     QTextOption option(Qt::AlignHCenter | Qt::AlignVCenter);
     option.setWrapMode(QTextOption::NoWrap);
     m_windowTitle.setTextOption(option);
@@ -126,19 +64,19 @@ void QWaylandMaterialDecoration::setWaylandWindow(QWaylandWindow *window)
 
 QRectF QWaylandMaterialDecoration::closeButtonRect() const
 {
-    return QRectF(window()->frameGeometry().width() - BUTTON_WIDTH - BUTTON_SPACING * 2,
+    return QRectF(window()->frameGeometry().width() - BUTTON_WIDTH - BUTTON_SPACING,
                   (margins().top() - BUTTON_WIDTH) / 2, BUTTON_WIDTH, BUTTON_WIDTH);
 }
 
 QRectF QWaylandMaterialDecoration::maximizeButtonRect() const
 {
-    return QRectF(window()->frameGeometry().width() - BUTTON_WIDTH * 2 - BUTTON_SPACING * 3,
+    return QRectF(window()->frameGeometry().width() - BUTTON_WIDTH * 2 - BUTTON_SPACING * 2,
                   (margins().top() - BUTTON_WIDTH) / 2, BUTTON_WIDTH, BUTTON_WIDTH);
 }
 
 QRectF QWaylandMaterialDecoration::minimizeButtonRect() const
 {
-    return QRectF(window()->frameGeometry().width() - BUTTON_WIDTH * 3 - BUTTON_SPACING * 4,
+    return QRectF(window()->frameGeometry().width() - BUTTON_WIDTH * 3 - BUTTON_SPACING * 3,
                   (margins().top() - BUTTON_WIDTH) / 2, BUTTON_WIDTH, BUTTON_WIDTH);
 }
 
@@ -208,20 +146,17 @@ void QWaylandMaterialDecoration::paint(QPaintDevice *device)
     p.setPen(m_iconColor);
 
     // Close button
-    QBitmap closePixmap = QPixmap(qt_close_xpm).createMaskFromColor(QColor("black"),
-            Qt::MaskOutColor);
-    p.drawPixmap(closeButtonRect(), closePixmap, closePixmap.rect());
+    QBitmap closeIcon = buttonIcon("window-close");
+    p.drawPixmap(closeButtonRect(), closeIcon, closeIcon.rect());
 
     // Maximize button
-    QBitmap maximizePixmap = QPixmap(waylandWindow()->isMaximized()
-            ? qt_normalizeup_xpm : qt_maximize_xpm).createMaskFromColor(QColor("black"),
-            Qt::MaskOutColor);
-    p.drawPixmap(maximizeButtonRect(), maximizePixmap, maximizePixmap.rect());
+    QBitmap maximizeIcon = buttonIcon(waylandWindow()->isMaximized()
+            ? "window-restore" : "window-maximize");
+    p.drawPixmap(maximizeButtonRect(), maximizeIcon, maximizeIcon.rect());
 
     // Minimize button
-    QBitmap minimizePixmap = QPixmap(qt_minimize_xpm).createMaskFromColor(QColor("black"),
-            Qt::MaskOutColor);
-    p.drawPixmap(minimizeButtonRect(), minimizePixmap, minimizePixmap.rect());
+    QBitmap minimizeIcon = buttonIcon("window-minimize");
+    p.drawPixmap(minimizeButtonRect(), minimizeIcon, minimizeIcon.rect());
 
     p.restore();
 }
@@ -359,6 +294,13 @@ int QWaylandMaterialDecoration::dp(int dp) const
 {
     qreal multiplier = 1.4;
     return round(dp * ((pixelDensity()*25.4)/160) * multiplier);
+}
+
+QBitmap QWaylandMaterialDecoration::buttonIcon(const QString &name) const
+{
+    QIcon icon(":/icons/" + name + ".svg");
+    QPixmap pixmap = icon.pixmap(QSize(BUTTON_WIDTH, BUTTON_WIDTH));
+    return pixmap.createMaskFromColor(QColor("black"), Qt::MaskOutColor);
 }
 
 qreal QWaylandMaterialDecoration::pixelDensity() const
