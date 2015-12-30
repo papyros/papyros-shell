@@ -22,6 +22,7 @@ import Material.Extras 0.1
 import GreenIsland 1.0
 import GreenIsland.Desktop 1.0
 import Papyros.Desktop 0.1
+import QtGraphicalEffects 1.0
 
 /*
  * The desktop consists of multiple workspaces, one of which is shown at a time. The desktop
@@ -78,14 +79,39 @@ Item {
         topLevelWindowComponent: TopLevelWindow {
             id: window
 
+            property int radius: Units.dp(3)
+            // A hack to see if a window draws its own shadow via CSDs
+            property bool usesGtkCSDs: window.clientWindow.internalGeometry.x != 0
+
+            onUsesGtkCSDsChanged: {
+                child.opacity = usesGtkCSDs ? 1 : 0
+            }
+
+            Component.onCompleted: {
+                child.opacity = usesGtkCSDs ? 1 : 0
+            }
+
             View {
                 id: dropShadow
                 anchors.fill: parent
                 elevation: window.clientWindow.active ? 5 : 2
-                // A hack to see if a window draws its own shadow via CSDs
-                visible: window.clientWindow.internalGeometry.x == 0
+                visible: !usesGtkCSDs
                 backgroundColor: "transparent"
-                radius: Units.dp(2)
+                radius:window.radius
+            }
+
+            Rectangle {
+                id: mask
+                anchors.fill: parent
+                radius:  window.clientWindow.maximized ? 0 : window.radius
+                visible: false
+            }
+
+            OpacityMask {
+                anchors.fill: parent
+                source: child
+                maskSource: mask
+                visible: !usesGtkCSDs
             }
 
             animation: WindowAnimation {

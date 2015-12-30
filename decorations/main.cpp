@@ -157,7 +157,7 @@ void QWaylandMaterialDecoration::paint(QPaintDevice *device)
     p.setRenderHint(QPainter::Antialiasing);
 
     // Title bar
-    int radius = waylandWindow()->isMaximized() ? 0 : dp(4);
+    int radius = waylandWindow()->isMaximized() ? 0 : dp(3);
     QPainterPath roundedRect;
     roundedRect.addRoundedRect(0, 0, window()->frameGeometry().width(), margins().top() * 1.5,
                 radius, radius);
