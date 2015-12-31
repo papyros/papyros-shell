@@ -187,7 +187,7 @@ Application *LauncherModel::addApplication(const QString &appId, bool pinned)
 
 QStringList LauncherModel::defaultPinnedApps() {
     QStringList defaultApps;
-    defaultApps << "papyros-files" << "org.kde.kate" << "org.kde.konsole";
+    defaultApps << "papyros-files" << "org.kde.kate" << "org.kde.konsole" << "papyros-settings";
 
     return defaultApps;
 }
