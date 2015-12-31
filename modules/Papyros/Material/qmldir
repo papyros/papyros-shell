@@ -1,0 +1,3 @@
+module Papyros.Material
+plugin papyrosmaterial
+PlatformExtensions 0.1 PlatformExtensions.qml
