@@ -135,6 +135,7 @@ void QWaylandMaterialDecoration::paint(QPaintDevice *device)
         int dy = (top.height()- size.height()) /2;
         QFont font = p.font();
         font.setBold(true);
+        font.setFamily("Roboto");
         p.setFont(font);
         QPoint windowTitlePoint(top.topLeft().x() + dx,
                  top.topLeft().y() + dy);
