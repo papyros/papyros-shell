@@ -25,7 +25,8 @@
 #include <QFileSystemWatcher>
 #include <QDBusInterface>
 
-#include "../qquicklist/qquicklist.h"
+#include <Papyros/QQuickList>
+
 #include "desktopfile.h"
 
 class DesktopFiles : public QObject

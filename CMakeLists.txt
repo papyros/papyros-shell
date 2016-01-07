@@ -54,6 +54,8 @@ find_package(Qt5WaylandClient 5.5 CONFIG REQUIRED COMPONENTS PRIVATE)
 
 find_package(QT5XDG REQUIRED)
 
+find_package(Papyros REQUIRED)
+
 # Find KF5
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
              Solid Config Declarative NetworkManagerQt)

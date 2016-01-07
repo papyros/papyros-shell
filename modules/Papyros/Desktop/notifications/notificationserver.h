@@ -25,8 +25,10 @@
 #include <QList>
 #include <QDBusConnection>
 #include <QObject>
+
+#include <Papyros/QQuickList>
+
 #include "notification.h"
-#include "../qquicklist/qquicklist.h"
 
 class NotificationAdaptor;
 

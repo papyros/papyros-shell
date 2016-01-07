@@ -36,6 +36,7 @@ target_link_libraries(papyrosdesktop
                       Qt5::WaylandClient
                       KF5::Solid
                       KF5::ConfigCore
+                      Papyros::Papyros
                       GreenIsland::Server
                       Qt5Xdg
                       ${PAM_LIBRARIES})

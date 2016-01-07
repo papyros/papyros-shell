@@ -1,6 +1,6 @@
 #include "plugin.h"
 
-#include "config/kquickconfig.h"
+#include <Papyros/KQuickConfig>
 
 #include "mpris/mprisconnection.h"
 #include "mpris/mpris2player.h"
