@@ -22,6 +22,7 @@ import Material.Extras 0.1
 import GreenIsland 1.0
 import GreenIsland.Desktop 1.0
 import Papyros.Components 0.1
+import Papyros.Desktop 0.1
 
 View {
     id: workspacePreview
@@ -66,9 +67,15 @@ View {
             model: workspace ? workspace.windows : []
             delegate: AppIcon {
                 iconName: window.iconName
+                hasIcon: desktopFile.hasIcon
                 name: window.appId
                 width: (grid.width - (grid.columns - 1) * grid.columnSpacing)/grid.columns
                 height: width
+
+                DesktopFile {
+                    id: desktopFile
+                    appId: window.appId
+                }
             }
         }
     }

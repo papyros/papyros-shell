@@ -56,7 +56,7 @@ View {
 
         print(JSON.stringify(layout))
 
-        var rowHeight = (workspace.height - spacing)/layout.count - spacing
+        var rowHeight = layout.rowHeight
         var totalHeight = (rowHeight + spacing) * layout.rows.length + spacing
         var offsetY = (workspace.height - totalHeight)/2
 
@@ -114,6 +114,12 @@ View {
 
         for (var i = 0; i < workspace.windows.count; i++) {
             var entry = workspace.windows.get(i)
+
+            rowHeight = Math.min(rowHeight, entry.item.height)
+        }
+
+        for (var i = 0; i < workspace.windows.count; i++) {
+            var entry = workspace.windows.get(i)
             var windowWidth = rowHeight * entry.item.width/entry.item.height
 
             if (rowHeight/entry.item.height > 1)
@@ -149,7 +155,8 @@ View {
 
         return {
             "count": rows,
-            "rows": list
+            "rows": list,
+            "rowHeight": rowHeight
         }
     }
 
