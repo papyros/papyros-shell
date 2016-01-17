@@ -17,7 +17,7 @@
  */
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
-import Material 0.1
+import Material 0.2
 import GreenIsland.Desktop 1.0
 
 Tooltip {

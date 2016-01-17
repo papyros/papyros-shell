@@ -17,7 +17,7 @@
  */
 import QtQuick 2.2
 import QtQuick.Window 2.0
-import Material 0.1
+import Material 0.2
 import Papyros.Desktop 0.1
 import Papyros.Indicators 0.1
 import org.kde.kcoreaddons 1.0 as KCoreAddons

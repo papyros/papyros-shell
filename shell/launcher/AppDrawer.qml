@@ -19,7 +19,7 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.2
-import Material 0.1
+import Material 0.2
 import Material.ListItems 0.1 as ListItem
 import Papyros.Components 0.1
 import Papyros.Desktop 0.1

@@ -17,7 +17,7 @@
  */
 import QtQuick 2.3
 import QtQuick.Layouts 1.0
-import Material 0.1
+import Material 0.2
 
 View {
     id: card
