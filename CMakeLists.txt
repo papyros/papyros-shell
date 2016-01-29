@@ -39,7 +39,7 @@ set(KF5_MIN_VERSION "5.8.0")
 find_package(PkgConfig)
 
 find_package(PAM REQUIRED)
-find_package(GreenIsland 0.6.90 REQUIRED)
+find_package(GreenIsland 0.7.1 REQUIRED)
 
 # Find Qt5
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
@@ -50,7 +50,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
              Widgets
              Qml
              Quick)
-find_package(Qt5WaylandClient 5.5 CONFIG REQUIRED COMPONENTS PRIVATE)
+find_package(Qt5WaylandClient 5.5.1 CONFIG REQUIRED COMPONENTS PRIVATE)
 
 find_package(QT5XDG REQUIRED)
 

@@ -18,7 +18,7 @@ unset(_realCurr)
 unset(_IMPORT_PREFIX)
 
 # For backwards compatibility only. Use Qt5WaylandClient_VERSION instead.
-set(Qt5WaylandClient_VERSION_STRING 5.5.)
+set(Qt5WaylandClient_VERSION_STRING 5.5.1)
 
 set(Qt5WaylandClient_LIBRARIES Qt5::WaylandClient)
 
@@ -55,8 +55,8 @@ if (NOT TARGET Qt5::WaylandClient)
 
     set(_Qt5WaylandClient_OWN_INCLUDE_DIRS "${_qt5WaylandClient_install_prefix}/include/qt/" "${_qt5WaylandClient_install_prefix}/include/qt/QtWaylandClient")
     set(Qt5WaylandClient_PRIVATE_INCLUDE_DIRS
-        "${_qt5WaylandClient_install_prefix}/include/qt/QtWaylandClient/5.5"
-        "${_qt5WaylandClient_install_prefix}/include/qt/QtWaylandClient/5.5/QtWaylandClient"
+        "${_qt5WaylandClient_install_prefix}/include/qt/QtWaylandClient/5.5.1"
+        "${_qt5WaylandClient_install_prefix}/include/qt/QtWaylandClient/5.5.1/QtWaylandClient"
     )
 
     foreach(_dir ${_Qt5WaylandClient_OWN_INCLUDE_DIRS})
