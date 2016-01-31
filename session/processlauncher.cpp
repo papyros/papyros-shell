@@ -65,24 +65,18 @@
 Q_LOGGING_CATEGORY(LAUNCHER, "papyros.session.launcher")
 
 ProcessLauncher::ProcessLauncher(SessionManager *sessionManager)
-    : QDBusAbstractAdaptor(sessionManager)
-    , m_sessionManager(sessionManager)
+        : QDBusAbstractAdaptor(sessionManager), m_sessionManager(sessionManager)
 {
 }
 
-ProcessLauncher::~ProcessLauncher()
-{
-    closeApplications();
-}
+ProcessLauncher::~ProcessLauncher() { closeApplications(); }
 
 bool ProcessLauncher::registerInterface()
 {
     QDBusConnection bus = QDBusConnection::sessionBus();
 
     if (!bus.registerObject(objectPath, this)) {
-        qCWarning(LAUNCHER,
-                  "Couldn't register %s D-Bus object: %s",
-                  objectPath,
+        qCWarning(LAUNCHER, "Couldn't register %s D-Bus object: %s", objectPath,
                   qPrintable(bus.lastError().message()));
         return false;
     }
@@ -105,7 +99,8 @@ void ProcessLauncher::closeApplications()
 
         i.remove();
 
-        qCDebug(LAUNCHER) << "Terminating application from" << fileName << "with pid" << process->pid();
+        qCDebug(LAUNCHER) << "Terminating application from" << fileName << "with pid"
+                          << process->pid();
 
         process->terminate();
         if (!process->waitForFinished())
@@ -116,9 +111,8 @@ void ProcessLauncher::closeApplications()
 
 bool ProcessLauncher::launchApplication(const QString &appId, const QStringList &urls)
 {
-    const QString fileName =
-            QStandardPaths::locate(QStandardPaths::ApplicationsLocation,
-                                   appId + QStringLiteral(".desktop"));
+    const QString fileName = QStandardPaths::locate(QStandardPaths::ApplicationsLocation,
+                                                    appId + QStringLiteral(".desktop"));
     XdgDesktopFile *entry = XdgDesktopFileCache::getFile(fileName);
     if (!entry->isValid()) {
         qCWarning(LAUNCHER) << "No desktop entry found for" << appId;
@@ -158,8 +152,7 @@ bool ProcessLauncher::launchEntry(XdgDesktopFile *entry, const QStringList &urls
     if (args.isEmpty())
         return false;
 
-    if (entry->value("Terminal").toBool())
-    {
+    if (entry->value("Terminal").toBool()) {
         QString term = getenv("TERM");
         if (term.isEmpty())
             term = "xterm";
@@ -177,21 +170,16 @@ bool ProcessLauncher::launchEntry(XdgDesktopFile *entry, const QStringList &urls
     process->setArguments(args);
     process->setProcessChannelMode(QProcess::ForwardedChannels);
     m_apps[entry->fileName()] = process;
-    connect(process, SIGNAL(finished(int)), this, SLOT(finished(int)));
+    connect(process, SIGNAL(finished(int) ), this, SLOT(finished(int) ));
     process->start();
     if (!process->waitForStarted()) {
-        qCWarning(LAUNCHER,
-                  "Failed to launch \"%s\" (%s)",
-                  qPrintable(entry->fileName()),
+        qCWarning(LAUNCHER, "Failed to launch \"%s\" (%s)", qPrintable(entry->fileName()),
                   qPrintable(entry->name()));
         return false;
     }
 
-    qCDebug(LAUNCHER,
-            "Launched \"%s\" (%s) with pid %lld",
-            qPrintable(entry->fileName()),
-            qPrintable(entry->name()),
-            process->pid());
+    qCDebug(LAUNCHER, "Launched \"%s\" (%s) with pid %lld", qPrintable(entry->fileName()),
+            qPrintable(entry->name()), process->pid());
 
     return true;
 }
@@ -205,6 +193,8 @@ bool ProcessLauncher::closeEntry(const QString &fileName)
     process->terminate();
     if (!process->waitForFinished())
         process->kill();
+    m_apps.remove(fileName);
+    process->deleteLater();
     return true;
 }
 
@@ -215,6 +205,10 @@ void ProcessLauncher::finished(int exitCode)
         return;
 
     QString fileName = m_apps.key(process);
+
+    if (fileName.isNull())
+        return;
+
     XdgDesktopFile *entry = XdgDesktopFileCache::getFile(fileName);
     if (entry) {
         qCDebug(LAUNCHER) << "Application for" << fileName << "finished with exit code" << exitCode;

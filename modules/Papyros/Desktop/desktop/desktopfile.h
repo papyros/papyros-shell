@@ -59,6 +59,8 @@ public:
     bool isValid() const;
     bool isShown(const QString &environment = QString()) const;
 
+    static QString canonicalAppId(QString appId);
+
 public slots:
     void setAppId(QString appId);
     void setPath(QString path);
@@ -71,9 +73,9 @@ signals:
     void appIdChanged();
 
 private:
-    QString pathFromAppId(QString appId);
-    QString findFileInPaths(QString fileName, QStringList paths);
-    QVariant localizedValue(const QSettings &desktopFile, QString key);
+    static QString pathFromAppId(QString appId);
+    static QString findFileInPaths(QString fileName, QStringList paths);
+    static QVariant localizedValue(const QSettings &desktopFile, QString key);
 
     XdgDesktopFile *m_desktopFile;
 };

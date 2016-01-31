@@ -57,13 +57,19 @@ QString DesktopFile::getEnvVar(int pid)
 
 void DesktopFile::setAppId(QString appId)
 {
+    appId = canonicalAppId(appId);
+    setPath(appId + ".desktop");
+}
+
+QString DesktopFile::canonicalAppId(QString appId)
+{
     bool notFound = pathFromAppId(appId).isEmpty();
 
     if (notFound && appId.startsWith("papyros-")) {
         QString name = appId.mid(8);
 
         if (name == "appcenter") {
-            name == "AppCenter";
+            name = "AppCenter";
         } else {
             name = name.left(1).toUpper() + name.mid(1);
         }
@@ -73,7 +79,7 @@ void DesktopFile::setAppId(QString appId)
         qDebug() << appId;
     }
 
-    setPath(appId + ".desktop");
+    return appId;
 }
 
 QString DesktopFile::pathFromAppId(QString appId)
