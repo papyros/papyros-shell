@@ -46,7 +46,7 @@ public:
 
     static QString getEnvVar(int pid);
 
-    Q_INVOKABLE bool launch(const QStringList& urls) const;
+    Q_INVOKABLE bool launch(const QStringList &urls) const;
 
     QString m_appId;
     QString m_path;

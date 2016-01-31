@@ -25,19 +25,20 @@
 Q_GLOBAL_STATIC(DesktopFiles, s_desktopFiles)
 
 DesktopFiles::DesktopFiles(QObject *parent)
-        : QObject(parent),
-          m_interface("io.papyros.session", "/PapyrosSession", "io.papyros.launcher", QDBusConnection::sessionBus())
+        : QObject(parent), m_interface("io.papyros.session", "/PapyrosSession",
+                                       "io.papyros.launcher", QDBusConnection::sessionBus())
 {
     QStringList iconSearchPaths;
     iconSearchPaths << "/usr/share/icons"
-                    << "/usr/share/pixmaps"
-                    << QDir::homePath() + "/.local/share/icons";
+                    << "/usr/share/pixmaps" << QDir::homePath() + "/.local/share/icons";
     QIcon::setThemeSearchPaths(iconSearchPaths);
 
-    QStringList paths; paths << "~/.local/share/applications"
-                             << "/usr/local/share/applications"
-                             << "/usr/share/applications";
-    QStringList filter; filter << "*.desktop";
+    QStringList paths;
+    paths << QDir::homePath() + "/.local/share/applications"
+          << "/usr/local/share/applications"
+          << "/usr/share/applications";
+    QStringList filter;
+    filter << "*.desktop";
 
     QStringList files = filesInPaths(paths, filter);
 
@@ -53,10 +54,9 @@ DesktopFiles::DesktopFiles(QObject *parent)
     fileWatcher = new QFileSystemWatcher(files, this);
     dirWatcher = new QFileSystemWatcher(paths, this);
 
-    connect(fileWatcher, &QFileSystemWatcher::fileChanged,
-            this, &DesktopFiles::onFileChanged);
-    connect(dirWatcher, &QFileSystemWatcher::directoryChanged,
-            this, &DesktopFiles::onDirectoryChanged);
+    connect(fileWatcher, &QFileSystemWatcher::fileChanged, this, &DesktopFiles::onFileChanged);
+    connect(dirWatcher, &QFileSystemWatcher::directoryChanged, this,
+            &DesktopFiles::onDirectoryChanged);
 }
 
 QStringList DesktopFiles::filesInPaths(QStringList paths, QStringList filters)
@@ -148,33 +148,35 @@ int DesktopFiles::indexOfName(QString name)
 bool DesktopFiles::launchApplication(const QString &appId, const QStringList &urls)
 {
     return m_interface.call(QStringLiteral("launchApplication"), appId, urls)
-            .arguments().at(0).toBool();
+            .arguments()
+            .at(0)
+            .toBool();
 }
 
 bool DesktopFiles::launchDesktopFile(const QString &fileName, const QStringList &urls)
 {
     return m_interface.call(QStringLiteral("launchDesktopFile"), fileName, urls)
-            .arguments().at(0).toBool();
+            .arguments()
+            .at(0)
+            .toBool();
 }
 
 bool DesktopFiles::closeApplication(const QString &appId)
 {
-    return m_interface.call(QStringLiteral("closeApplication"), appId)
-            .arguments().at(0).toBool();
+    return m_interface.call(QStringLiteral("closeApplication"), appId).arguments().at(0).toBool();
 }
 
 bool DesktopFiles::closeDesktopFile(const QString &fileName)
 {
     return m_interface.call(QStringLiteral("closeDesktopFile"), fileName)
-            .arguments().at(0).toBool();
+            .arguments()
+            .at(0)
+            .toBool();
 }
 
-DesktopFiles *DesktopFiles::sharedInstance()
-{
-    return s_desktopFiles();
-}
+DesktopFiles *DesktopFiles::sharedInstance() { return s_desktopFiles(); }
 
-QObject* DesktopFiles::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine)
+QObject *DesktopFiles::qmlSingleton(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
