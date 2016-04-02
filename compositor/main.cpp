@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     // Application
     QApplication app(argc, argv);
     app.setApplicationName(QStringLiteral("Papyros"));
-    app.setApplicationVersion(PPAPYROS_VERSION_STRING);
+    app.setApplicationVersion(PAPYROS_SHELL_VERSION_STRING);
     app.setOrganizationName(QStringLiteral("Papyros"));
     app.setOrganizationDomain(QStringLiteral("papyros.io"));
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
@@ -157,8 +157,8 @@ int main(int argc, char *argv[])
            "** http://papyros.io\n"
            "** Bug reports to: https://github.com/papyros/papyros-shell/issues\n"
            "** Build: %s-%s",
-           PAPYROS_VERSION_STRING, GREENISLAND_VERSION_STRING,
-           PAPYROS_VERSION_STRING, GIT_REV);
+           PAPYROS_SHELL_VERSION_STRING, GREENISLAND_VERSION_STRING,
+           PAPYROS_SHELL_VERSION_STRING, GIT_REV);
 
     // Application
     Application *papyros = new Application();

@@ -27,7 +27,7 @@
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
-import Material 0.2
+import Material 0.3
 
 Rectangle {
     width: grid.implicitWidth + 16
@@ -125,7 +125,7 @@ Rectangle {
             Layout.alignment: Qt.AlignRight
         }
         Text {
-            text: Units.dp(1).toFixed(2)
+            text: Units.dp.toFixed(2)
             color: "white"
         }
 
@@ -137,7 +137,7 @@ Rectangle {
             Layout.alignment: Qt.AlignRight
         }
         Text {
-            text: Units.gu(1).toFixed(2)
+            text: Units.gu.toFixed(2)
             color: "white"
         }
 

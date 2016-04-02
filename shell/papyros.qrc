@@ -1,0 +1,18 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+
+<qresource>
+	<file>Compositor.qml</file>
+	<file>KeyBindings.qml</file>
+	<file>ScreenView.qml</file>
+	<file>desktop/Background.qml</file>
+	<file>desktop/Output.qml</file>
+	<file>desktop/OutputInfo.qml</file>
+	<file>desktop/ScreenView.qml</file>
+	<file>desktop/ScreenZoom.qml</file>
+	<file>desktop/Shell.qml</file>
+	<file>images/papyros-wallpaper.png</file>
+	<file>screens/LogoutScreen.qml</file>
+</qresource>
+
+</RCC>
