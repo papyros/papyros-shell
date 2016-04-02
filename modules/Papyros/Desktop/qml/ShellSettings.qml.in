@@ -27,6 +27,7 @@ Object {
 
     property alias appShelf: __appShelf
     property alias desktop: __desktop
+    property alias session: __session
 
     KQuickConfig {
         id: __appShelf
@@ -48,6 +49,17 @@ Object {
             "accentColor": "teal",
             "backgroundUrl": "file://@SHELL_PATH@/images/papyros-wallpaper.png",
             "iconTheme": "Paper"
+        }
+    }
+
+    KQuickConfig {
+        id: __session
+
+        file: "papyros-shell"
+        group: "session"
+
+        defaults: {
+            idleDelay: "60"
         }
     }
 }

@@ -55,19 +55,15 @@ find_package(QT5XDG REQUIRED)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
              Solid Config Declarative NetworkManagerQt)
 
-set(SHELL_PATH ${CMAKE_INSTALL_PREFIX}/${DATA_INSTALL_DIR}/greenisland/shells/io.papyros.shell)
-
-greenisland_install_shell(io.papyros.shell shell)
-
 install(DIRECTORY sddm/
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/sddm/themes/papyros
         PATTERN dummydata EXCLUDE)
 
 add_subdirectory(3rdparty)
+add_subdirectory(compositor)
 add_subdirectory(data)
 add_subdirectory(headers)
 add_subdirectory(modules)
-add_subdirectory(session)
 
 # Display featute summary
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

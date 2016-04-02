@@ -1,3 +1,6 @@
 module Papyros.Desktop
+
 plugin papyrosdesktop
+
+Loadable 0.1 Loadable.qml
 singleton ShellSettings 0.1 ShellSettings.qml

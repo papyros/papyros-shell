@@ -1,44 +1,17 @@
 /****************************************************************************
  * This file is part of Hawaii.
  *
- * Copyright (C) 2015 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2015-2016 Pier Luigi Fiorini
  *
  * Author(s):
- *    Pier Luigi Fiorini
+ *    Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
- * $BEGIN_LICENSE:GPL3-HAWAII$
+ * $BEGIN_LICENSE:GPL2+$
  *
- * This program is free software; you can redistribute it and/or modify
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 or any later version accepted
- * by Pier Luigi Fiorini, which shall act as a proxy defined in Section 14
- * of version 3 of the license.
- *
- * Any modifications to this file must keep this entire header intact.
- *
- * The interactive user interfaces in modified source and object code
- * versions of this program must display Appropriate Legal Notices,
- * as required under Section 5 of the GNU General Public License version 3.
- *
- * In accordance with Section 7(b) of the GNU General Public License
- * version 3, these Appropriate Legal Notices must retain the display of the
- * "Powered by Hawaii" logo.  If the display of the logo is not reasonably
- * feasible for technical reasons, the Appropriate Legal Notices must display
- * the words "Powered by Hawaii".
- *
- * In accordance with Section 7(c) of the GNU General Public License
- * version 3, modified source and object code versions of this program
- * must be marked in reasonable ways as different from the original version.
- *
- * In accordance with Section 7(d) of the GNU General Public License
- * version 3, neither the "Hawaii" name, nor the name of any project that is
- * related to it, nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written
- * permission.
- *
- * In accordance with Section 7(e) of the GNU General Public License
- * version 3, this license does not grant any license or rights to use the
- * "Hawaii" name or logo, nor any other trademark.
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -53,20 +26,18 @@
 
 #include <QtCore/QProcess>
 #include <QtCore/QStandardPaths>
-
-#include <qt5xdg/xdgdesktopfile.h>
-
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusError>
 
+#include <qt5xdg/xdgdesktopfile.h>
+
 #include "processlauncher.h"
-#include "sessionmanager.h"
+#include "processlauncheradaptor.h"
 
-Q_LOGGING_CATEGORY(LAUNCHER, "papyros.session.launcher")
+Q_LOGGING_CATEGORY(LAUNCHER, "papyros.launcher")
 
-ProcessLauncher::ProcessLauncher(SessionManager *sessionManager)
-    : QDBusAbstractAdaptor(sessionManager)
-    , m_sessionManager(sessionManager)
+ProcessLauncher::ProcessLauncher(QObject *parent)
+    : QObject(parent)
 {
 }
 
@@ -75,20 +46,18 @@ ProcessLauncher::~ProcessLauncher()
     closeApplications();
 }
 
-bool ProcessLauncher::registerInterface()
+QString ProcessLauncher::waylandSocketName() const
 {
-    QDBusConnection bus = QDBusConnection::sessionBus();
+    return m_waylandSocketName;
+}
 
-    if (!bus.registerObject(objectPath, this)) {
-        qCWarning(LAUNCHER,
-                  "Couldn't register %s D-Bus object: %s",
-                  objectPath,
-                  qPrintable(bus.lastError().message()));
-        return false;
-    }
+void ProcessLauncher::setWaylandSocketName(const QString &name)
+{
+    if (m_waylandSocketName == name)
+        return;
 
-    qCDebug(LAUNCHER) << "Registered" << interfaceName << "D-Bus interface";
-    return true;
+    m_waylandSocketName = name;
+    Q_EMIT waylandSocketNameChanged();
 }
 
 void ProcessLauncher::closeApplications()
@@ -114,29 +83,44 @@ void ProcessLauncher::closeApplications()
     }
 }
 
-bool ProcessLauncher::launchApplication(const QString &appId, const QStringList &urls)
+bool ProcessLauncher::registerWithDBus(ProcessLauncher *instance)
+{
+    QDBusConnection bus = QDBusConnection::sessionBus();
+
+    new ProcessLauncherAdaptor(instance);
+    if (!bus.registerObject(QStringLiteral("/ProcessLauncher"), instance)) {
+        qCWarning(LAUNCHER,
+                  "Couldn't register /ProcessLauncher D-Bus object: %s",
+                  qPrintable(bus.lastError().message()));
+        return false;
+    }
+
+    return true;
+}
+
+bool ProcessLauncher::launchApplication(const QString &appId)
 {
     const QString fileName =
             QStandardPaths::locate(QStandardPaths::ApplicationsLocation,
                                    appId + QStringLiteral(".desktop"));
     XdgDesktopFile *entry = XdgDesktopFileCache::getFile(fileName);
-    if (!entry->isValid()) {
+    if (!entry) {
         qCWarning(LAUNCHER) << "No desktop entry found for" << appId;
         return false;
     }
 
-    return launchEntry(entry, urls);
+    return launchEntry(entry);
 }
 
-bool ProcessLauncher::launchDesktopFile(const QString &fileName, const QStringList &urls)
+bool ProcessLauncher::launchDesktopFile(const QString &fileName)
 {
     XdgDesktopFile *entry = XdgDesktopFileCache::getFile(fileName);
-    if (!entry->isValid()) {
+    if (!entry) {
         qCWarning(LAUNCHER) << "Failed to open desktop file" << fileName;
         return false;
     }
 
-    return launchEntry(entry, urls);
+    return launchEntry(entry);
 }
 
 bool ProcessLauncher::closeApplication(const QString &appId)
@@ -151,30 +135,29 @@ bool ProcessLauncher::closeDesktopFile(const QString &fileName)
     return closeEntry(fileName);
 }
 
-bool ProcessLauncher::launchEntry(XdgDesktopFile *entry, const QStringList &urls)
+bool ProcessLauncher::launchEntry(XdgDesktopFile *entry)
 {
-    QStringList args = entry->expandExecString(urls);
-
-    if (args.isEmpty())
-        return false;
-
-    if (entry->value("Terminal").toBool())
-    {
-        QString term = getenv("TERM");
-        if (term.isEmpty())
-            term = "xterm";
-
-        args.prepend("-e");
-        args.prepend(term);
-    }
-
+    QStringList args = entry->expandExecString();
     QString command = args.takeAt(0);
 
-    qDebug() << "Launching" << args.join(" ") << "from" << entry->fileName();
+    qCDebug(LAUNCHER) << "Launching" << entry->expandExecString().join(" ") << "from" << entry->fileName();
+
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    if (!m_waylandSocketName.isEmpty())
+        env.insert(QStringLiteral("WAYLAND_DISPLAY"), m_waylandSocketName);
+    env.insert(QStringLiteral("SAL_USE_VCLPLUGIN"), QStringLiteral("kde"));
+    env.insert(QStringLiteral("QT_PLATFORM_PLUGIN"), QStringLiteral("Papyros"));
+    env.insert(QStringLiteral("QT_QPA_PLATFORM"), QStringLiteral("wayland"));
+    env.insert(QStringLiteral("QT_QPA_PLATFORMTHEME"), QStringLiteral("Papyros"));
+    env.insert(QStringLiteral("QT_QUICK_CONTROLS_STYLE"), QStringLiteral("Material"));
+    env.insert(QStringLiteral("XCURSOR_THEME"), QStringLiteral("papyros"));
+    env.insert(QStringLiteral("XCURSOR_SIZE"), QStringLiteral("16"));
+    env.remove(QStringLiteral("QSG_RENDER_LOOP"));
 
     QProcess *process = new QProcess(this);
     process->setProgram(command);
     process->setArguments(args);
+    process->setProcessEnvironment(env);
     process->setProcessChannelMode(QProcess::ForwardedChannels);
     m_apps[entry->fileName()] = process;
     connect(process, SIGNAL(finished(int)), this, SLOT(finished(int)));
