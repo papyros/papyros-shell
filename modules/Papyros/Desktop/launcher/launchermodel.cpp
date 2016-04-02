@@ -1,129 +1,53 @@
-/****************************************************************************
- * This file is part of Hawaii.
+/*
+ * QML Desktop - Set of tools written in C++ for QML
  *
- * Copyright (C) 2014-2015 Pier Luigi Fiorini
- *               2015 Michael Spencer <sonrisesoftware@gmail.com>
- *
- * Author(s):
- *    Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
- *    Michael Spencer <sonrisesoftware@gmail.com>
- *
- * $BEGIN_LICENSE:LGPL2.1+$
+ * Copyright (C) 2015-2016 Michael Spencer <sonrisesoftware@gmail.com>
+ *               2015 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 2.1 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 2.1 of the
+ * License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * $END_LICENSE$
- ***************************************************************************/
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <QtGui/QIcon>
 #include <QDebug>
 
 #include <KConfigCore/KConfigGroup>
 
-#include <GreenIsland/Server/ApplicationManager>
-
 #include "launchermodel.h"
 #include "application.h"
 
-using namespace GreenIsland;
-
-LauncherModel::LauncherModel(bool includePinnedApps, QObject *parent)
-    : QAbstractListModel(parent), m_includePinnedApps(includePinnedApps)
+LauncherModel::LauncherModel(QObject *parent)
+    : QAbstractListModel(parent)
 {
-    // Settings
     m_config = KSharedConfig::openConfig("papyros-shell", KConfig::NoGlobals);
+}
 
-    // Application manager instance
-    ApplicationManager *appMan = ApplicationManager::instance();
+LauncherModel::~LauncherModel()
+{
+    // Delete the items
+    while (!m_list.isEmpty())
+        m_list.takeFirst()->deleteLater();
+}
 
-    // Connect to application events
-    connect(appMan, &ApplicationManager::applicationAdded, this, [this](const QString &appId, pid_t pid) {
-        // Do we have already an icon?
-        for (int i = 0; i < m_list.size(); i++) {
-            Application *app = m_list.at(i);
-            if (app->appId() == appId) {
-                app->m_pids.insert(pid);
-                app->setState(Application::Running);
-                QModelIndex modelIndex = index(i);
-                emit dataChanged(modelIndex, modelIndex);
-                return;
-            }
-        }
+void LauncherModel::setIncludePinnedApplications(bool includePinnedApps)
+{
+    if (m_includePinnedApps == includePinnedApps)
+        return;
 
-        // Otherwise create one
-        beginInsertRows(QModelIndex(), m_list.size(), m_list.size());
-        Application *app = new Application(appId, this);
-        app->setState(Application::Running);
-        app->m_pids.insert(pid);
-        m_list.append(app);
-        endInsertRows();
-    });
-    connect(appMan, &ApplicationManager::applicationRemoved, this, [this](const QString &appId, pid_t pid) {
-        for (int i = 0; i < m_list.size(); i++) {
-            Application *app = m_list.at(i);
-            if (app->appId() == appId) {
-                // Remove this pid and determine if there are any processes left
-                app->m_pids.remove(pid);
-                if (app->m_pids.count() > 0)
-                    return;
+    if (m_list.count() > 0)
+        return;
 
-                if (app->isPinned() && m_includePinnedApps) {
-                    // If it's pinned we just unset the flags if all pids are gone
-                    app->setState(Application::NotRunning);
-                    app->setFocused(false);
-                    QModelIndex modelIndex = index(i);
-                    emit dataChanged(modelIndex, modelIndex);
-                } else {
-                    // Otherwise the icon goes away because it wasn't meant
-                    // to stay
-                    beginRemoveRows(QModelIndex(), i, i);
-                    m_list.takeAt(i)->deleteLater();
-                    endRemoveRows();
-                }
-                break;
-            }
-        }
-    });
-    connect(appMan, &ApplicationManager::applicationFocused, this, [this](const QString &appId) {
-        for (int i = 0; i < m_list.size(); i++) {
-            Application *app = m_list.at(i);
-            if (app->appId() == appId) {
-                app->setFocused(true);
-                QModelIndex modelIndex = index(i);
-                emit dataChanged(modelIndex, modelIndex);
-
-                if (!m_includePinnedApps) {
-                    moveRows(i, 1, 0);
-                }
-
-                break;
-            }
-        }
-    });
-    connect(appMan, &ApplicationManager::applicationUnfocused, this, [this](const QString &appId) {
-        for (int i = 0; i < m_list.size(); i++) {
-            Application *app = m_list.at(i);
-            if (app->appId() == appId) {
-                app->setFocused(false);
-                QModelIndex modelIndex = index(i);
-                Q_EMIT dataChanged(modelIndex, modelIndex);
-                break;
-            }
-        }
-    });
-
-    if (m_includePinnedApps) {
+    if (includePinnedApps) {
         // Add pinned launchers
         const QStringList pinnedLaunchers = m_config->group("appshelf")
                 .readEntry("pinnedApps", defaultPinnedApps());
@@ -135,13 +59,132 @@ LauncherModel::LauncherModel(bool includePinnedApps, QObject *parent)
 
         endInsertRows();
     }
+
+    emit includePinnedApplicationsChanged();
 }
 
-LauncherModel::~LauncherModel()
+bool LauncherModel::includePinnedApplications() const
 {
-    // Delete the items
-    while (!m_list.isEmpty())
-        m_list.takeFirst()->deleteLater();
+    return m_includePinnedApps;
+}
+
+void LauncherModel::setApplicationManager(ApplicationManager *applicationManager)
+{
+    if (m_applicationManager == applicationManager)
+        return;
+
+    if (m_applicationManager != nullptr) {
+        disconnect(m_applicationManager, &ApplicationManager::applicationAdded,
+                   this, &LauncherModel::handleApplicationAdded);
+        disconnect(m_applicationManager, &ApplicationManager::applicationRemoved,
+                   this, &LauncherModel::handleApplicationRemoved);
+        disconnect(m_applicationManager, &ApplicationManager::applicationFocused,
+                   this, &LauncherModel::handleApplicationFocused);
+        disconnect(m_applicationManager, &ApplicationManager::applicationUnfocused,
+                   this, &LauncherModel::handleApplicationUnfocused);
+    }
+
+    m_applicationManager = applicationManager;
+
+    emit applicationManagerChanged();
+
+    if (applicationManager != nullptr) {
+        connect(applicationManager, &ApplicationManager::applicationAdded,
+                this, &LauncherModel::handleApplicationAdded);
+        connect(applicationManager, &ApplicationManager::applicationRemoved,
+                this, &LauncherModel::handleApplicationRemoved);
+        connect(applicationManager, &ApplicationManager::applicationFocused,
+                this, &LauncherModel::handleApplicationFocused);
+        connect(applicationManager, &ApplicationManager::applicationUnfocused,
+                this, &LauncherModel::handleApplicationUnfocused);
+    }
+}
+
+ApplicationManager *LauncherModel::applicationManager() const
+{
+    return m_applicationManager;
+}
+
+void LauncherModel::handleApplicationAdded(const QString &appId, pid_t pid)
+{
+    // Do we have already an icon?
+    for (int i = 0; i < m_list.size(); i++) {
+        Application *app = m_list.at(i);
+        if (app->appId() == appId) {
+            app->m_pids.insert(pid);
+            app->setState(Application::Running);
+            QModelIndex modelIndex = index(i);
+            emit dataChanged(modelIndex, modelIndex);
+            return;
+        }
+    }
+
+    // Otherwise create one
+    beginInsertRows(QModelIndex(), m_list.size(), m_list.size());
+    Application *app = new Application(appId, this);
+    app->setState(Application::Running);
+    app->m_pids.insert(pid);
+    m_list.append(app);
+    endInsertRows();
+}
+
+void LauncherModel::handleApplicationRemoved(const QString &appId, pid_t pid)
+{
+    for (int i = 0; i < m_list.size(); i++) {
+        Application *app = m_list.at(i);
+        if (app->appId() == appId) {
+            // Remove this pid and determine if there are any processes left
+            app->m_pids.remove(pid);
+            if (app->m_pids.count() > 0)
+                return;
+
+            if (app->isPinned() && m_includePinnedApps) {
+                // If it's pinned we just unset the flags if all pids are gone
+                app->setState(Application::NotRunning);
+                app->setFocused(false);
+                QModelIndex modelIndex = index(i);
+                emit dataChanged(modelIndex, modelIndex);
+            } else {
+                // Otherwise the icon goes away because it wasn't meant
+                // to stay
+                beginRemoveRows(QModelIndex(), i, i);
+                m_list.takeAt(i)->deleteLater();
+                endRemoveRows();
+            }
+            break;
+        }
+    }
+}
+
+void LauncherModel::handleApplicationFocused(const QString &appId)
+{
+    for (int i = 0; i < m_list.size(); i++) {
+        Application *app = m_list.at(i);
+        if (app->appId() == appId) {
+            app->setFocused(true);
+            QModelIndex modelIndex = index(i);
+            emit dataChanged(modelIndex, modelIndex);
+
+            if (!m_includePinnedApps) {
+                moveRows(i, 1, 0);
+            }
+
+            break;
+        }
+    }
+}
+
+void LauncherModel::handleApplicationUnfocused(const QString &appId)
+{
+    for (int i = 0; i < m_list.size(); i++) {
+        Application *app = m_list.at(i);
+        if (app->appId() == appId) {
+            app->setFocused(false);
+            QModelIndex modelIndex = index(i);
+            Q_EMIT dataChanged(modelIndex, modelIndex);
+            break;
+        }
+    }
 }
 
 QStringList LauncherModel::defaultPinnedApps() {
@@ -344,22 +387,4 @@ bool LauncherModel::moveRows(const QModelIndex & sourceParent, int sourceRow, in
         endMoveRows();
     }
     return true;
-}
-
-QObject* LauncherModel::launcherSingleton(QQmlEngine *engine, QJSEngine *scriptEngine)
-{
-    Q_UNUSED(engine)
-    Q_UNUSED(scriptEngine)
-
-    LauncherModel *launcherModel = new LauncherModel(true);
-    return launcherModel;
-}
-
-QObject* LauncherModel::switcherSingleton(QQmlEngine *engine, QJSEngine *scriptEngine)
-{
-    Q_UNUSED(engine)
-    Q_UNUSED(scriptEngine)
-
-    LauncherModel *launcherModel = new LauncherModel(false);
-    return launcherModel;
 }

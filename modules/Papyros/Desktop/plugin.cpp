@@ -45,11 +45,8 @@ void DesktopPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Application>(uri, 0, 1, "Application", "Applications are managed by the launcher model");
     qmlRegisterUncreatableType<QObjectListModel>(uri, 0, 1, "QObjectListModel", "For cool animations");
 
-    qmlRegisterSingletonType<LauncherModel>(uri, 0, 1, "AppLauncherModel",
-            LauncherModel::launcherSingleton);
 
-    qmlRegisterSingletonType<LauncherModel>(uri, 0, 1, "AppSwitcherModel",
-            LauncherModel::switcherSingleton);
+    qmlRegisterType<LauncherModel>(uri, 0, 1, "LauncherModel");
 
     // Hardware (battery and storage)
 

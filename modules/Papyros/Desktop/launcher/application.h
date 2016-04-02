@@ -1,7 +1,7 @@
 /*
  * QML Desktop - Set of tools written in C++ for QML
  *
- * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2015-2016 Michael Spencer <sonrisesoftware@gmail.com>
  *               2015 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 #define APPLICATION_H
 
 #include <QtCore/QObject>
+
 #include "../desktop/desktopfile.h"
 
 class ApplicationAction;
@@ -29,18 +30,18 @@ class LauncherModel;
 class Application : public QObject
 {
     Q_OBJECT
-    
+
     // Properties from the desktop file
 
     Q_PROPERTY(QString appId READ appId CONSTANT)
     Q_PROPERTY(DesktopFile *desktopFile READ desktopFile CONSTANT)
     //Q_PROPERTY(QList<ApplicationAction *> actions READ actions CONSTANT)
-    
+
     Q_PROPERTY(State state READ state NOTIFY stateChanged)
     Q_PROPERTY(bool running READ isRunning NOTIFY stateChanged)
     Q_PROPERTY(bool focused READ isFocused NOTIFY focusedChanged)
     Q_PROPERTY(bool pinned READ isPinned WRITE setPinned NOTIFY pinnedChanged)
-    
+
     Q_ENUMS(State)
 
     friend LauncherModel;
@@ -63,9 +64,9 @@ public:
         Stopped
     };
 
-    Application(const QString &appId, QObject *parent = 0);
-    Application(const QString &appId, bool pinned, QObject *parent = 0);
-    
+    Application(const QString &appId, LauncherModel *LauncherModel);
+    Application(const QString &appId, bool pinned, LauncherModel *LauncherModel);
+
     /*!
      * \brief Application state.
      *
@@ -126,6 +127,7 @@ protected:
     QSet<pid_t> m_pids;
 
 private:
+    LauncherModel *m_launcherModel;
     QString m_appId;
     DesktopFile *m_desktopFile;
     bool m_focused;

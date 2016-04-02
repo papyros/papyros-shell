@@ -1,7 +1,7 @@
 /*
  * QML Desktop - Set of tools written in C++ for QML
  *
- * Copyright (C) 2015 Michael Spencer <sonrisesoftware@gmail.com>
+ * Copyright (C) 2015-2016 Michael Spencer <sonrisesoftware@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <GreenIsland/Server/ApplicationManager>
 #include <QtCore/QLocale>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QDebug>
@@ -26,16 +25,20 @@
 
 #include "application.h"
 
-Application::Application(const QString &appId, bool pinned, QObject *parent)
-		: QObject(parent), m_appId(appId),
-		  m_focused(false), m_pinned(pinned),
+#include "launchermodel.h"
+
+using namespace GreenIsland::Server;
+
+Application::Application(const QString &appId, bool pinned, LauncherModel *launcherModel)
+		: QObject(launcherModel), m_launcherModel(launcherModel),
+          m_appId(appId), m_focused(false), m_pinned(pinned),
 		  m_state(Application::NotRunning)
 {
 	m_desktopFile = new DesktopFile(appId, this);
 }
 
-Application::Application(const QString &appId, QObject *parent)
-		: Application(appId, false, parent)
+Application::Application(const QString &appId, LauncherModel *launcherModel)
+		: Application(appId, false, launcherModel)
 {
 }
 
@@ -83,7 +86,7 @@ bool Application::quit()
 	if (!isRunning())
         return false;
 
-    GreenIsland::ApplicationManager::instance()->quit(appId());
+    m_launcherModel->applicationManager()->quit(appId());
 
     return true;
 }
