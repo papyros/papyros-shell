@@ -10,8 +10,6 @@
 
 #include "mixer/sound.h"
 
-#include "keyeventfilter/keyeventfilter.h"
-
 #include "desktop/desktopfile.h"
 #include "desktop/desktopfiles.h"
 
@@ -36,8 +34,6 @@ void DesktopPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<Notification>(uri, 0, 1, "Notification", "A notification from NotificationServer");
 
     qmlRegisterType<Sound>(uri, 0, 1, "Sound");
-
-    qmlRegisterType<KeyEventFilter>(uri, 0, 1, "KeyEventFilter");
 
     qmlRegisterType<DesktopFile>(uri, 0, 1, "DesktopFile");
     qmlRegisterSingletonType<DesktopFiles>(uri, 0, 1, "DesktopFiles",
