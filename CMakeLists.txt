@@ -58,7 +58,7 @@ find_package(Papyros REQUIRED)
 
 # Find KF5
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
-             Solid Config Declarative NetworkManagerQt)
+             Solid Wallet Config Declarative NetworkManagerQt)
 
 set(SHELL_PATH ${CMAKE_INSTALL_PREFIX}/${DATA_INSTALL_DIR}/greenisland/shells/io.papyros.shell)
 
